@@ -20,7 +20,7 @@ const CommonMethodConstant = {
 # Thí dụ:
 * Lấy tất cả học phần (GET): ``` http://localhost:4000/api/hocphan/get-all```
 
-* Lấy tất 1 học phần có id 12(GET): ``` http://localhost:4000/api/hocphan/12```
+* Lấy 1 học phần có id 12(GET): ``` http://localhost:4000/api/hocphan/12```
 
 * Tạo mới 1 HP (POST): ``` http://localhost:4000/api/hocphan```
 
