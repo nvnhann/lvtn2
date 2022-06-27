@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {useSnackbar} from "notistack";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
@@ -7,9 +8,19 @@ import bgLogin from "../../assets/images/bg_login.jpg";
 
 var arr = [
   {
-    taikhoan: "B1809248",
-    matkhau: "12345",
+    taikhoan: "admin",
+    matkhau: "admin",
     role: "admin",
+  },
+  {
+    taikhoan: "student",
+    matkhau: "student",
+    role: "student",
+  },
+  {
+    taikhoan: "teacher",
+    matkhau: "teacher",
+    role: "teacher",
   },
 ];
 
@@ -23,12 +34,26 @@ function Login() {
   const [hidden, setHidden] = useState(false);
 
   const navigate = useNavigate();
+  const {enqueueSnackbar} = useSnackbar();
 
   const onSubmit = (data) => {
-    const a = arr.filter((e) => e.taikhoan === data.taikhoan && e.matkhau === data.matkhau);
-    if (a.length > 0 && a[0].role === "admin") {
+    const role = arr.filter((e) => e.taikhoan === data.taikhoan && e.matkhau === data.matkhau);
+    if (role.length > 0 && role[0].role === "admin") {
       navigate("/admin");
+    } else if (role.length > 0 && role[0].role === "student") {
+      navigate("/student");
+    } else if (role.length > 0 && role[0].role === "teacher") {
+      navigate("/teacher");
+    } else {
+      enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     }
+    enqueueSnackbar("Đăng nhập thành công", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
   };
 
   return (
