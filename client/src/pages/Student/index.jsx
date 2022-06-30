@@ -12,10 +12,12 @@ import Home from './home'
 import Article from './article'
 import EditProfile from './edit_profile'
 import ForgotPassword from './forgot_password'
+import ResultSearch from './result_search'
+import {useForm} from 'react-hook-form'
 
 function Student() {
   const [show, setShow] = useState(false)
-
+  const {register, handleSubmit} = useForm()
   const navigate = useNavigate()
 
   const handleProfile = () => {
@@ -30,12 +32,24 @@ function Student() {
     navigate('/login')
   }
 
+  const search = (data) => {
+    if (data.search) navigate(`/student/search/${data.search}`)
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center py-5 px-6 bg-[#2554A6] text-white">
         <p className="block w-[15%] text-[30px] font-bold">CIT</p>
-        <form className="flex justify-center w-[70%]">
-          <input className="py-2 px-4 w-[80%] rounded-l-md text-black outline-none" type="text" />
+        <form
+          className="flex justify-center w-[70%]"
+          onSubmit={handleSubmit((data) => search(data))}
+        >
+          <input
+            className="py-2 px-4 w-[80%] rounded-l-md text-black outline-none"
+            type="text"
+            name="search"
+            {...register('search')}
+          />
           <button className="px-4 py-2 bg-white rounded-r-md border border-r">
             <BiSearch size={20} color="#000" />
           </button>
@@ -110,6 +124,7 @@ function Student() {
             <Route path="/my_profile" element={<MyProfile />} />
             <Route path="/edit_profile/:student" element={<EditProfile />} />
             <Route path="/forgot_password/:student" element={<ForgotPassword />} />
+            <Route path="/search/:keyword" element={<ResultSearch />} />
           </Routes>
         </div>
       </div>

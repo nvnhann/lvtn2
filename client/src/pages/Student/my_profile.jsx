@@ -1,32 +1,87 @@
 import React, {useState} from 'react'
 import {IoMdLock} from 'react-icons/io'
 import {FaUserEdit, FaUser} from 'react-icons/fa'
-import {HiOutlineDocumentText} from 'react-icons/hi'
+import {AiOutlineCloudUpload} from 'react-icons/ai'
 import {Link} from 'react-router-dom'
 
 function MyProfile() {
-  const [show, setShow] = useState(false)
 
-  const open = () => {
-    setShow(!show)
+  const [imageUrl, setImageUrl] = useState([])
+  const [listImage, setListImage] = useState([])
+
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      }
+
+      fileReader.onerror = (err) => {
+        reject(err)
+      }
+    })
   }
 
-  const close = () => {
-    setShow(!show)
+  const uploadImage = async (e) => {
+    setListImage(e.target.files)
+    const imageNumber = e.target.files.length + imageUrl.length
+    if (imageNumber <= 5) {
+      let i = 0
+      for (i; i < e.target.files.length; i++) {
+        const file = e.target.files[i]
+        if (!file) return
+        const base64 = await getBase64(file)
+        setImageUrl([{url: base64}])
+      }
+    }
   }
+
+  const btnActive = () => {
+    document.getElementById('default-btn').click()
+  }
+
+  const renderImage =
+    imageUrl.length > 0 ? (
+      <div className="relative">
+        <img
+          className="w-[200px] h-[200px] rounded-lg"
+          src={`${imageUrl[0].url}`}
+          alt="anhsanpham"
+        />
+      </div>
+    ) : (
+      <FaUser
+        size={100}
+        color="#747474"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      />
+    )
 
   return (
     <div>
       <div className="w-full">
-        <div className="flex gap-5">
-          <div className="relative w-[160px] h-[160px] bg-slate-200 rounded-md">
-            <FaUser
-              size={100}
-              color="#747474"
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            />
+        <div className="flex gap-5 p-4 bg-white rounded-md">
+          <div className="w-[30%]">
+            <div className="relative mx-auto w-[200px] h-[200px] bg-slate-200 rounded-md">
+              {renderImage}
+              <input
+                type="file"
+                id="default-btn"
+                className="hidden"
+                name="file"
+                onChange={(e) => {
+                  uploadImage(e)
+                }}
+              />
+              <AiOutlineCloudUpload
+                onClick={btnActive}
+                size={30}
+                className="absolute bottom-1 right-1 cursor-pointer"
+              />
+            </div>
           </div>
-          <div>
+          <div className="w-[70%]">
             <p className="text-[25px] font-bold uppercase">Đào Minh Khoa</p>
             <p>
               <strong>MSSV:</strong> B180xxxx
@@ -38,17 +93,13 @@ function MyProfile() {
               <strong>Email:</strong> abcxyz@student.ctu.edu.vn
             </p>
             <p>
-              <strong>Địa chỉ:</strong> 30/4 Hứng Lợi, Ninh Kiều, Cần Thơ
+              <strong>Địa chỉ:</strong> 30/4 Hưng Lợi, Ninh Kiều, Cần Thơ
             </p>
             <p>
               <strong>Số điện thoại:</strong> 0398423952
             </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-end gap-5 mt-5">
-        <div className="relative text-white z-50">
+            <div className="flex gap-5 mt-5">
+              {/* <div className="relative text-white z-50">
           <button
             onClick={() => open()}
             className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md"
@@ -73,17 +124,73 @@ function MyProfile() {
               </div>
             </>
           )}
+        </div> */}
+              <Link to="/student/forgot_password/id">
+                <button className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md">
+                  Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
+                </button>
+              </Link>
+              <Link to="/student/edit_profile/id">
+                <button className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md">
+                  Chỉnh sửa thông tin cá nhân <FaUserEdit className="ml-2" size={20} />
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
-        <Link to="/student/forgot_password/id">
-          <button className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md">
-            Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
-          </button>
-        </Link>
-        <Link to="/student/edit_profile/id">
-          <button className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md">
-            Chỉnh sửa thông tin cá nhân <FaUserEdit className="ml-2" size={20} />
-          </button>
-        </Link>
+      </div>
+
+      <div className="my-5">
+        <p className="text-[20px] font-bold">Tài liệu</p>
+        <div className="w-[250px] mt-3">
+          <Link to="">
+            <div className="bg-white p-3 rounded-md">
+              <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"></div>
+              <p>
+                <strong>Báo cáo cuối kỳ</strong>
+              </p>
+              <p>
+                <span className="text-[12px] text-white bg-[#F38E46] rounded-full mr-2 px-[8px] py-1">
+                  Máy học
+                </span>
+                <span className="text-[12px] text-white bg-[#F38E46] rounded-full mr-2 px-[8px] py-1">
+                  ML
+                </span>
+              </p>
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      <div className="mt-5">
+        <p className="text-[20px] font-bold">Khóa học đã nghi danh</p>
+        <div className="grid grid-cols-4 gap-2 mt-3 p-3 text-center bg-[#D9D9D9] rounded-md">
+          <div className="p-2 bg-white rounded-md">
+            <p>
+              <strong>CT178 - Nguyên lý hệ điều hành</strong>
+            </p>
+          </div>
+          <div className="p-2 bg-white rounded-md">
+            <p>
+              <strong>CT178 - Nguyên lý hệ điều hành</strong>
+            </p>
+          </div>
+          <div className="p-2 bg-white rounded-md">
+            <p>
+              <strong>CT178 - Nguyên lý hệ điều hành</strong>
+            </p>
+          </div>
+          <div className="p-2 bg-white rounded-md">
+            <p>
+              <strong>CT178 - Nguyên lý hệ điều hành</strong>
+            </p>
+          </div>
+          <div className="p-2 bg-white rounded-md">
+            <p>
+              <strong>CT178 - Nguyên lý hệ điều hành</strong>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )

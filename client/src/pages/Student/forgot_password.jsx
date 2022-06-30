@@ -34,7 +34,7 @@ function ForgotPassword() {
       </div>
       <form onSubmit={handleSubmit((data) => updatePassword(data))}>
         <div className="mt-5 mx-auto w-[70%] p-6 bg-white rounded-md">
-          <div className="flex items-center mb-8">
+          <div className="relative flex items-center mb-8">
             <p className="w-[40%] font-medium text-[18px]">Mật khẩu hiện tại</p>
             <input
               className="items-center px-4 py-2 w-[60%] rounded-lg bg-slate-200 outline-none"
@@ -42,9 +42,13 @@ function ForgotPassword() {
               name="pwd"
               {...register('currentpass')}
             />
-            {!!errors.pwd && <span>{errors.pwd}</span>}
+            {errors.pwd && (
+              <span className="absolute top-11 right-[340px] text-[12px] text-red-500">
+                {errors.pwd.message}
+              </span>
+            )}
           </div>
-          <div className="flex items-center mb-8">
+          <div className="relative flex items-center mb-8">
             <p className="w-[40%] font-medium text-[18px]">Mật khẩu mới</p>
             <input
               className=" px-4 py-2 w-[60%] rounded-lg bg-slate-200 outline-none"
@@ -52,8 +56,13 @@ function ForgotPassword() {
               name="newpwd"
               {...register('newpass')}
             />
+            {errors.newpwd && (
+              <span className="absolute top-11 right-[340px] text-[12px] text-red-500">
+                {errors.newpwd.message}
+              </span>
+            )}
           </div>
-          <div className="flex items-center mb-8">
+          <div className="relative flex items-center mb-8">
             <p className="w-[40%] font-medium text-[18px]">Nhập lại mật khẩu mới</p>
             <input
               className=" px-4 py-2 w-[60%] rounded-lg bg-slate-200 outline-none"
@@ -61,6 +70,11 @@ function ForgotPassword() {
               name="renewpwd"
               {...register('confirmnewpass')}
             />
+            {errors.renewpwd && (
+              <span className="absolute top-11 right-[325px] text-[12px] text-red-500">
+                {errors.renewpwd.message}
+              </span>
+            )}
           </div>
           <button className="block ml-auto mr-0 mt-4 py-2 px-6 text-white font-medium bg-[#F38E46] rounded-md">
             Lưu
