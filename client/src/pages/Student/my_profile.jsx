@@ -5,7 +5,6 @@ import {AiOutlineCloudUpload} from 'react-icons/ai'
 import {Link} from 'react-router-dom'
 
 function MyProfile() {
-
   const [imageUrl, setImageUrl] = useState([])
   const [listImage, setListImage] = useState([])
 
@@ -77,6 +76,7 @@ function MyProfile() {
               <AiOutlineCloudUpload
                 onClick={btnActive}
                 size={30}
+                color="#3d3d3d"
                 className="absolute bottom-1 right-1 cursor-pointer"
               />
             </div>
@@ -126,13 +126,13 @@ function MyProfile() {
           )}
         </div> */}
               <Link to="/student/forgot_password/id">
-                <button className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md">
+                <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
                 </button>
               </Link>
               <Link to="/student/edit_profile/id">
-                <button className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md">
-                  Chỉnh sửa thông tin cá nhân <FaUserEdit className="ml-2" size={20} />
+                <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
+                  Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
                 </button>
               </Link>
             </div>
