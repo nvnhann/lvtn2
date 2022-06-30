@@ -1,32 +1,35 @@
-import React, {useState} from "react";
-import {FaUserCircle} from "react-icons/fa";
-import {BiSearch} from "react-icons/bi";
+import React, {useState} from 'react'
+import {FaUserCircle} from 'react-icons/fa'
+import {BiSearch} from 'react-icons/bi'
 
-import {Link, Route, Routes, Navigate, useNavigate} from "react-router-dom";
-import Document from "./document";
-import Course from "./course";
-import Teacher from "./teacher";
-import TeacherProfile from "./teacher_profile";
-import MyProfile from "./my_profile";
-import Home from "./home";
-import Article from "./article";
+import {Link, Route, Routes, Navigate, useNavigate} from 'react-router-dom'
+import Document from './document'
+import Course from './course'
+import Teacher from './teacher'
+import TeacherProfile from './teacher_profile'
+import MyProfile from './my_profile'
+import Home from './home'
+import Article from './article'
+import EditProfile from './edit_profile'
+import ForgotPassword from './forgot_password'
 
 function Student() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleProfile = () => {
-    setShow(!show);
-  };
+    setShow(!show)
+  }
 
-  const Close = () => {
-    setShow(!show);
-  };
+  const close = () => {
+    setShow(!show)
+  }
 
   const logout = () => {
-    navigate("/login");
-  };
+    navigate('/login')
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center py-5 px-6 bg-[#2554A6] text-white">
@@ -42,10 +45,10 @@ function Student() {
           <div className="relative">
             <FaUserCircle className="cursor-pointer" size={25} onClick={handleProfile} />
             {show === true ? (
-              <div className="absolute -right-3 w-[200px] text-center top-[40px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45">
+              <div className="absolute -right-3 w-[200px] text-center top-[40px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
                 <Link to="/student/my_profile">
                   <p
-                    onClick={() => Close()}
+                    onClick={() => close()}
                     className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
                   >
                     Trang cá nhân
@@ -69,13 +72,19 @@ function Student() {
         <div className="w-[20%] p-5">
           <div className="bg-[#47568A] p-4 rounded-md text-center">
             <Link to="/student/home">
-              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">Trang chủ</p>
+              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
+                Gợi ý cho bạn
+              </p>
             </Link>
             <Link to="/student/course">
-              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">Các khóa học</p>
+              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
+                Các khóa học
+              </p>
             </Link>
             <Link to="/student/teacher">
-              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">Giảng viên</p>
+              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
+                Giảng viên
+              </p>
             </Link>
             <Link to="/student/document">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
@@ -83,7 +92,9 @@ function Student() {
               </p>
             </Link>
             <Link to="/student/article">
-              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">Bài báo</p>
+              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
+                Bài báo
+              </p>
             </Link>
           </div>
         </div>
@@ -97,11 +108,13 @@ function Student() {
             <Route path="/teacher/*" element={<Teacher />} />
             <Route path="/teacher/teacher_profile" element={<TeacherProfile />} />
             <Route path="/my_profile" element={<MyProfile />} />
+            <Route path="/edit_profile/:student" element={<EditProfile />} />
+            <Route path="/forgot_password/:student" element={<ForgotPassword />} />
           </Routes>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Student;
+export default Student
