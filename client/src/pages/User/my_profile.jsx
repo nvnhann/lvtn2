@@ -125,14 +125,14 @@ function MyProfile() {
               <AiOutlineCloudUpload
                 onClick={btnActive}
                 size={30}
-                color="#3d3d3d"
+                color="#F38E46"
                 className="absolute bottom-1 right-1 cursor-pointer"
               />
               <div className="mt-2">
                 {check && (
                   <button
                     onClick={submitAvt}
-                    className="absolute flex items-center justify-center min-w-[50px] p-2 text-white bg-[#F38E46] rounded-md"
+                    className="absolute -left-[68px] top-0 flex items-center justify-center min-w-[50px] p-2 text-white bg-[#F38E46] rounded-md"
                   >
                     Lưu
                   </button>
