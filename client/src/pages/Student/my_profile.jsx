@@ -3,11 +3,26 @@ import {IoMdLock} from 'react-icons/io'
 import {FaUserEdit, FaUser} from 'react-icons/fa'
 import {AiOutlineCloudUpload} from 'react-icons/ai'
 import {Link} from 'react-router-dom'
+import { getUserInfo } from '../../reducers/profile'
+import {useSelector} from 'react-redux';
+import ModalEditProFile from './modalEditProfile'
+import { useForm } from 'react-hook-form'
 
 function MyProfile() {
   const [imageUrl, setImageUrl] = useState([])
   const [listImage, setListImage] = useState([])
+  const profile = useSelector(state => getUserInfo(state));
+  const [showModal, setShowModal] = useState(false);
+  
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
 
+  const onSubmit = async values =>{
+    console.log(values)
+  }
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader()
@@ -39,6 +54,7 @@ function MyProfile() {
   const btnActive = () => {
     document.getElementById('default-btn').click()
   }
+
 
   const renderImage =
     imageUrl.length > 0 ? (
@@ -82,59 +98,99 @@ function MyProfile() {
             </div>
           </div>
           <div className="w-[70%]">
-            <p className="text-[25px] font-bold uppercase">Đào Minh Khoa</p>
+            <p className="text-[25px] font-bold uppercase">{profile?.ho_ten}</p>
             <p>
-              <strong>MSSV:</strong> B180xxxx
+              <strong>MSSV: </strong> {profile.maso}
             </p>
             <p>
-              <strong>Giới tính:</strong> Nam
+              <strong>Giới tính: </strong> {profile?.gioi_tinh ? 'Nam' : 'Nữ'}
             </p>
             <p>
-              <strong>Email:</strong> abcxyz@student.ctu.edu.vn
+              <strong>Email: </strong> {profile?.email}
             </p>
             <p>
-              <strong>Địa chỉ:</strong> 30/4 Hưng Lợi, Ninh Kiều, Cần Thơ
+              <strong>Địa chỉ: </strong> 30/4 Hưng Lợi, Ninh Kiều, Cần Thơ
             </p>
             <p>
-              <strong>Số điện thoại:</strong> 0398423952
+              <strong>Số điện thoại: </strong> {profile?.sdt}
             </p>
             <div className="flex gap-5 mt-5">
-              {/* <div className="relative text-white z-50">
-          <button
-            onClick={() => open()}
-            className="flex items-center px-4 py-2 text-white bg-[#F38E46] rounded-md"
-          >
-            Tài liệu của tôi <HiOutlineDocumentText className="ml-2" size={20} />
-          </button>
-          {show === true && (
-            <>
-              <div className="absolute top-[60px] w-[150px] p-4 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:z-10 after:right-[60px] after:bg-white after:rotate-45">
-                <p
-                  onClick={close}
-                  className="relative py-2 text-center px-6 mb-2 rounded-md bg-[#F38E46] z-20 cursor-pointer"
-                >
-                  Đã lưu
-                </p>
-                <p
-                  onClick={close}
-                  className="relative py-2 text-center px-6 rounded-md bg-[#F38E46] z-20 cursor-pointer"
-                >
-                  Tải lên
-                </p>
-              </div>
-            </>
-          )}
-        </div> */}
               <Link to="/student/forgot_password/id">
                 <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
                 </button>
               </Link>
-              <Link to="/student/edit_profile/id">
-                <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
+                <button onClick={()=>setShowModal(true)} className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
                 </button>
-              </Link>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <ModalEditProFile title='Chỉnh sửa thông tin cá nhân' 
+                    showModal={showModal} 
+                    setShowModal={setShowModal}
+                    content={
+                      <>
+                        <input
+                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="text"
+                            name="ho_ten"
+                            placeholder="Họ và tên"
+                            {...register("ho_ten", {value: profile?.ho_ten,required: true})}
+                          />
+                          <div className="flex items-center my-4">
+                              <input 
+                                  id="default-radio-1"
+                                  type="radio"  
+                                  name="gioi_tinh"
+                                  value="nam"
+                                  {...register("gioi_tinh", {value: profile?.gioi_tinh ? "nam" : "nu"})}
+                                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
+                                />
+                              <label htmlFor="default-radio-1" className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nam</label>
+                              <input 
+                                id="default-radio-2" 
+                                type="radio"  
+                                name="gioi_tinh"
+                                value="nu"
+                                {...register("gioi_tinh", {value: profile?.gioi_tinh ? "nam" : "nu"})}
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                              <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nữ</label>
+                          </div>
+                          <input
+                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="text"
+                            name="dia_chi"
+                            placeholder="Địa chỉ"
+                            {...register("dia_chi", {value: profile?.dia_chi,required: true})}
+                          />
+                           <input
+                            className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="text"
+                            name="sdt"
+                            placeholder="Số điện thoại"
+                            {...register("sdt", {value: profile?.sdt,required: true})}
+                          />
+
+                      </>
+                    }
+                    action={
+                      <>
+                          <button
+                              className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                              type="button"
+                              onClick={() => setShowModal(false)}
+                            >
+                              Đóng
+                            </button>
+                            <button
+                              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                              type='submit'
+                            >
+                              Lưu
+                            </button>
+                      </>
+                    }
+                  />
+                  </form>
             </div>
           </div>
         </div>

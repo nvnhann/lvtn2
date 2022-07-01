@@ -13,12 +13,16 @@ import Article from './article'
 import EditProfile from './edit_profile'
 import ForgotPassword from './forgot_password'
 import ResultSearch from './result_search'
-import {useForm} from 'react-hook-form'
+import {useForm} from 'react-hook-form';
+import { useSelector} from 'react-redux';
+import { getUserInfo } from '../../reducers/profile'
 
 function Student() {
   const [show, setShow] = useState(false)
   const {register, handleSubmit} = useForm()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const profile = useSelector(state => getUserInfo(state));
+  console.log(profile)
 
   const handleProfile = () => {
     setShow(!show)
@@ -55,7 +59,7 @@ function Student() {
           </button>
         </form>
         <div className="flex gap-4 justify-end items-center w-[15%]">
-          <p>Đào Minh Khoa</p>
+          <p>{profile?.ho_ten}</p>
           <div className="relative">
             <FaUserCircle className="cursor-pointer" size={25} onClick={handleProfile} />
             {show === true ? (

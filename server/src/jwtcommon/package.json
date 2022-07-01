@@ -1,0 +1,19 @@
+{
+  "name": "jwtcommon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2",
+    "node-mocks-http": "^1.8.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "SangLN2 <sangln2@fsoft.com.vn>",
+  "license": "ISC"
+}
