@@ -1,8 +1,17 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {Document, Page} from 'react-pdf'
 import {FiDownload, FiPrinter} from 'react-icons/fi'
 import {BiRightArrow, BiLeftArrow} from 'react-icons/bi'
+// import file from '../../../public/FileTest/FileTest.pdf'
 
 function DocumentDetail() {
+  const [numPages, setNumPages] = useState(null)
+  const [pageNumber, setPageNumber] = useState(1)
+
+  function onDocumentLoadSuccess({numPages}) {
+    setNumPages(numPages)
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center gap-5 w-[65%]">
@@ -20,7 +29,14 @@ function DocumentDetail() {
           <BiRightArrow className="cursor-pointer" size={25} />
         </div>
       </div>
-      <div className="mt-5 w-[65%] h-[100vh] bg-slate-400"></div>
+      <div className="mt-5 w-[65%] h-[100vh] bg-slate-400">
+        <Document file="./FileTest.pdf" onLoadSuccess={onDocumentLoadSuccess}>
+          <Page pageNumber={pageNumber} />
+        </Document>
+        <p>
+          Page {pageNumber} of {numPages}
+        </p>
+      </div>
     </div>
   )
 }

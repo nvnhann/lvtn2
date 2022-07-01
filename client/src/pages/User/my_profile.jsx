@@ -60,7 +60,7 @@ function MyProfile() {
   return (
     <div>
       <div className="w-full">
-        <div className="flex gap-5 p-4 bg-white rounded-md">
+        <div className="flex items-center gap-5 p-4 bg-white rounded-md">
           <div className="w-[30%]">
             <div className="relative mx-auto w-[200px] h-[200px] bg-slate-200 rounded-md">
               {renderImage}
@@ -88,6 +88,9 @@ function MyProfile() {
             </p>
             <p>
               <strong>Giới tính:</strong> Nam
+            </p>
+            <p>
+              <strong>Ngày sinh:</strong> 1/1/2111
             </p>
             <p>
               <strong>Email:</strong> abcxyz@student.ctu.edu.vn
