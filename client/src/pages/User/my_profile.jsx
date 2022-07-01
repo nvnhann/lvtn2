@@ -125,12 +125,12 @@ function MyProfile() {
             </>
           )}
         </div> */}
-              <Link to="/student/forgot_password/id">
+              <Link to="/user/forgot_password/id">
                 <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
                 </button>
               </Link>
-              <Link to="/student/edit_profile/id">
+              <Link to="/user/edit_profile/id">
                 <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
                 </button>

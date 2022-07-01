@@ -1,5 +1,5 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React from 'react'
+import {Link} from 'react-router-dom'
 
 function Teacher() {
   return (
@@ -22,14 +22,14 @@ function Teacher() {
         </button>
       </div>
       <div className="grid grid-cols-2 gap-5 mt-5">
-        <Link to="/student/teacher/teacher_profile">
+        <Link to="/user/teacher/teacher_profile">
           <div className="p-4 text-center font-medium bg-white rounded-md cursor-pointer">
             <p>TS. Phạm Thế Phi</p>
           </div>
         </Link>
       </div>
     </div>
-  );
+  )
 }
 
-export default Teacher;
+export default Teacher

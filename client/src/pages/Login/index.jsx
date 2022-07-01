@@ -41,9 +41,9 @@ function Login() {
     if (role.length > 0 && role[0].role === "admin") {
       navigate("/admin");
     } else if (role.length > 0 && role[0].role === "student") {
-      navigate("/student");
+      navigate("/user");
     } else if (role.length > 0 && role[0].role === "teacher") {
-      navigate("/teacher");
+      navigate("/user");
     } else {
       enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
         variant: "error",
