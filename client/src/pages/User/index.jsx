@@ -19,6 +19,8 @@ import DocumentDetail from './document_detail'
 import CourseDetail from './course_detail'
 import CourseDetailList from './course_detail_list'
 import DocumentUpload from './document_upload'
+import * as CONFIG from '../../config/configUrl';
+//-----------------------------------------------------------------
 
 function User() {
   const [show, setShow] = useState(false)
@@ -64,9 +66,11 @@ function User() {
         <div className="flex gap-4 justify-end items-center w-[15%]">
           <p>{profile?.ho_ten}</p>
           <div className="relative">
-            <FaUserCircle className="cursor-pointer" size={25} onClick={handleProfile} />
+            {!!profile.avatar?.path_name && <img className="w-10 cursor-pointer cu h-10 rounded-full" onClick={handleProfile} src={CONFIG.API_BASE_URL +'/avatar/'+ profile.avatar.path_name} alt="Rounded avatar" />
+}
+            {!profile.avatar?.path_name && <FaUserCircle className="cursor-pointer" size={35} onClick={handleProfile} />}
             {show === true ? (
-              <div className="absolute -right-3 w-[200px] text-center top-[40px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
+              <div className="absolute -right-3 w-[200px] text-center top-[60px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
                 <Link to="/user/my_profile">
                   <p
                     onClick={() => close()}

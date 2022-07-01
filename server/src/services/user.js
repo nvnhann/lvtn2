@@ -1,3 +1,4 @@
+const { findOne } = require("../database-utility/utils");
 const { User, Group, BoMon, Avatar } = require("../database/models");
 const getAll = async () => {
     return await User.findAll();
@@ -23,15 +24,24 @@ const getProfileByMaSo = async maso =>{
         }]
     })
 }
-// const updateProfile = async (maso, profile)=>{
-//     return await User.update(profile, {
-//         where: maso
-//     })
+const updateProfile = async (maso, profile)=>{
+    const user = await User.findOne({ where: {maso}});
+   if(user){
+        user.ho_ten = profile.ho_ten;
+        user.dia_chi = profile.dia_chi;
+        user.sdt = profile.sdt;
+        user.gioi_tinh = profile.gioi_tinh;
+       return await user.save();
+   }
+}
 
-// }
+const getUserByMaso = async maso =>{
+    return await User.findOne({ where: {maso}})
+}
 module.exports = {
     getAll,
     getByMaSo,
     getProfileByMaSo,
-    
+    updateProfile,
+    getUserByMaso
 }

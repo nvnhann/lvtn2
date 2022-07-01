@@ -43,5 +43,5 @@ db.Group.belongsToMany(db.User, { through: 'membership' });
 
 
 
-sequelize.sync({ alter: true });
+sequelize.sync();
 module.exports = db;

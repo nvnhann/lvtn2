@@ -51,7 +51,7 @@ function Login() {
         TokenUtils.setToken(JSON.stringify(res.data.data));
         dispatch(fnGetUserInfo())
         const role = profile.role;
-        if(role[0].groupname === 'SINHVIEN') navigate("/student");
+        if(role[0].groupname === 'SINHVIEN') navigate("/user");
       }
     } catch (error) {
       enqueueSnackbar(error.response.data.message, {

@@ -4,24 +4,40 @@ import {FaUserEdit, FaUser} from 'react-icons/fa'
 import {AiOutlineCloudUpload} from 'react-icons/ai'
 import {Link} from 'react-router-dom'
 import { getUserInfo } from '../../reducers/profile'
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ModalEditProFile from './modalEditProfile'
-import { useForm } from 'react-hook-form'
-
+import { useForm } from 'react-hook-form';
+import * as $http from'../../utils/httpProvider';
+import * as CONFIG from '../../config/configUrl';
+import { useSnackbar } from 'notistack'
+import { fnGetUserInfo } from '../../actions/profile/profileAction'
+//----------------------------------------------------------
 function MyProfile() {
-  const [imageUrl, setImageUrl] = useState([])
   const [listImage, setListImage] = useState([])
   const profile = useSelector(state => getUserInfo(state));
+  const [imageUrl, setImageUrl] = useState([{url: CONFIG.API_BASE_URL +'/avatar/'+ profile.avatar?.path_name}])
+
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-  
+  const {enqueueSnackbar} = useSnackbar();
+  const [check, setCheck] = useState(false);
   const {
     register,
     handleSubmit,
     formState: {errors},
   } = useForm();
-
+  console.log(imageUrl[0].url)
   const onSubmit = async values =>{
-    console.log(values)
+    try {
+      const gt = values.gioi_tinh === 'nam' ? 1 : 0;
+      values.gioi_tinh = gt;
+      await $http.putData(CONFIG.API_BASE_URL+'/user/profile', {profile: values});
+      dispatch(await fnGetUserInfo())
+      enqueueSnackbar('Cập nhật thành công', {variant: 'success', autoHideDuration: 3000});
+      setShowModal(false)
+    } catch (error) {
+        console.log(error)
+    }
   }
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -49,15 +65,28 @@ function MyProfile() {
         setImageUrl([{url: base64}])
       }
     }
+    setCheck(true)
   }
 
   const btnActive = () => {
     document.getElementById('default-btn').click()
   }
 
-
+  const submitAvt = async () =>{
+    try {
+      const formDt = new FormData();
+      formDt.append('avatar', listImage[0]);
+      await $http.postData(CONFIG.API_BASE_URL + '/user/profile/upload', formDt, {"content-type": "multipart/form-data"});
+      enqueueSnackbar('Cập nhật ảnh đại diện thành công', {variant: 'success', autoHideDuration: 3000});
+      dispatch(await fnGetUserInfo());
+      setCheck(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log(!!profile.avatar?.path_name)
   const renderImage =
-    imageUrl.length > 0 ? (
+   !!profile.avatar?.path_name ? (
       <div className="relative">
         <img
           className="w-[200px] h-[200px] rounded-lg"
@@ -95,7 +124,15 @@ function MyProfile() {
                 color="#3d3d3d"
                 className="absolute bottom-1 right-1 cursor-pointer"
               />
+               <div className='mt-2'> 
+                {check && <button onClick={submitAvt} className="flex items-center justify-center min-w-[50px] p-2 text-white bg-[#F38E46] rounded-md">
+                  Lưu
+                </button>}
+              </div>
+            <div>
             </div>
+          </div>
+          
           </div>
           <div className="w-[70%]">
             <p className="text-[25px] font-bold uppercase">{profile?.ho_ten}</p>

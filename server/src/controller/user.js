@@ -1,6 +1,47 @@
 const  UserService  = require('../services/user');
 const AuthenticateService = require('../services/authentication');
 const TokenUtils = require('../helper/token-utils');
+const multer = require('multer');
+const db = require('../database/models');
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, 'public/avatar')
+    },
+    filename: function(req, file, cb){
+        cb(null,file.fieldname+'-'+ Date.now()+file.originalname);
+    }
+});
+
+const uploadFile = multer({storage: storage}).single('avatar');
+
+const uploadAvatar = async (req, res) => {
+    let transaction = null;
+   try {
+    transaction = await db.sequelize.transaction();
+    const { id } = req.user;
+    const avatarFile = req.file;
+    let avt = {};
+    avt.path_name = avatarFile.filename;
+    avt.src = avatarFile.path;
+    console.log(avt)
+    const user = await db.User.findOne({ where: { id }})
+    const oldAvt = await db.Avatar.findOne({ where: {userId: id}})
+    if(oldAvt){
+        console.log('====================update')
+        await db.Avatar.update(avt, {where: {userId: id }})
+    } else{
+        avt = await db.Avatar.create(avt);
+        await avt.setUser(user);
+    }
+    await transaction.commit();
+    res.status(200).json({ success: true, msg: 'Thanh cong'})
+    
+   } catch (error) {
+    if(transaction) await transaction.rollback();
+    console.log(error)
+   }
+}
 
 const getAll = async (req, res)=>{
     return res.json(await UserService.getAll())
@@ -34,10 +75,6 @@ const getProfileByMaSo = async (req, res)=>{
           message: error.message
         });
     }
-
-    // return res.json({
-    //     id: rs.id
-    // })
 }
 
 const login = async (req, res) => {
@@ -69,9 +106,11 @@ const login = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        const { maso } = req.user.maso;
+        const { maso } = req.user;
         const { profile } = req.body;
-        console.log(profile)
+        console.log(maso, profile)
+        await UserService.updateProfile(maso, profile);
+        res.status(200).json({success: true, msg: 'Thanh cong'})
     } catch (error) {
         console.log(error);
         res.status(400).json({
@@ -84,5 +123,8 @@ const updateProfile = async (req, res) => {
 module.exports = {
     getAll,
     login,
-    getProfileByMaSo
+    getProfileByMaSo,
+    updateProfile,
+    uploadFile,
+    uploadAvatar
 }

@@ -9,6 +9,10 @@ import { crosSetup } from "./helper/router-setting";
 // router
 import indexRouter from "./routers/index";
 import userRoute from './routers/user'
+import { checkToken } from "./helper/middleware";
+const  UserController  = require('./controller/user');
+const asyncHandler = require('express-async-handler');
+
 const app = express();
 
 app.use(express.json());
@@ -26,6 +30,10 @@ app.use(crosSetup);
 
 // ROUTER MAPPING.
 app.use("/", indexRouter);
-app.use(userRoute)
+app.use(userRoute);
+
+app.use(checkToken);
+app.post('/user/profile/upload', [UserController.uploadFile, asyncHandler(UserController.uploadAvatar)])
+
 
 export default app;
