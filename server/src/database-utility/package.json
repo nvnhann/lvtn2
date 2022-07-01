@@ -1,0 +1,21 @@
+{
+  "name": "database-utility",
+  "version": "1.0.0",
+  "description": "database utility tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "AnCT <anct@fsoft.com.vn>",
+  "license": "MIT",
+  "dependencies": {
+    "common-logging": "file:../common-logging",
+    "dotenv": "^8.2.0",
+    "mysql2": "^2.0.1",
+    "sequelize": "^5.21.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
+  }
+}

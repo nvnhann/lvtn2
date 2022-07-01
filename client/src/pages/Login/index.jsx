@@ -3,8 +3,13 @@ import {useSnackbar} from "notistack";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import {AiOutlineEyeInvisible, AiOutlineEye} from "react-icons/ai";
-
+import * as $http from '../../utils/httpProvider';
+import * as CONFIG from '../../config/configUrl';
+import * as TokenUtils from "../../utils/tokenUtils";
 import bgLogin from "../../assets/images/bg_login.jpg";
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserInfo } from "../../reducers/profile";
+import { fnGetUserInfo } from "../../actions/profile/profileAction";
 
 var arr = [
   {
@@ -32,28 +37,45 @@ function Login() {
   } = useForm();
 
   const [hidden, setHidden] = useState(false);
-
+  const profile = useSelector(state => getUserInfo(state));
+  const dispatch = useDispatch();
+  console.log(profile)
   const navigate = useNavigate();
   const {enqueueSnackbar} = useSnackbar();
 
-  const onSubmit = (data) => {
-    const role = arr.filter((e) => e.taikhoan === data.taikhoan && e.matkhau === data.matkhau);
-    if (role.length > 0 && role[0].role === "admin") {
-      navigate("/admin");
-    } else if (role.length > 0 && role[0].role === "student") {
-      navigate("/user");
-    } else if (role.length > 0 && role[0].role === "teacher") {
-      navigate("/user");
-    } else {
-      enqueueSnackbar("Tài khoản hoặc mật khẩu không đúng", {
+  const onSubmit = async data => {
+    try {
+      const res =await $http.postData(CONFIG.API_BASE_URL + '/user/login', data);
+      console.log(res)
+      if (res.data.data !== undefined) {
+        TokenUtils.setToken(JSON.stringify(res.data.data));
+        dispatch(fnGetUserInfo())
+        const role = profile.role;
+        if(role[0].groupname === 'SINHVIEN') navigate("/student");
+      }
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, {
         variant: "error",
         autoHideDuration: 2000,
       });
+
     }
-    enqueueSnackbar("Đăng nhập thành công", {
-      variant: "success",
-      autoHideDuration: 2000,
-    });
+    
+   // const role = arr.filter((e) => e.taikhoan === data.taikhoan && e.matkhau === data.matkhau);
+    // if (role.length > 0 && role[0].role === "admin") {
+    //   navigate("/admin");
+    // } else if (role.length > 0 && role[0].role === "student") {
+    //   navigate("/student");
+    // } else if (role.length > 0 && role[0].role === "teacher") {
+    //   navigate("/teacher");
+    // } else {
+ 
+    // }
+
+    // enqueueSnackbar("Đăng nhập thành công", {
+    //   variant: "success",
+    //   autoHideDuration: 2000,
+    // });
   };
 
   return (
@@ -69,9 +91,9 @@ function Login() {
               <input
                 className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
                 type="text"
-                name="taikhoan"
+                name="maso"
                 placeholder="Tài khoản"
-                {...register("taikhoan", {required: true})}
+                {...register("maso", {required: true})}
               />
               <p className="absolute text-[14px] text-red-600">
                 {errors.taikhoan?.type === "required" && "Vui lòng nhập tài khoản"}
@@ -81,9 +103,9 @@ function Login() {
               <input
                 className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
                 type={hidden === true ? "text" : "password"}
-                name="matkhau"
+                name="pwd"
                 placeholder="Mật khẩu"
-                {...register("matkhau", {required: true})}
+                {...register("pwd", {required: true})}
               />
               <p className="absolute text-[14px] text-red-600">
                 {errors.matkhau?.type === "required" && "Vui lòng nhập mật khẩu"}
