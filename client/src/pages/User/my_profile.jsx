@@ -105,7 +105,7 @@ function MyProfile() {
   return (
     <div>
       <div className="w-full">
-        <div className="flex gap-5 p-4 bg-white rounded-md">
+        <div className="flex items-center gap-5 p-4 bg-white rounded-md">
           <div className="w-[30%]">
             <div className="relative mx-auto w-[200px] h-[200px] bg-slate-200 rounded-md">
               {renderImage}
@@ -143,6 +143,9 @@ function MyProfile() {
               <strong>Giới tính: </strong> {profile?.gioi_tinh ? 'Nam' : 'Nữ'}
             </p>
             <p>
+              <strong>Ngày sinh:</strong> 1/1/2111
+            </p>
+            <p>
               <strong>Email: </strong> {profile?.email}
             </p>
             <p>
@@ -157,77 +160,91 @@ function MyProfile() {
                   Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
                 </button>
               </Link>
-                <button onClick={()=>setShowModal(true)} className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
-                  Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
-                </button>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <ModalEditProFile title='Chỉnh sửa thông tin cá nhân' 
-                    showModal={showModal} 
-                    setShowModal={setShowModal}
-                    content={
-                      <>
+              <button
+                onClick={() => setShowModal(true)}
+                className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md"
+              >
+                Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
+              </button>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <ModalEditProFile
+                  title="Chỉnh sửa thông tin cá nhân"
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  content={
+                    <>
+                      <input
+                        className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                        type="text"
+                        name="ho_ten"
+                        placeholder="Họ và tên"
+                        {...register('ho_ten', {value: profile?.ho_ten, required: true})}
+                      />
+                      <div className="flex items-center my-4">
                         <input
-                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                            type="text"
-                            name="ho_ten"
-                            placeholder="Họ và tên"
-                            {...register("ho_ten", {value: profile?.ho_ten,required: true})}
-                          />
-                          <div className="flex items-center my-4">
-                              <input 
-                                  id="default-radio-1"
-                                  type="radio"  
-                                  name="gioi_tinh"
-                                  value="nam"
-                                  {...register("gioi_tinh", {value: profile?.gioi_tinh ? "nam" : "nu"})}
-                                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
-                                />
-                              <label htmlFor="default-radio-1" className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nam</label>
-                              <input 
-                                id="default-radio-2" 
-                                type="radio"  
-                                name="gioi_tinh"
-                                value="nu"
-                                {...register("gioi_tinh", {value: profile?.gioi_tinh ? "nam" : "nu"})}
-                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                              <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nữ</label>
-                          </div>
-                          <input
-                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                            type="text"
-                            name="dia_chi"
-                            placeholder="Địa chỉ"
-                            {...register("dia_chi", {value: profile?.dia_chi,required: true})}
-                          />
-                           <input
-                            className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                            type="text"
-                            name="sdt"
-                            placeholder="Số điện thoại"
-                            {...register("sdt", {value: profile?.sdt,required: true})}
-                          />
-
-                      </>
-                    }
-                    action={
-                      <>
-                          <button
-                              className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                              type="button"
-                              onClick={() => setShowModal(false)}
-                            >
-                              Đóng
-                            </button>
-                            <button
-                              className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                              type='submit'
-                            >
-                              Lưu
-                            </button>
-                      </>
-                    }
-                  />
-                  </form>
+                          id="default-radio-1"
+                          type="radio"
+                          name="gioi_tinh"
+                          value="nam"
+                          {...register('gioi_tinh', {value: profile?.gioi_tinh ? 'nam' : 'nu'})}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label
+                          htmlFor="default-radio-1"
+                          className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          Nam
+                        </label>
+                        <input
+                          id="default-radio-2"
+                          type="radio"
+                          name="gioi_tinh"
+                          value="nu"
+                          {...register('gioi_tinh', {value: profile?.gioi_tinh ? 'nam' : 'nu'})}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label
+                          htmlFor="default-radio-2"
+                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          Nữ
+                        </label>
+                      </div>
+                      <input
+                        className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                        type="text"
+                        name="dia_chi"
+                        placeholder="Địa chỉ"
+                        {...register('dia_chi', {value: profile?.dia_chi, required: true})}
+                      />
+                      <input
+                        className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                        type="text"
+                        name="sdt"
+                        placeholder="Số điện thoại"
+                        {...register('sdt', {value: profile?.sdt, required: true})}
+                      />
+                    </>
+                  }
+                  action={
+                    <>
+                      <button
+                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                        onClick={() => setShowModal(false)}
+                      >
+                        Đóng
+                      </button>
+                      <button
+                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="submit"
+                      >
+                        Lưu
+                      </button>
+                    </>
+                  }
+                />
+              </form>
             </div>
           </div>
         </div>
