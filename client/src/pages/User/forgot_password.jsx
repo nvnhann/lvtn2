@@ -24,8 +24,6 @@ function ForgotPassword() {
     console.log(data)
   }
 
-  console.log(errors)
-
   return (
     <div>
       <div className="flex gap-5 items-center py-4 px-6 mx-auto w-[70%] bg-[#2554A6] rounded-md">

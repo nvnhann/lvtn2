@@ -1,5 +1,6 @@
 import React from 'react'
 import {IoMdFolderOpen} from 'react-icons/io'
+import {Link} from 'react-router-dom'
 
 function Course() {
   return (
@@ -12,9 +13,11 @@ function Course() {
             <div className="absolute z-50 top-[65px] right-2 w-[75px] h-[75px] bg-slate-500 rounded-full"></div>
           </div>
         </div>
-        <div className="h-[150px]">
-          <IoMdFolderOpen size={25} className="absolute bottom-2 right-2 cursor-pointer" />
-        </div>
+        <Link to="/user/course/detail=jkasndjj">
+          <div className="h-[150px]">
+            <IoMdFolderOpen size={25} className="absolute bottom-2 right-2 cursor-pointer" />
+          </div>
+        </Link>
       </div>
     </div>
   )

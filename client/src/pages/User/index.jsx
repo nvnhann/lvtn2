@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {FaUserCircle} from 'react-icons/fa'
 import {BiSearch} from 'react-icons/bi'
-
 import {Link, Route, Routes, Navigate, useNavigate} from 'react-router-dom'
 import Document from './document'
 import Course from './course'
@@ -16,8 +15,12 @@ import ResultSearch from './result_search'
 import {useForm} from 'react-hook-form';
 import { useSelector} from 'react-redux';
 import { getUserInfo } from '../../reducers/profile'
+import DocumentDetail from './document_detail'
+import CourseDetail from './course_detail'
+import CourseDetailList from './course_detail_list'
+import DocumentUpload from './document_upload'
 
-function Student() {
+function User() {
   const [show, setShow] = useState(false)
   const {register, handleSubmit} = useForm()
   const navigate = useNavigate();
@@ -37,7 +40,7 @@ function Student() {
   }
 
   const search = (data) => {
-    if (data.search) navigate(`/student/search/${data.search}`)
+    if (data.search) navigate(`/user/search/${data.search}`)
   }
 
   return (
@@ -64,7 +67,7 @@ function Student() {
             <FaUserCircle className="cursor-pointer" size={25} onClick={handleProfile} />
             {show === true ? (
               <div className="absolute -right-3 w-[200px] text-center top-[40px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
-                <Link to="/student/my_profile">
+                <Link to="/user/my_profile">
                   <p
                     onClick={() => close()}
                     className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
@@ -89,27 +92,27 @@ function Student() {
       <div className="flex mt-4">
         <div className="w-[20%] p-5">
           <div className="bg-[#47568A] p-4 rounded-md text-center">
-            <Link to="/student/home">
+            <Link to="/user/home">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Gợi ý cho bạn
               </p>
             </Link>
-            <Link to="/student/course">
+            <Link to="/user/course">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Các khóa học
               </p>
             </Link>
-            <Link to="/student/teacher">
+            <Link to="/user/teacher">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Giảng viên
               </p>
             </Link>
-            <Link to="/student/document">
+            <Link to="/user/document">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Tài liệu của tôi
               </p>
             </Link>
-            <Link to="/student/article">
+            <Link to="/user/article">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Bài báo
               </p>
@@ -118,16 +121,21 @@ function Student() {
         </div>
         <div className="w-[80%] p-5">
           <Routes>
-            <Route path="/" element={<Navigate to="/student/home" />} />
+            <Route path="/" element={<Navigate to="/user/home" />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/document" element={<Document />} />
+            <Route path="/save" element={<Navigate to="/user/document/save" />} />
+            <Route path="/document/*" element={<Document />} />
+            <Route path="/document/detail" element={<DocumentDetail />} />
+            <Route path="/document/upload" element={<DocumentUpload />} />
             <Route path="/article" element={<Article />} />
             <Route path="/course" element={<Course />} />
+            <Route path="/course/detail=:id1" element={<CourseDetailList />} />
+            <Route path="/course/detail=:id1/subject=:id2" element={<CourseDetail />} />
             <Route path="/teacher/*" element={<Teacher />} />
             <Route path="/teacher/teacher_profile" element={<TeacherProfile />} />
             <Route path="/my_profile" element={<MyProfile />} />
-            <Route path="/edit_profile/:student" element={<EditProfile />} />
-            <Route path="/forgot_password/:student" element={<ForgotPassword />} />
+            <Route path="/edit_profile/:user" element={<EditProfile />} />
+            <Route path="/forgot_password/:user" element={<ForgotPassword />} />
             <Route path="/search/:keyword" element={<ResultSearch />} />
           </Routes>
         </div>
@@ -136,4 +144,4 @@ function Student() {
   )
 }
 
-export default Student
+export default User

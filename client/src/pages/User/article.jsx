@@ -2,41 +2,43 @@ import React from "react";
 import {MdDelete} from "react-icons/md";
 import {Link} from "react-router-dom";
 
-const arr_1 = [
+const arr_2 = [
   {
     id: 1,
     tenbaibao: "Xây dựng website Bán đồ hàng",
-    tengv: "Nguyễn Trần Thị Ngọc Lê",
+    tengv: "Nguyễn Trần Thị Ngọc Lê Thi",
   },
   {
     id: 2,
     tenbaibao: "Xây dựng website Bán đồ hàng",
-    tengv: "Nguyễn Trần Thị Ngọc Lê",
+    tengv: "Nguyễn Trần Thị Ngọc Lê Thi",
   },
   {
     id: 3,
     tenbaibao: "Xây dựng website Bán đồ hàng",
-    tengv: "Nguyễn Trần Thị Ngọc Lê",
+    tengv: "Nguyễn Trần Thị Ngọc Lê Thi",
   },
   {
     id: 4,
     tenbaibao: "Xây dựng website Bán đồ hàng",
-    tengv: "Nguyễn Trần Thị Ngọc Lê",
+    tengv: "Nguyễn Trần Thị Ngọc Lê Thi",
   },
   {
     id: 5,
     tenbaibao: "Xây dựng website Bán đồ hàng",
-    tengv: "Nguyễn Trần Thị Ngọc Lê",
+    tengv: "Nguyễn Trần Thị Ngọc Lê Thi",
   },
 ];
 
-function Document() {
+function Article() {
   return (
-    <div className="w-full px-5 grid grid-cols-4 gap-2">
-      {arr_1?.map((item, idx) => (
-        <Link key={idx} to="">
+    <div className="w-full px-5 grid grid-cols-4 gap-4">
+      {arr_2?.map((item, idx) => (
+        <Link key={idx} to={`/user/article=${item.id}`}>
           <div className="bg-white p-3 rounded-md">
-            <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"></div>
+            <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden">
+              {/* <GoogleDocsViewer width="100%" height="160px" fileUrl={lvtn} /> */}
+            </div>
             <p>
               <strong>{item.tenbaibao}</strong>
             </p>
@@ -56,4 +58,4 @@ function Document() {
   );
 }
 
-export default Document;
+export default Article;
