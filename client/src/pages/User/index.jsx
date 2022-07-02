@@ -13,13 +13,14 @@ import EditProfile from './edit_profile'
 import ForgotPassword from './forgot_password'
 import ResultSearch from './result_search'
 import {useForm} from 'react-hook-form';
-import { useSelector} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { getUserInfo } from '../../reducers/profile'
 import DocumentDetail from './document_detail'
 import CourseDetail from './course_detail'
 import CourseDetailList from './course_detail_list'
 import DocumentUpload from './document_upload'
 import * as CONFIG from '../../config/configUrl';
+import { userLogout } from '../../actions/profile'
 //-----------------------------------------------------------------
 
 function User() {
@@ -27,6 +28,7 @@ function User() {
   const {register, handleSubmit} = useForm()
   const navigate = useNavigate();
   const profile = useSelector(state => getUserInfo(state));
+  const dispatch = useDispatch();
   
   const handleProfile = () => {
     setShow(!show)
@@ -36,7 +38,8 @@ function User() {
     setShow(!show)
   }
 
-  const logout = () => {
+  const logout = async () => {
+    dispatch(await userLogout())
     navigate('/login')
   }
 
@@ -143,7 +146,7 @@ function User() {
             <Route path="/teacher/teacher_profile" element={<TeacherProfile />} />
             <Route path="/student/:id" element={<MyProfile />} />
             <Route path="/edit_profile/:user" element={<EditProfile />} />
-            <Route path="/forgot_password/:user" element={<ForgotPassword />} />
+            <Route path="/forgot_password" element={<ForgotPassword />} />
             <Route path="/search/:keyword" element={<ResultSearch />} />
             <Route path="/lich-thuc-hanh" element={ 
               <iframe title='Lịch thực hành' src='https://docs.google.com/spreadsheets/d/e/2PACX-1vR7otGf88SBVjmeKnug0-dVA1zi3XtNgohAWNNdKMm0sPEcbJQ_7EsicY8p2mRJwA/pubhtml'  width="1200" height="580" frameBorder="0"/>

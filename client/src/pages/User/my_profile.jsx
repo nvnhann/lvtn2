@@ -12,7 +12,7 @@ import * as CONFIG from '../../config/configUrl'
 import {useSnackbar} from 'notistack'
 import {fnGetUserInfo} from '../../actions/profile/profileAction'
 import { useEffect } from 'react'
-//----------------------------------------------------------
+//---------------------------------------------------------------------------------
 function MyProfile() {
   const {id} = useParams()
   const [listImage, setListImage] = useState([])
@@ -169,7 +169,7 @@ function MyProfile() {
             </p>
             {
               user?.maso === profile?.maso &&   <div className="flex gap-5 mt-5">
-              <Link to="/student/forgot_password/id">
+              <Link to="/app/forgot_password">
                 <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
                 </button>

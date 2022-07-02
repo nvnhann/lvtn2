@@ -26,6 +26,8 @@ function Login() {
 
   const onSubmit = async data => {
     try {
+      const ms = data?.maso.toUpperCase();
+      data.ms = ms;
       const res =await $http.postData(CONFIG.API_BASE_URL + '/user/login', data);
       console.log('data',res.data)
       if (res.data.data !== undefined) {

@@ -3,6 +3,7 @@ const AuthenticateService = require('../services/authentication');
 const TokenUtils = require('../helper/token-utils');
 const multer = require('multer');
 const db = require('../database/models');
+const bcrypt = require('bcryptjs');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -120,11 +121,37 @@ const updateProfile = async (req, res) => {
     }
 }
 
+const updatePwd = async (req, res) => {
+    const { maso } = req.user;
+    const { pwd, newpwd }= req.body;
+    try {
+        const user = await UserService.getByMaSo(maso);
+        if(user){
+            const compare = await bcrypt.compare(pwd, user.mat_khau);
+            if(compare){
+                const newpass = await bcrypt.hash(newpwd,10);
+                await UserService.updatePwd(maso, newpass);
+                return res.status(200).json({success: true, message: 'successfully!'})
+            }else{
+                return res.status(500).json({success: false, message: 'Sai mật khẩu!'})
+            }
+
+        } else return res.status(404).json({success: false, message: 'user not exist!'})
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+          code: "Error",
+          message: error.message
+        });
+    }
+}
+
 module.exports = {
     getAll,
     login,
     getProfileByMaSo,
     updateProfile,
     uploadFile,
-    uploadAvatar
+    uploadAvatar,
+    updatePwd
 }

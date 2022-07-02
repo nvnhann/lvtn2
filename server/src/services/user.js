@@ -38,10 +38,19 @@ const updateProfile = async (maso, profile)=>{
 const getUserByMaso = async maso =>{
     return await User.findOne({ where: {maso}})
 }
+
+const updatePwd = async(maso, pwd) => {
+    const user = await User.findOne({ where: { maso }});
+    if(user){
+        user.mat_khau = pwd;
+        return await user.save();
+    }
+}
 module.exports = {
     getAll,
     getByMaSo,
     getProfileByMaSo,
     updateProfile,
-    getUserByMaso
+    getUserByMaso,
+    updatePwd
 }

@@ -1,4 +1,4 @@
-import { USERPROFILE_GET_USER_INFO } from "../../actions/profile";
+import { USERPROFILE_GET_USER_INFO, USER_LOGOUT } from "../../actions/profile";
 
 const initialState = {
     userInfo: JSON.parse(localStorage.getItem('profile')) || {}
@@ -12,6 +12,12 @@ export function userProfileReducer(state = initialState, action) {
                 ...state,
                 userInfo: action.payload === undefined ? state.userInfo : action.payload,
             };
+        case USER_LOGOUT:
+            state.userInfo = {};
+            localStorage.removeItem('profile');
+            return{
+                ...state
+            }
         default: return state;
     }
 }

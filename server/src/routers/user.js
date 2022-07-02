@@ -7,4 +7,5 @@ router.get('/user', asyncHandler(UserController.getAll));
 router.post('/user/login', asyncHandler(UserController.login));
 router.get('/user/profile/:maso', [checkToken,asyncHandler(UserController.getProfileByMaSo)]);
 router.put('/user/profile', [checkToken, asyncHandler(UserController.updateProfile)]);
+router.post('/user/forgotpass', [checkToken, UserController.updatePwd]);
 export default router;
