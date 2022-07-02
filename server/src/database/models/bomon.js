@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: 1
+    }
   }, {underscored: true, tableName: 'bomon'});
   BoMon.associate = function(models) {
     // associations can be defined here

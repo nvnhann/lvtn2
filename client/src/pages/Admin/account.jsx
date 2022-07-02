@@ -26,12 +26,6 @@ const schema = yup
       .string()
       .email("Vui lòng nhập email")
       .required("Vui lòng nhập email"),
-    ngaysinh: yup.string().required("Vui lòng chọn ngày sinh"),
-    sodienthoai: yup
-      .string()
-      .length(10, "Số điện thoại gồm 10 số")
-      .required("Vui lòng nhập số điện thoại"),
-    diachi: yup.string().required("Vui lòng nhập địa chỉ"),
   })
   .required();
 

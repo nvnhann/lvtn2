@@ -92,7 +92,7 @@ function MyProfile() {
         variant: 'success',
         autoHideDuration: 3000,
       })
-      dispatch(await fnGetUserInfo())
+      dispatch(await fnGetUserInfo(profile.maso))
       setCheck(false)
     } catch (error) {
       console.log(error)

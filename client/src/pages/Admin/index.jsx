@@ -9,6 +9,7 @@ import Account from "./account";
 import Student from "./student";
 import Lecturer from "./lecturers";
 import Course from "./courses";
+import BoMon from "./bomon";
 
 function Admin() {
   return (
@@ -29,6 +30,12 @@ function Admin() {
               <div className="flex gap-5 items-center w-[90%] mx-auto my-2 px-5 py-3 hover:bg-[#42C2FF] hover:text-white rounded-md duration-300 cursor-pointer">
                 <AiOutlineUser size={25} />
                 <p className="">Giảng Viên</p>
+              </div>
+            </Link>
+            <Link to="/admin/bomon">
+              <div className="flex gap-5 items-center w-[90%] mx-auto my-2 px-5 py-3 hover:bg-[#42C2FF] hover:text-white rounded-md duration-300 cursor-pointer">
+               <BsNewspaper size={25} />
+                <p className="">Bộ môn</p>
               </div>
             </Link>
             <Link to="/admin/accounts">
@@ -72,6 +79,7 @@ function Admin() {
             <Route path="/lecturers" element={<Lecturer />} />
             <Route path="/posts" element={<Lecturer />} />
             <Route path="/courses" element={<Course />} />
+            <Route path="/bomon" element={<BoMon />} />
           </Routes>
         </div>
       </div>

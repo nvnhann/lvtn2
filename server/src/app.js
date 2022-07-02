@@ -9,6 +9,9 @@ import { crosSetup } from "./helper/router-setting";
 // router
 import indexRouter from "./routers/index";
 import userRoute from './routers/user'
+import khoaHocRoute from './routers/khoahoc';
+import BoMonRoute from './routers/bomon';
+
 import { checkToken } from "./helper/middleware";
 const  UserController  = require('./controller/user');
 const asyncHandler = require('express-async-handler');
@@ -31,6 +34,8 @@ app.use(crosSetup);
 // ROUTER MAPPING.
 app.use("/", indexRouter);
 app.use(userRoute);
+app.use(khoaHocRoute);
+app.use(BoMonRoute);
 
 app.use(checkToken);
 app.post('/user/profile/upload', [UserController.uploadFile, asyncHandler(UserController.uploadAvatar)])
