@@ -41,7 +41,7 @@ function User() {
   }
 
   const search = (data) => {
-    if (data.search) navigate(`/user/search/${data.search}`)
+    if (data.search) navigate(`/app/search/${data.search}`)
   }
 
   return (
@@ -95,17 +95,17 @@ function User() {
       <div className="flex mt-4">
         <div className="w-[20%] p-5">
           <div className="bg-[#47568A] p-4 rounded-md text-center">
-            <Link to="/user/home">
+            <Link to="/app/home">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Gợi ý cho bạn
               </p>
             </Link>
-            <Link to="/user/course">
+            <Link to="/app/course">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Các khóa học
               </p>
             </Link>
-            <Link to="/user/teacher">
+            <Link to="/app/teacher">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Giảng viên
               </p>
@@ -115,7 +115,7 @@ function User() {
                 Tài liệu của tôi
               </p>
             </Link>
-            <Link to="/user/article">
+            <Link to="/app/article">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Bài báo
               </p>
@@ -131,7 +131,7 @@ function User() {
           <Routes>
             <Route path="/" element={<Navigate to="/app/home" />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/save" element={<Navigate to="/user/document/save" />} />
+            <Route path="/save" element={<Navigate to="/app/document/save" />} />
             <Route path="/document/*" element={<Document />} />
             <Route path="/document/detail" element={<DocumentDetail />} />
             <Route path="/document/upload" element={<DocumentUpload />} />

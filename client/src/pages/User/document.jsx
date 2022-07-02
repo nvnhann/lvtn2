@@ -34,7 +34,7 @@ function Document() {
   return (
     <div>
       <div className="mb-4 text-white font-bold">
-        <Link to="/user/document/save">
+        <Link to="/app/document/save">
           <button className="px-6 py-2 bg-[#F38E46] rounded-md">Đã lưu</button>
         </Link>
         <Link to="/app/document/upload">
@@ -43,7 +43,7 @@ function Document() {
       </div>
       <div className="w-full  grid grid-cols-4 gap-2">
         {arr_1?.map((item, idx) => (
-          <Link key={idx} to="/user/document/detail">
+          <Link key={idx} to="/app/document/detail">
             <div className="bg-white p-3 rounded-md">
               <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"></div>
               <p>

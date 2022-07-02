@@ -34,7 +34,7 @@ function Article() {
   return (
     <div className="w-full px-5 grid grid-cols-4 gap-4">
       {arr_2?.map((item, idx) => (
-        <Link key={idx} to={`/user/article=${item.id}`}>
+        <Link key={idx} to={`/app/article=${item.id}`}>
           <div className="bg-white p-3 rounded-md">
             <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden">
               {/* <GoogleDocsViewer width="100%" height="160px" fileUrl={lvtn} /> */}

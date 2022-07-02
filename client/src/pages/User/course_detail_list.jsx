@@ -10,7 +10,7 @@ function CourseDetailList() {
       <div className="mx-auto w-[80%]">
         <p className="mt-4 mb-2 text-[18px] font-bold">Các file ôn tập cuối kỳ</p>
         <div className="grid grid-cols-2 gap-5">
-          <Link to="/user/course/detail=id1/subject=id2">
+          <Link to="/app/course/detail=id1/subject=id2">
             <div className="flex gap-4 p-3 bg-white rounded-md shadow-md">
               <div className="w-[80px] h-[80px] bg-slate-200 rounded-md"></div>
               <div>

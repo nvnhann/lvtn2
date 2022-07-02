@@ -22,7 +22,7 @@ function Teacher() {
         </button>
       </div>
       <div className="grid grid-cols-2 gap-5 mt-5">
-        <Link to="/user/teacher/teacher_profile">
+        <Link to="/app/teacher/teacher_profile">
           <div className="p-4 text-center font-medium bg-white rounded-md cursor-pointer">
             <p>TS. Phạm Thế Phi</p>
           </div>

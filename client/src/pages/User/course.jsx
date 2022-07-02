@@ -13,7 +13,7 @@ function Course() {
             <div className="absolute z-50 top-[65px] right-2 w-[75px] h-[75px] bg-slate-500 rounded-full"></div>
           </div>
         </div>
-        <Link to="/user/course/detail=jkasndjj">
+        <Link to="/app/course/detail=jkasndjj">
           <div className="h-[150px]">
             <IoMdFolderOpen size={25} className="absolute bottom-2 right-2 cursor-pointer" />
           </div>
