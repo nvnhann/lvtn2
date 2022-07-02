@@ -75,12 +75,16 @@ const defaulValue = {
 function Account() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    reset(defaulValue);
+    setOpen(false);
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ resolver: yupResolver(schema) });
 
   //Data form
@@ -91,9 +95,10 @@ function Account() {
       <div className="flex gap-4 mb-5">
         <button
           onClick={handleOpen}
-          className="px-4 py-2 bg-yellow-400 font-bold rounded-md shadow-md"
+          className="px-4 py-2 bg-yellow-400 font-bold rounded-md inline-flex items-center shadow-md"
         >
-          Thêm tài khoản
+          Thêm tài khoản{" "}
+          <AiTwotoneFileExcel className="ml-2" color="#064e3b" size={25} />
         </button>
         <Modal
           open={open}
