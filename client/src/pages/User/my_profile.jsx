@@ -41,7 +41,7 @@ function MyProfile() {
       const gt = values.gioi_tinh === 'nam' ? 1 : 0
       values.gioi_tinh = gt
       await $http.putData(CONFIG.API_BASE_URL + '/user/profile', {profile: values})
-      dispatch(await fnGetUserInfo())
+      dispatch(await fnGetUserInfo(profile.maso))
       enqueueSnackbar('Cập nhật thành công', {variant: 'success', autoHideDuration: 3000})
       setShowModal(false)
     } catch (error) {
