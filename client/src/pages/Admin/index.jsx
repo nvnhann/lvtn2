@@ -8,6 +8,7 @@ import {FiUsers} from "react-icons/fi";
 import Account from "./account";
 import Student from "./student";
 import Lecturer from "./lecturers";
+import Course from "./courses";
 
 function Admin() {
   return (
@@ -34,6 +35,12 @@ function Admin() {
               <div className="flex gap-5 items-center w-[90%] mx-auto my-2 px-5 py-3 hover:bg-[#42C2FF] hover:text-white rounded-md duration-300 cursor-pointer">
                 <FiUsers size={25} />
                 <p className="">Tài khoản</p>
+              </div>
+            </Link>
+            <Link to="/admin/courses">
+              <div className="flex gap-5 items-center w-[90%] mx-auto my-2 px-5 py-3 hover:bg-[#42C2FF] hover:text-white rounded-md duration-300 cursor-pointer">
+                <BsNewspaper size={25} />
+                <p className="">Khóa học</p>
               </div>
             </Link>
             <Link to="/admin/posts">
@@ -64,6 +71,7 @@ function Admin() {
             <Route path="/students" element={<Student />} />
             <Route path="/lecturers" element={<Lecturer />} />
             <Route path="/posts" element={<Lecturer />} />
+            <Route path="/courses" element={<Course />} />
           </Routes>
         </div>
       </div>

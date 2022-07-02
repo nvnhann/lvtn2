@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { AiTwotoneFileExcel } from "react-icons/ai";
 
 const styleAddAccount = {
   position: "absolute",
@@ -213,6 +214,12 @@ function Account() {
           </Box>
         </Modal>
       </div>
+      <button className="px-4 py-2 my-2 mr-2 bg-slate-400 rounded-md">
+        Thêm tài khoản
+      </button>
+      <button className="px-4 py-2 my-2 bg-slate-400 rounded-md inline-flex items-center">
+        Thêm tài khoản <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
+      </button>
       <div className="grid grid-cols-5 gap-4">
         {arr.map(({ img }, idx) => (
           <div key={idx} className="relative h-[250px] border rounded-md">
