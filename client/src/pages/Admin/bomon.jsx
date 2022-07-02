@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as $http from '../../utils/httpProvider';
 import * as CONFIG from '../../config/configUrl';
 import { Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-// import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 const style = {
     position: 'absolute',
@@ -44,7 +44,7 @@ function BoMon(props) {
                 <TableCell>{e.name}</TableCell>
                 <TableCell>
                    <IconButton>
-                        {/* <ModeEditIcon /> */}
+                        <ModeEditIcon />
                    </IconButton>
                 </TableCell>
             </TableRow>
