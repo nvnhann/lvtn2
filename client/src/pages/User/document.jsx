@@ -37,7 +37,7 @@ function Document() {
         <Link to="/user/document/save">
           <button className="px-6 py-2 bg-[#F38E46] rounded-md">Đã lưu</button>
         </Link>
-        <Link to="/user/document/upload">
+        <Link to="/app/document/upload">
           <button className="ml-4 px-6 py-2 bg-[#F38E46] rounded-md">Tải lên</button>
         </Link>
       </div>

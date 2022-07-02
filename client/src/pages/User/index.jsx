@@ -27,8 +27,7 @@ function User() {
   const {register, handleSubmit} = useForm()
   const navigate = useNavigate();
   const profile = useSelector(state => getUserInfo(state));
-  console.log(profile)
-
+  
   const handleProfile = () => {
     setShow(!show)
   }
@@ -71,7 +70,7 @@ function User() {
             {!profile.avatar?.path_name && <FaUserCircle className="cursor-pointer" size={35} onClick={handleProfile} />}
             {show === true ? (
               <div className="absolute -right-3 w-[200px] text-center top-[60px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
-                <Link to="/user/my_profile">
+                <Link to={"/app/student/"+profile?.maso}>
                   <p
                     onClick={() => close()}
                     className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
@@ -111,7 +110,7 @@ function User() {
                 Giảng viên
               </p>
             </Link>
-            <Link to="/user/document">
+            <Link to="/app/document">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Tài liệu của tôi
               </p>
@@ -121,11 +120,16 @@ function User() {
                 Bài báo
               </p>
             </Link>
+            <Link to="/app/lich-thuc-hanh">
+              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
+                Lịch thực hành
+              </p>
+            </Link>
           </div>
         </div>
         <div className="w-[80%] p-5">
           <Routes>
-            <Route path="/" element={<Navigate to="/user/home" />} />
+            <Route path="/" element={<Navigate to="/app/home" />} />
             <Route path="/home" element={<Home />} />
             <Route path="/save" element={<Navigate to="/user/document/save" />} />
             <Route path="/document/*" element={<Document />} />
@@ -137,11 +141,15 @@ function User() {
             <Route path="/course/detail=:id1/subject=:id2" element={<CourseDetail />} />
             <Route path="/teacher/*" element={<Teacher />} />
             <Route path="/teacher/teacher_profile" element={<TeacherProfile />} />
-            <Route path="/my_profile" element={<MyProfile />} />
+            <Route path="/student/:id" element={<MyProfile />} />
             <Route path="/edit_profile/:user" element={<EditProfile />} />
             <Route path="/forgot_password/:user" element={<ForgotPassword />} />
             <Route path="/search/:keyword" element={<ResultSearch />} />
-          </Routes>
+            <Route path="/lich-thuc-hanh" element={ 
+              <iframe title='Lịch thực hành' src='https://docs.google.com/spreadsheets/d/e/2PACX-1vR7otGf88SBVjmeKnug0-dVA1zi3XtNgohAWNNdKMm0sPEcbJQ_7EsicY8p2mRJwA/pubhtml'  width="1200" height="580" frameBorder="0"/>
+            } 
+            />
+            </Routes>
         </div>
       </div>
     </div>

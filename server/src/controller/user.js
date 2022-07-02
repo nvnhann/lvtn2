@@ -49,7 +49,7 @@ const getAll = async (req, res)=>{
 
 const getProfileByMaSo = async (req, res)=>{
     try {
-        const rs = await UserService.getProfileByMaSo(req.user.maso);
+        const rs = await UserService.getProfileByMaSo(req.params.maso);
         if(rs){
             res.json({
                 id: rs.id,
@@ -82,12 +82,12 @@ const login = async (req, res) => {
         const { maso, pwd } = req.body;
         console.log('maso', maso)
         const user = await AuthenticateService.verifyUser(maso,pwd);
-        console.log(user)
         if (user !== null) {
             let token = TokenUtils.createToken(user);
             res.status(200).json({
               code: "Success",
-              data: token
+              data: token,
+              maso: user.maso
             });
           } else {
             res.status(400).json({

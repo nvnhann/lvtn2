@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    mota: {
+      type: DataTypes.STRING,
+    },
     path: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

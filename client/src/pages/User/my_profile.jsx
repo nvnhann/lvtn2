@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {IoMdLock} from 'react-icons/io'
 import {FaUserEdit, FaUser} from 'react-icons/fa'
 import {AiOutlineCloudUpload} from 'react-icons/ai'
-import {Link} from 'react-router-dom'
+import {Link, useMatch, useParams} from 'react-router-dom'
 import {getUserInfo} from '../../reducers/profile'
 import {useDispatch, useSelector} from 'react-redux'
 import ModalEditProFile from './modalEditProfile'
@@ -11,14 +11,14 @@ import * as $http from '../../utils/httpProvider'
 import * as CONFIG from '../../config/configUrl'
 import {useSnackbar} from 'notistack'
 import {fnGetUserInfo} from '../../actions/profile/profileAction'
+import { useEffect } from 'react'
 //----------------------------------------------------------
 function MyProfile() {
+  const {id} = useParams()
   const [listImage, setListImage] = useState([])
-  const profile = useSelector((state) => getUserInfo(state))
-  const [imageUrl, setImageUrl] = useState([
-    {url: CONFIG.API_BASE_URL + '/avatar/' + profile.avatar?.path_name},
-  ])
-
+  const [profile, setProfile] = useState([]);
+  const [imageUrl, setImageUrl] = useState([])
+  const user = useSelector(state => getUserInfo(state));
   const dispatch = useDispatch()
   const [showModal, setShowModal] = useState(false)
   const {enqueueSnackbar} = useSnackbar()
@@ -27,8 +27,15 @@ function MyProfile() {
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm()
-  console.log(imageUrl[0].url)
+  } = useForm();
+
+  useEffect(()=>{
+    (async ()=>{
+      const res = await $http.getData(CONFIG.API_BASE_URL + '/user/profile/'+id);
+      setProfile(res.data);
+      setImageUrl([{url: CONFIG.API_BASE_URL + '/avatar/' + res.data?.avatar?.path_name}])
+    })()
+  },[])
   const onSubmit = async (values) => {
     try {
       const gt = values.gioi_tinh === 'nam' ? 1 : 0
@@ -92,11 +99,10 @@ function MyProfile() {
     }
   }
 
-  console.log(imageUrl)
   const renderImage =
-    imageUrl[0].url !== CONFIG.API_BASE_URL + '/avatar/undefined' || !!profile.avatar?.path_name ? (
+    imageUrl[0]?.url !== CONFIG.API_BASE_URL + '/avatar/undefined' || !!profile.avatar?.path_name ? (
       <div className="relative">
-        <img className="w-[200px] h-[200px] rounded-lg" src={imageUrl[0].url} alt="anhsanpham" />
+        <img className="w-[200px] h-[200px] rounded-lg" src={imageUrl[0]?.url} alt="anhsanpham" />
       </div>
     ) : (
       <FaUser
@@ -144,7 +150,7 @@ function MyProfile() {
           <div className="w-[70%]">
             <p className="text-[25px] font-bold uppercase">{profile?.ho_ten}</p>
             <p>
-              <strong>MSSV: </strong> {profile.maso}
+              <strong>MSSV: </strong> {profile?.maso}
             </p>
             <p>
               <strong>Giới tính: </strong> {profile?.gioi_tinh ? 'Nam' : 'Nữ'}
@@ -161,7 +167,8 @@ function MyProfile() {
             <p>
               <strong>Số điện thoại: </strong> {profile?.sdt}
             </p>
-            <div className="flex gap-5 mt-5">
+            {
+              user?.maso === profile?.maso &&   <div className="flex gap-5 mt-5">
               <Link to="/student/forgot_password/id">
                 <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
                   Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
@@ -253,6 +260,8 @@ function MyProfile() {
                 />
               </form>
             </div>
+            }
+          
           </div>
         </div>
       </div>
