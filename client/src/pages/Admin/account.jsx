@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { AiTwotoneFileExcel } from "react-icons/ai";
+import { AiTwotoneFileExcel, AiOutlineSearch } from "react-icons/ai";
 import { DataGrid } from "@mui/x-data-grid";
 
 const styleAddAccount = {
@@ -21,6 +21,7 @@ const styleAddAccount = {
 const schema = yup
   .object({
     ten: yup.string().required("Vui lòng nhập tên"),
+    bomon: yup.string().required("Vui lòng chọn bộ môn"),
     mssv: yup.string().required("Vui lòng nhập mã số sinh viên"),
     gioitinh: yup.string().nullable().required("Vui lòng chọn giới tính"),
     email: yup
@@ -55,6 +56,9 @@ function Account() {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
+  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
+    useForm();
+
   //Data form
   const createAccount = (data) => console.log(data);
 
@@ -73,42 +77,62 @@ function Account() {
       headerName: "Giới tính",
       type: "number",
       width: 90,
-      headerAlign: "center"
+      headerAlign: "center",
     },
     {
       field: "email",
       headerName: "Email",
       width: 250,
-      headerAlign: "center"
+      headerAlign: "center",
     },
     {
       field: "sodienthoai",
       headerName: "Số điện thoại",
       width: 160,
-      headerAlign: "center"
+      headerAlign: "center",
     },
     {
       field: "diachi",
       headerName: "Địa chỉ",
       width: 250,
-      headerAlign: "center"
+      headerAlign: "center",
     },
   ];
 
   const rows = [];
 
+  const search = (data) => {
+    console.log(data);
+  };
+
   return (
     <div>
       <div className="flex gap-4 mb-5">
-        <button
-          onClick={handleOpen}
-          className="px-4 py-2 my-2 mr-2 bg-yellow-500 font-medium rounded-md"
-        >
-          Thêm tài khoản
-        </button>
-        <button className="px-4 py-2 my-2 bg-yellow-500 font-medium rounded-md inline-flex items-center">
-          Thêm tài khoản <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
-        </button>
+        <div className="flex gap-4 items-center">
+          <button
+            onClick={handleOpen}
+            className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md"
+          >
+            Thêm tài khoản
+          </button>
+          <button className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md inline-flex items-center">
+            Thêm tài khoản
+            <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
+          </button>
+          <form onSubmit={handleSubmitSearch((data) => search(data))}>
+            <div className="flex items-center gap-2">
+              <input
+                name="search"
+                {...registerSearch("search")}
+                className="w-[500px] py-2 px-2 border border-[#ccc] rounded-md outline-none"
+                type="text"
+              />
+              <button className=" bg-blue-500 rounded-md p-2">
+                <AiOutlineSearch size={25} color="#fff" />
+              </button>
+            </div>
+          </form>
+        </div>
         <Modal
           open={open}
           onClose={handleClose}
@@ -116,11 +140,8 @@ function Account() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={styleAddAccount}>
-            <p className="mb-4 text-[25px] font-bold text-center">
-              Thêm tài khoản
-            </p>
             <form onSubmit={handleSubmit((data) => createAccount(data))}>
-              <div className="relative my-5">
+              <div className="relative my-2">
                 <p className="mb-1 font-bold">Tên</p>
                 <input
                   type="text"
@@ -130,6 +151,21 @@ function Account() {
                 />
                 <p className="absolute text-[12px] text-red-600">
                   {errors.ten?.message}
+                </p>
+              </div>
+              <div className="relative my-5">
+                <p className="mb-1 font-bold">Bộ môn</p>
+                <select
+                  className="w-full py-1 px-4 border border-slate-500 rounded-lg outline-none"
+                  name="bomon"
+                  {...register("bomon")}
+                >
+                  <option value="">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+                <p className="absolute text-[12px] text-red-600">
+                  {errors.bomon?.message}
                 </p>
               </div>
               <div className="relative my-5">

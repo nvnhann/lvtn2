@@ -1,8 +1,8 @@
-import React from 'react'
-import {AiOutlineUnorderedList} from 'react-icons/ai'
-import {BsBook} from 'react-icons/bs'
-import {FaUserAlt} from 'react-icons/fa'
-import {IoSend} from 'react-icons/io5'
+import React from "react";
+import { AiOutlineUnorderedList } from "react-icons/ai";
+import { BsBook } from "react-icons/bs";
+import { FaUserAlt } from "react-icons/fa";
+import { IoSend } from "react-icons/io5";
 
 function CourseDetail() {
   return (
@@ -35,11 +35,14 @@ function CourseDetail() {
       </div>
       <div className="relative flex items-center gap-2 mt-2">
         <FaUserAlt size={30} />
-        <input type="text" className="w-[87%] py-2 px-4 rounded-2xl border border-[#ccc] outline-none" />
+        <input
+          type="text"
+          className="w-[87%] py-2 px-4 rounded-2xl border border-[#ccc] outline-none"
+        />
         <IoSend size={30} className="absolute right-[120px] cursor-pointer" />
       </div>
     </div>
-  )
+  );
 }
 
-export default CourseDetail
+export default CourseDetail;
