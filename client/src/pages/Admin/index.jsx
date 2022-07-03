@@ -1,9 +1,9 @@
 import "../../assets/css/styles.css";
 import React from "react";
-import {Link, Navigate, Route, Routes} from "react-router-dom";
-import {AiOutlineUser} from "react-icons/ai";
-import {BsNewspaper} from "react-icons/bs";
-import {FiUsers} from "react-icons/fi";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { AiOutlineUser } from "react-icons/ai";
+import { BsNewspaper } from "react-icons/bs";
+import { FiUsers } from "react-icons/fi";
 
 import Account from "./account";
 import Student from "./student";
@@ -34,7 +34,7 @@ function Admin() {
             </Link>
             <Link to="/admin/bomon">
               <div className="flex gap-5 items-center w-[90%] mx-auto my-2 px-5 py-3 hover:bg-[#42C2FF] hover:text-white rounded-md duration-300 cursor-pointer">
-               <BsNewspaper size={25} />
+                <BsNewspaper size={25} />
                 <p className="">Bộ môn</p>
               </div>
             </Link>
@@ -62,12 +62,11 @@ function Admin() {
       <div className="w-full">
         <div className="flex justify-between items-center mb-4 p-4 w-full h-[100px] border-b border-slate-200">
           <div></div>
+
           <div>
-            <input className="py-2 px-4 w-[350px] border border-slate-200 outline-none rounded-md" type="text" />
-            <button className="ml-2 px-4 py-2 font-medium bg-yellow-300 rounded-md">Tìm kiếm</button>
-          </div>
-          <div>
-            <button className="ml-2 px-4 py-2 font-medium bg-yellow-300 rounded-md">Đăng xuất</button>
+            <button className="ml-2 px-4 py-2 font-medium bg-yellow-400 rounded-md">
+              Đăng xuất
+            </button>
           </div>
         </div>
 
