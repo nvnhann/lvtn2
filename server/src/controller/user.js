@@ -4,6 +4,17 @@ const TokenUtils = require('../helper/token-utils');
 const multer = require('multer');
 const db = require('../database/models');
 const bcrypt = require('bcryptjs');
+const sendMail = require('../services/mail');
+
+function makepass(length) {
+    let result           = '';
+    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -25,11 +36,9 @@ const uploadAvatar = async (req, res) => {
     let avt = {};
     avt.path_name = avatarFile.filename;
     avt.src = avatarFile.path;
-    console.log(avt)
     const user = await db.User.findOne({ where: { id }})
     const oldAvt = await db.Avatar.findOne({ where: {userId: id}})
     if(oldAvt){
-        console.log('====================update')
         await db.Avatar.update(avt, {where: {userId: id }})
     } else{
         avt = await db.Avatar.create(avt);
@@ -146,6 +155,31 @@ const updatePwd = async (req, res) => {
     }
 }
 
+const createUser = async(req, res)=>{
+    try {
+        const { user } = req.body;
+        const pass = makepass(8)
+        user.mat_khau = await bcrypt.hash(pass,10);
+        await UserService.createUser(user);
+        const subject_email = 'Cấp tài khoản CIT';
+        const content = `
+            <div>
+            <div style="color: #002984">Xin chào!</div>    
+            <h1>${user.ho_ten}</h1>
+            <p>Tài khoản CIT của bạn là: </p>
+            <p>Tài khoản: ${user.maso}</p>
+            <p>Mật khẩu: ${pass}</p>
+            </div>
+        `;
+        sendMail(user.email,subject_email,content);
+        return res.status(200).json({message: 'thanh cong'})
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({err: error})
+    }
+}
+
 module.exports = {
     getAll,
     login,
@@ -153,5 +187,6 @@ module.exports = {
     updateProfile,
     uploadFile,
     uploadAvatar,
-    updatePwd
+    updatePwd,
+    createUser
 }

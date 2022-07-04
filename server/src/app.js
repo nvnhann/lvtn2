@@ -11,8 +11,11 @@ import indexRouter from "./routers/index";
 import userRoute from './routers/user'
 import khoaHocRoute from './routers/khoahoc';
 import BoMonRoute from './routers/bomon';
+import TaiLieuRoute from './routers/tailieu';
+import LinhVucRoute from './routers/linhvuc';
 
 import { checkToken } from "./helper/middleware";
+import { LinhVuc } from "./database/models";
 const  UserController  = require('./controller/user');
 const asyncHandler = require('express-async-handler');
 
@@ -36,6 +39,8 @@ app.use("/", indexRouter);
 app.use(userRoute);
 app.use(khoaHocRoute);
 app.use(BoMonRoute);
+app.use(TaiLieuRoute);
+app.use(LinhVucRoute);
 
 app.use(checkToken);
 app.post('/user/profile/upload', [UserController.uploadFile, asyncHandler(UserController.uploadAvatar)])

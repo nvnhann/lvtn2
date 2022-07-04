@@ -11,12 +11,13 @@ function Course() {
     (async ()=>{
       const res = await $http.getData(CONFIG.API_BASE_URL+'/course');
       setData(res.data);
+      console.log(res.data)
     })()
   },[]);
   console.log(data)
   return (
     <div className="flex flex-wrap gap-3 mb-5">
-      {data?.map( (e) => (
+      {data?.map((e) => (
         e.users?.map((e1,idx) => (
           <div key={idx} className="relative w-[260px] bg-white rounded-md shadow-md">
           <div className="p-4 w-full h-[100px] bg-slate-300 rounded-t-md">
@@ -29,7 +30,7 @@ function Course() {
               </div>
             </div>
           </div>
-          <Link to="/app/course/detail=jkasndjj">
+          <Link to={"/app/course/detail/id="+e.id+"&gv="+e1.id}>
             <div className="h-[150px]">
               <IoMdFolderOpen size={25} className="absolute bottom-2 right-2 cursor-pointer" />
             </div>

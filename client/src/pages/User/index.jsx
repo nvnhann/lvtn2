@@ -39,7 +39,7 @@ function User() {
   }
 
   const logout = async () => {
-    dispatch(await userLogout())
+    dispatch(await userLogout());
     navigate('/login')
   }
 
@@ -136,11 +136,11 @@ function User() {
             <Route path="/home" element={<Home />} />
             <Route path="/save" element={<Navigate to="/app/document/save" />} />
             <Route path="/document/*" element={<Document />} />
-            <Route path="/document/detail" element={<DocumentDetail />} />
+            <Route path="/document/detail/:id" element={<DocumentDetail />} />
             <Route path="/document/upload" element={<DocumentUpload />} />
             <Route path="/article" element={<Article />} />
             <Route path="/course" element={<Course />} />
-            <Route path="/course/detail=:id1" element={<CourseDetailList />} />
+            <Route path="/course/detail" element={<CourseDetailList />} />
             <Route path="/course/detail=:id1/subject=:id2" element={<CourseDetail />} />
             <Route path="/teacher/*" element={<Teacher />} />
             <Route path="/teacher/teacher_profile" element={<TeacherProfile />} />

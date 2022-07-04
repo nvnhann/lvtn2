@@ -28,9 +28,9 @@ db.User.belongsToMany(db.KhoaHoc, { through: 'chi_tiet_kh' });
 db.User.belongsToMany(db.Group, { through: 'membership' });
 db.User.belongsToMany(db.TaiLieu , {through: 'ct_tai_lieu'});
 
-db.LinhVuc.hasMany(db.TaiLieu);
+db.LinhVuc.belongsToMany(db.TaiLieu, {through: 'ct_lv'});
 
-db.TaiLieu.belongsTo(db.LinhVuc);
+db.TaiLieu.belongsToMany(db.LinhVuc, {through: 'ct_lv'});
 db.TaiLieu.belongsToMany(db.User, { through: 'ct_tai_lieu'});
 
 db.BoMon.hasMany(db.User);

@@ -5,6 +5,7 @@ import {FaUserAlt} from 'react-icons/fa'
 import {IoSend} from 'react-icons/io5'
 
 function CourseDetail() {
+
   return (
     <div>
       <div className="flex items-center gap-2 mb-2">

@@ -1,7 +1,9 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useParams, useSearchParams} from 'react-router-dom'
 
 function CourseDetailList() {
+  const param = useSearchParams();
+  console.log(param)
   return (
     <div>
       <div className="flex justify-center align-middle mx-auto py-4 w-[80%] bg-[#2554A6] rounded-md">

@@ -4,6 +4,7 @@ const { Router } = require('express');
 const router = Router();
 const UserController = require('../controller/user');
 router.get('/user', asyncHandler(UserController.getAll));
+router.post('/user', asyncHandler(UserController.createUser));
 router.post('/user/login', asyncHandler(UserController.login));
 router.get('/user/profile/:maso', [checkToken,asyncHandler(UserController.getProfileByMaSo)]);
 router.put('/user/profile', [checkToken, asyncHandler(UserController.updateProfile)]);
