@@ -8,17 +8,26 @@ import * as CONFIG from '../../config/configUrl';
 import { useSnackbar } from 'notistack'
 import { MdDelete } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 600,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   boxShadow: 24,
-  p: 4,
-}
+  p: 2,
+};
+
+const schema = yup
+  .object({
+    tentailieu: yup.string().required("Vui lòng nhập tên tài liệu"),
+    mota: yup.string().required("Vui lòng viết mô tả"),
+  })
+  .required();
 
 function DocumentUpload() {
   const [open, setOpen] = useState(false)
@@ -170,21 +179,21 @@ function DocumentUpload() {
               {...register('file')}
               />
             <div className="flex gap-2 justify-end my-4">
-              <button className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md">
-                Thêm
-              </button>
               <button
-                className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md"
+                className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300"
                 onClick={handleClose}
               >
                 Hủy
+              </button>
+              <button className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300">
+                Thêm
               </button>
             </div>
           </form>
         </Box>
       </Modal>
     </div>
-  )
+  );
 }
 
-export default DocumentUpload
+export default DocumentUpload;

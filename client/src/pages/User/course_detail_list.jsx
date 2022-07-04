@@ -9,8 +9,13 @@ function CourseDetailList() {
       <div className="flex justify-center align-middle mx-auto py-4 w-[80%] bg-[#2554A6] rounded-md">
         <p className="text-white text-[30px]">CT113-POLICE</p>
       </div>
+      <div className="mx-auto my-5 w-[80%] flex justify-end">
+        <button className="py-2 px-4 bg-[#4980df] text-white font-medium rounded-md">Tạo bài viết</button>
+      </div>
       <div className="mx-auto w-[80%]">
-        <p className="mt-4 mb-2 text-[18px] font-bold">Các file ôn tập cuối kỳ</p>
+        <p className="mt-4 mb-2 text-[18px] font-bold">
+          Các file ôn tập cuối kỳ
+        </p>
         <div className="grid grid-cols-2 gap-5">
           <Link to="/app/course/detail=id1/subject=id2">
             <div className="flex gap-4 p-3 bg-white rounded-md shadow-md">
@@ -57,7 +62,7 @@ function CourseDetailList() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default CourseDetailList
+export default CourseDetailList;

@@ -4,7 +4,8 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { AiTwotoneFileExcel } from "react-icons/ai";
+import { AiTwotoneFileExcel, AiOutlineSearch } from "react-icons/ai";
+import { DataGrid } from "@mui/x-data-grid";
 
 const styleAddAccount = {
   position: "absolute",
@@ -20,6 +21,7 @@ const styleAddAccount = {
 const schema = yup
   .object({
     ten: yup.string().required("Vui lòng nhập tên"),
+    bomon: yup.string().required("Vui lòng chọn bộ môn"),
     mssv: yup.string().required("Vui lòng nhập mã số sinh viên"),
     gioitinh: yup.string().nullable().required("Vui lòng chọn giới tính"),
     email: yup
@@ -28,33 +30,6 @@ const schema = yup
       .required("Vui lòng nhập email"),
   })
   .required();
-
-var arr = [
-  {
-    id: 1,
-    img: "https://i.pinimg.com/564x/f0/19/c4/f019c408f21614452a28fea474074953.jpg",
-  },
-  {
-    id: 2,
-    img: "https://i.pinimg.com/564x/97/24/3c/97243cba12cb36d41624e610baf7671e.jpg",
-  },
-  {
-    id: 3,
-    img: "https://i.pinimg.com/564x/b0/59/01/b05901126c29226ec588bc63b9e23a4d.jpg",
-  },
-  {
-    id: 4,
-    img: "https://i.pinimg.com/564x/54/9e/f5/549ef58a9844f35fe9fb11283411fa91.jpg",
-  },
-  {
-    id: 5,
-    img: "https://i.pinimg.com/564x/4c/34/0a/4c340a3d5db6a11fbfa7166926c67273.jpg",
-  },
-  {
-    id: 6,
-    img: "https://i.pinimg.com/564x/a5/9c/e3/a59ce3c90ca73a0046949d2d1391aac5.jpg",
-  },
-];
 
 const defaulValue = {
   ten: "",
@@ -81,19 +56,83 @@ function Account() {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
+  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
+    useForm();
+
   //Data form
   const createAccount = (data) => console.log(data);
+
+  //table
+  const columns = [
+    { field: "id", headerName: "ID", headerAlign: "center", width: 50 },
+    {
+      field: "ten",
+      headerName: "Tên sinh viên",
+      headerAlign: "center",
+      width: 250,
+    },
+    { field: "mssv", headerName: "MSSV", headerAlign: "center", width: 130 },
+    {
+      field: "gioitinh",
+      headerName: "Giới tính",
+      type: "number",
+      width: 90,
+      headerAlign: "center",
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 250,
+      headerAlign: "center",
+    },
+    {
+      field: "sodienthoai",
+      headerName: "Số điện thoại",
+      width: 160,
+      headerAlign: "center",
+    },
+    {
+      field: "diachi",
+      headerName: "Địa chỉ",
+      width: 250,
+      headerAlign: "center",
+    },
+  ];
+
+  const rows = [];
+
+  const search = (data) => {
+    console.log(data);
+  };
 
   return (
     <div>
       <div className="flex gap-4 mb-5">
-        <button
-          onClick={handleOpen}
-          className="px-4 py-2 bg-yellow-400 font-bold rounded-md inline-flex items-center shadow-md"
-        >
-          Thêm tài khoản{" "}
-          <AiTwotoneFileExcel className="ml-2" color="#064e3b" size={25} />
-        </button>
+        <div className="flex gap-4 items-center">
+          <button
+            onClick={handleOpen}
+            className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md"
+          >
+            Thêm tài khoản
+          </button>
+          <button className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md inline-flex items-center">
+            Thêm tài khoản
+            <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
+          </button>
+          <form onSubmit={handleSubmitSearch((data) => search(data))}>
+            <div className="flex items-center gap-2">
+              <input
+                name="search"
+                {...registerSearch("search")}
+                className="w-[500px] py-2 px-2 border border-[#ccc] rounded-md outline-none"
+                type="text"
+              />
+              <button className=" bg-blue-500 rounded-md p-2">
+                <AiOutlineSearch size={25} color="#fff" />
+              </button>
+            </div>
+          </form>
+        </div>
         <Modal
           open={open}
           onClose={handleClose}
@@ -101,11 +140,8 @@ function Account() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={styleAddAccount}>
-            <p className="mb-4 text-[25px] font-bold text-center">
-              Thêm tài khoản
-            </p>
             <form onSubmit={handleSubmit((data) => createAccount(data))}>
-              <div className="relative my-5">
+              <div className="relative my-2">
                 <p className="mb-1 font-bold">Tên</p>
                 <input
                   type="text"
@@ -115,6 +151,21 @@ function Account() {
                 />
                 <p className="absolute text-[12px] text-red-600">
                   {errors.ten?.message}
+                </p>
+              </div>
+              <div className="relative my-5">
+                <p className="mb-1 font-bold">Bộ môn</p>
+                <select
+                  className="w-full py-1 px-4 border border-slate-500 rounded-lg outline-none"
+                  name="bomon"
+                  {...register("bomon")}
+                >
+                  <option value="">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                </select>
+                <p className="absolute text-[12px] text-red-600">
+                  {errors.bomon?.message}
                 </p>
               </div>
               <div className="relative my-5">
@@ -214,31 +265,17 @@ function Account() {
           </Box>
         </Modal>
       </div>
-      {/* <button className="px-4 py-2 my-2 mr-2 bg-slate-400 rounded-md">
-        Thêm tài khoản
-      </button>
-      <button className="px-4 py-2 my-2 bg-slate-400 rounded-md inline-flex items-center">
-        Thêm tài khoản <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
-      </button> */}
-      <div className="grid grid-cols-5 gap-4">
-        {arr.map(({ img }, idx) => (
-          <div key={idx} className="relative h-[250px] border rounded-md">
-            <img
-              className="mx-auto mt-4 w-[80px] h-[80px] rounded-full"
-              src={img}
-              alt="avatar"
-            />
-            <div className="mt-5 text-center">
-              <p>Nguyễn Thị Mèo</p>
-              <p>MSSV: B180xxxx</p>
-            </div>
-            <div className="absolute w-full bottom-2 flex justify-center gap-2">
-              <button className="px-4 py-1 bg-slate-400 rounded-md">Xem</button>
-              <button className="px-4 py-1 bg-slate-400 rounded-md">Sửa</button>
-              <button className="px-4 py-1 bg-slate-400 rounded-md">Xóa</button>
-            </div>
-          </div>
-        ))}
+
+      <div>
+        <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+          />
+        </div>
       </div>
     </div>
   );
