@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@tinymce/tinymce-react": "^4.1.0",
     "axios": "^0.27.2",
     "notistack": "^2.0.5",
     "react": "^18.1.0",
@@ -27,6 +28,7 @@
     "redux": "^4.2.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
+    "verbum": "^0.3.2",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

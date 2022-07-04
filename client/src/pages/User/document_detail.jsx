@@ -1,21 +1,23 @@
-import React, {useState} from 'react'
-import {Document, Page} from 'react-pdf'
-import {FiDownload, FiPrinter} from 'react-icons/fi'
-import {BiRightArrow, BiLeftArrow} from 'react-icons/bi'
+import React, { useState } from "react";
+import { Document, Page } from "react-pdf";
+import { FiDownload, FiPrinter } from "react-icons/fi";
+import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 // import file from '../../../public/FileTest/FileTest.pdf'
 
 function DocumentDetail() {
-  const [numPages, setNumPages] = useState(null)
-  const [pageNumber, setPageNumber] = useState(1)
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  function onDocumentLoadSuccess({numPages}) {
-    setNumPages(numPages)
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
   }
 
   return (
     <div>
       <div className="flex justify-between items-center gap-5 w-[65%]">
-        <button className="px-8 py-2 font-bold text-white bg-[#F38E46] rounded-md">Mở</button>
+        <button className="px-8 py-2 font-bold text-white bg-[#F38E46] rounded-md">
+          Mở
+        </button>
 
         <div className="flex items-center gap-2 cursor-pointer">
           <FiDownload className="cursor-pointer" size={25} />
@@ -38,7 +40,7 @@ function DocumentDetail() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default DocumentDetail
+export default DocumentDetail;
