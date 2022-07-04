@@ -71,6 +71,12 @@ function Account() {
       headerAlign: "center",
       width: 250,
     },
+    {
+      field: "bomon",
+      headerName: "Bộ môn",
+      headerAlign: "center",
+      width: 250,
+    },
     { field: "mssv", headerName: "MSSV", headerAlign: "center", width: 130 },
     {
       field: "gioitinh",
