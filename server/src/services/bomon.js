@@ -16,7 +16,7 @@ const updateNameById = async(id, name) => {
 }
 
 const updateStatusById = async(id, status) => {
-    if(id && name){
+    if(id !== undefined && status !== undefined){
         const bm = await BoMon.findOne({
             where: { id: id}
         });

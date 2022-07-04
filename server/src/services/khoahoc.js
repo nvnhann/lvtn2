@@ -16,6 +16,20 @@ const getAllKhoaHoc = async () =>{
     })
 }
 
+const getKhoaHocById = async (kh) => {
+    console.log(kh)
+    return await KhoaHoc.findOne({
+        where: {id: kh.id},
+        include: [{
+            model: User,
+            where: {
+                id: kh.idgv
+            }
+        }]
+    })
+}
+
 module.exports = {
-    getAllKhoaHoc
+    getAllKhoaHoc,
+    getKhoaHocById
 }

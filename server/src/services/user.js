@@ -1,5 +1,5 @@
-const { findOne } = require("../database-utility/utils");
 const { User, Group, BoMon, Avatar } = require("../database/models");
+
 const getAll = async () => {
     return await User.findAll();
 }
@@ -46,11 +46,24 @@ const updatePwd = async(maso, pwd) => {
         return await user.save();
     }
 }
+
+const createUser = async (user) => {
+    const usr = {};
+    usr.maso = user.maso;
+    usr.email = user.email;
+    usr.ho_ten = user.ho_ten;
+    usr.bomon_id = user.bomon_id;
+    usr.mat_khau = user.mat_khau;
+    console.log(user)
+    return;
+
+}
 module.exports = {
     getAll,
     getByMaSo,
     getProfileByMaSo,
     updateProfile,
     getUserByMaso,
-    updatePwd
+    updatePwd,
+    createUser
 }
