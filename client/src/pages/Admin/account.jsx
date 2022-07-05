@@ -64,43 +64,31 @@ function Account() {
 
   //table
   const columns = [
-    { field: "id", headerName: "ID", headerAlign: "center", width: 50 },
     {
-      field: "ten",
-      headerName: "Tên sinh viên",
+      field: "hanhdong",
+      headerName: "Hành động",
+      headerAlign: "center",
+      width: 200,
+    },
+    { field: "maso", headerName: "Mã số", headerAlign: "center", width: 150 },
+    {
+      field: "hoten",
+      headerName: "Họ tên",
       headerAlign: "center",
       width: 250,
-    },
-    {
-      field: "bomon",
-      headerName: "Bộ môn",
-      headerAlign: "center",
-      width: 250,
-    },
-    { field: "mssv", headerName: "MSSV", headerAlign: "center", width: 130 },
-    {
-      field: "gioitinh",
-      headerName: "Giới tính",
-      type: "number",
-      width: 90,
-      headerAlign: "center",
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      width: 250,
-      headerAlign: "center",
     },
     {
       field: "sodienthoai",
       headerName: "Số điện thoại",
-      width: 160,
       headerAlign: "center",
+      width: 150,
     },
+    { field: "mssv", headerName: "MSSV", headerAlign: "center", width: 130 },
+
     {
       field: "diachi",
       headerName: "Địa chỉ",
-      width: 250,
+      width: 300,
       headerAlign: "center",
     },
   ];
