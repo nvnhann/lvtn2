@@ -34,7 +34,7 @@ function Login() {
         TokenUtils.setToken(JSON.stringify(res.data.data));
         dispatch(fnGetUserInfo(res.data.maso))
         const role = profile.role;
-        if(role[0].groupname === 'SINHVIEN') navigate("/app");
+        if(role[0].groupname === 'SINHVIEN' || role[0].groupname === 'GIANGVIEN') navigate("/app");
       }
     } catch (error) {
       enqueueSnackbar(error.response.data.message, {
@@ -91,7 +91,7 @@ function Login() {
                 />
               )}
             </div>
-            <button className="block mb-5 w-full text-white font-bold mx-auto px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-500 rounded-md">
+            <button type="submit" className="block mb-5 w-full text-white font-bold mx-auto px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-500 rounded-md">
               Đăng Nhập
             </button>
           </form>

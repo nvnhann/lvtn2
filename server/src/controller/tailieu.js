@@ -24,7 +24,6 @@ const createTaiLieu = async (req, res) => {
     tl.mota = tailieu.mota;
     tl.file = req.file;
     tl.lv = tailieu.lv;
-    console.log("===================================", tl);
     await TaiLieuService.createTaiLieu(req.user.maso, tl );
     res.status(200).json({ success: true, msg: "thanh cong" });
   } catch (error) {

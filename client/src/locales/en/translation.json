@@ -1,0 +1,17 @@
+{
+    "header" : {
+        "home"  : "Home",
+        "en"    : "English",
+        "vi"    : "Vietnamese",
+        "logout": "Logout",
+        "profile": "My profile"
+    },
+    "sidebar" : {
+        "suggest" : "Suggest to you",
+        "courses" : "Courses",
+        "lectures": "Lectures",
+        "my_doc": "My documents",
+        "paper": "Papers",
+        "schedule": "Practice schedule"
+    }
+}

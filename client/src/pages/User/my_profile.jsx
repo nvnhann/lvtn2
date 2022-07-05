@@ -156,13 +156,13 @@ function MyProfile() {
               <strong>Giới tính: </strong> {profile?.gioi_tinh ? 'Nam' : 'Nữ'}
             </p>
             <p>
-              <strong>Ngày sinh:</strong> 1/1/2111
+              <strong>Ngày sinh:</strong> {profile?.ngay_sinh}
             </p>
             <p>
               <strong>Email: </strong> {profile?.email}
             </p>
             <p>
-              <strong>Địa chỉ: </strong> 30/4 Hưng Lợi, Ninh Kiều, Cần Thơ
+              <strong>Địa chỉ: </strong> {profile?.dia_chi}
             </p>
             <p>
               <strong>Số điện thoại: </strong> {profile?.sdt}

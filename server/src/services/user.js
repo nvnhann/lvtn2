@@ -9,6 +9,19 @@ const getByMaSo = async maso => {
     return User.findOne({
         where: { maso: maso}
     })
+};
+
+const getGiangVienByMaSo = async maso =>{
+    if(!maso) return;
+    return await User.findOne({
+        where : { maso: maso},
+        include: [{
+            model: Group,
+            where: {
+                groupname: 'GIANGVIEN'
+            }
+        }]
+    })
 }
 
 const getProfileByMaSo = async maso =>{
@@ -65,5 +78,6 @@ module.exports = {
     updateProfile,
     getUserByMaso,
     updatePwd,
-    createUser
+    createUser,
+    getGiangVienByMaSo
 }

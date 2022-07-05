@@ -21,13 +21,13 @@ db.BoMon = require("./bomon")(sequelize, Sequelize);
 db.KhoaHoc = require("./khoahoc")(sequelize, Sequelize);
 db.TaiLieu = require("./tailieu")(sequelize, Sequelize);
 db.LinhVuc = require("./linhvuc")(sequelize, Sequelize);
-
+db.CTKH = require('./chitietkhoahoc')(sequelize, Sequelize);
 db.User.hasOne(db.Avatar);
 db.User.belongsTo(db.BoMon);
-db.User.belongsToMany(db.KhoaHoc, { through: "chi_tiet_kh" });
+db.User.belongsToMany(db.KhoaHoc, { through: db.CTKH });
 db.User.belongsToMany(db.Group, { through: "membership" });
 db.User.belongsToMany(db.TaiLieu, { through: "ct_tai_lieu" });
-
+db.User.belongsToMany(db.TaiLieu, { through: "ct_tai_lieu" });
 db.LinhVuc.belongsToMany(db.TaiLieu, { through: "ct_lv" });
 
 db.TaiLieu.belongsToMany(db.LinhVuc, { through: "ct_lv" });
@@ -35,7 +35,9 @@ db.TaiLieu.belongsToMany(db.User, { through: "ct_tai_lieu" });
 
 db.BoMon.hasMany(db.User);
 
-db.KhoaHoc.belongsToMany(db.User, { through: "chi_tiet_kh" });
+db.KhoaHoc.belongsToMany(db.User, { through: db.CTKH });
+db.CTKH.belongsToMany(db.User, {through:"tv_kh" });
+db.User.belongsToMany(db.CTKH, {through:"tv_kh" });
 
 db.Avatar.belongsTo(db.User);
 

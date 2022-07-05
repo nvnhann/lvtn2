@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
 import "react-quill/dist/quill.snow.css";
@@ -7,6 +7,8 @@ import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { AiFillPlusCircle } from "react-icons/ai";
+import * as $http from '../../utils/httpProvider';
+import * as CONFIG from '../../config/configUrl';
 
 const styleFile = {
   position: "absolute",
@@ -89,17 +91,25 @@ const dataFile = [
 function CourseDetailList() {
   const [openEditor, setOpenEditor] = useState(false);
   const [data, setData] = useState(null);
-  const params = useParams();
+  const [course, setCourse] = useState([]);
+  const {id, gv} = useParams();
 
   const [openFile, setOpenFile] = useState(false);
   const handleOpenFile = () => setOpenFile(true);
   const handleCloseFile = () => setOpenFile(false);
 
+  useEffect(()=>{
+    (async () => {
+      const res = await $http.getData(CONFIG.API_BASE_URL + '/course/detail?id='+id+'&&idgv='+gv);
+      setCourse(res.data)
+    })()
+  },[])
+
   const openInputFile = () => {
     document.querySelector(".inputfile").click();
   };
 
-  console.log(data);
+  console.log(course);
 
   const handleChange = (value) => {
     setData(value);
@@ -109,7 +119,7 @@ function CourseDetailList() {
     <div className="flex gap-4">
       <div className="w-[75%]">
         <div className="flex justify-center align-middle  py-4  bg-[#2554A6] rounded-md">
-          <p className="text-white text-[30px]">CT113-POLICE</p>
+          <p className="text-white text-[30px]">{course?.kh?.ma_khoa_hoc} - {course?.kh?.ten_khoa_hoc}</p>
         </div>
         {!!openEditor ? (
           <div className=" my-5 p-4 bg-white  rounded-md">
@@ -160,7 +170,7 @@ function CourseDetailList() {
                     />
                   </div>
                   {dataFile.map(({ id, value }, idx) => (
-                    <div className="flex gap-2 my-4 p-2 bg-slate-300 rounded-md">
+                    <div className="flex gap-2 items-center my-4 p-2 bg-slate-300 rounded-md">
                       <input type="checkbox" name={id} value={id} />
                       <p>{value}</p>
                     </div>
@@ -265,21 +275,28 @@ function CourseDetailList() {
 
       <div className="grid grid-cols-1 gap-2 w-[25%] bg-white rounded-md p-2">
         <div>
+        <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
+            Giảng viên
+          </p>
+            <div>
+                <div className="flex justify-start items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
+                <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"><img className="w-[50px] h-[50px]  rounded-full bg-slate-300" src={course.kh?.path_name ? CONFIG.API_BASE_URL + '/avatar/'+ course.kh?.path_name : '/avt.jpg' } /></div>
+                <p className="">{ course?.kh?.ho_ten}</p>
+              </div>
+           </div>
           <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
             Thành Viên
           </p>
-          <div className="flex justify-center items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
-            <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"></div>
-            <p className="">Nguyễn Văn Nhẫn Nhẫn</p>
-          </div>
-          <div className="flex justify-center items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
-            <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"></div>
-            <p className="">Nguyễn Văn Nhẫn Nhẫn</p>
-          </div>
-          <div className="flex justify-center items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
-            <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"></div>
-            <p className="">Nguyễn Văn Nhẫn Nhẫn</p>
-          </div>
+          {course?.member?.map((e, idx)=>(
+            <div>
+              <Link to={`/app/student/${e.maso}`}>
+                <div  className="flex cursor-pointer justify-start items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
+                <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"><img className="w-[50px] h-[50px]  rounded-full bg-slate-300" src={e?.path_name ? CONFIG.API_BASE_URL + '/avatar/'+ e?.path_name : '/avt.jpg' } /></div>
+                <p className="">{ e?.ho_ten}</p>
+                </div></Link>
+           </div>
+          ))}
+         
         </div>
       </div>
     </div>

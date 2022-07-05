@@ -1,7 +1,21 @@
-import { BoMon } from "../database/models"
+import { BoMon, Group, User } from "../database/models"
 
 const getAll = async () =>{
     return await BoMon.findAll();
+}
+
+const getBomonById = async (id) => {
+    return await BoMon.findByPk(id, {
+        include: [{
+            model: User,
+            include: [{
+                model: Group,
+                where: {
+                    groupname: 'GIANGVIEN'
+                }
+            }]
+        }]
+    })
 }
 
 const updateNameById = async(id, name) => {
@@ -30,5 +44,6 @@ const updateStatusById = async(id, status) => {
 module.exports = {
     getAll,
     updateNameById,
-    updateStatusById
+    updateStatusById,
+    getBomonById
 }

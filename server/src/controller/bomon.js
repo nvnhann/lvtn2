@@ -4,6 +4,10 @@ const getAll = async(req, res)=>{
     return await res.json(await BoMonService.getAll());
 }
 
+const getBomonById = async (req, res) => {
+    return await res.json ( await BoMonService.getBomonById(req.params.id));
+}
+
 const updateNameById = async (req, res) => {
     const { id, name } = req.body;
     try {
@@ -42,5 +46,6 @@ const updateStatusById = async (req, res)=>{
 module.exports = {
     getAll,
     updateNameById,
-    updateStatusById
+    updateStatusById,
+    getBomonById
 }

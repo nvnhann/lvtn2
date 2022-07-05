@@ -21,7 +21,11 @@ const storage = multer.diskStorage({
         cb(null, 'public/avatar')
     },
     filename: function(req, file, cb){
-        cb(null,file.fieldname+'-'+ Date.now()+file.originalname);
+        let ext = file.originalname.substring(
+            file.originalname.lastIndexOf("."),
+            file.originalname.length
+          );
+          cb(null, file.fieldname + "-" + Date.now() + ext);
     }
 });
 

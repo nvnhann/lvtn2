@@ -1,0 +1,17 @@
+{
+    "header" : {
+        "home"  : "Trang chủ",
+        "en"    : "Tiếng Anh",
+        "vi"    : "Tiếng việt",
+        "logout": "Đăng xuất",
+        "profile": "Trang cá nhân"
+    },
+    "sidebar" : {
+        "suggest" : "Gợi ý cho bạn",
+        "courses" : "Các khóa học",
+        "lectures": "Giảng viên",
+        "my_doc": "Tài liệu của tôi",
+        "paper": "Bài báo",
+        "schedule": "Lịch thực hành"
+    }
+}
