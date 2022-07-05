@@ -1,108 +1,126 @@
-import React, {useState} from 'react'
-import {IoMdLock} from 'react-icons/io'
-import {FaUserEdit, FaUser} from 'react-icons/fa'
-import {AiOutlineCloudUpload} from 'react-icons/ai'
-import {Link, useMatch, useParams} from 'react-router-dom'
-import {getUserInfo} from '../../reducers/profile'
-import {useDispatch, useSelector} from 'react-redux'
-import ModalEditProFile from './modalEditProfile'
-import {useForm} from 'react-hook-form'
-import * as $http from '../../utils/httpProvider'
-import * as CONFIG from '../../config/configUrl'
-import {useSnackbar} from 'notistack'
-import {fnGetUserInfo} from '../../actions/profile/profileAction'
-import { useEffect } from 'react'
+import React, { useState } from "react";
+import { IoMdLock } from "react-icons/io";
+import { FaUserEdit, FaUser } from "react-icons/fa";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { Link, useMatch, useParams } from "react-router-dom";
+import { getUserInfo } from "../../reducers/profile";
+import { useDispatch, useSelector } from "react-redux";
+import ModalEditProFile from "./modalEditProfile";
+import { useForm } from "react-hook-form";
+import * as $http from "../../utils/httpProvider";
+import * as CONFIG from "../../config/configUrl";
+import { useSnackbar } from "notistack";
+import { fnGetUserInfo } from "../../actions/profile/profileAction";
+import { useEffect } from "react";
 //---------------------------------------------------------------------------------
 function MyProfile() {
-  const {id} = useParams()
-  const [listImage, setListImage] = useState([])
+  const { id } = useParams();
+  const [listImage, setListImage] = useState([]);
   const [profile, setProfile] = useState([]);
-  const [imageUrl, setImageUrl] = useState([])
-  const user = useSelector(state => getUserInfo(state));
-  const dispatch = useDispatch()
-  const [showModal, setShowModal] = useState(false)
-  const {enqueueSnackbar} = useSnackbar()
-  const [check, setCheck] = useState(false)
+  const [imageUrl, setImageUrl] = useState([]);
+  const user = useSelector((state) => getUserInfo(state));
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const [check, setCheck] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm();
 
-  useEffect(()=>{
-    (async ()=>{
-      const res = await $http.getData(CONFIG.API_BASE_URL + '/user/profile/'+id);
+  useEffect(() => {
+    (async () => {
+      const res = await $http.getData(
+        CONFIG.API_BASE_URL + "/user/profile/" + id
+      );
       setProfile(res.data);
-      setImageUrl([{url: CONFIG.API_BASE_URL + '/avatar/' + res.data?.avatar?.path_name}])
-    })()
-  },[])
+      setImageUrl([
+        { url: CONFIG.API_BASE_URL + "/avatar/" + res.data?.avatar?.path_name },
+      ]);
+    })();
+  }, []);
   const onSubmit = async (values) => {
     try {
-      const gt = values.gioi_tinh === 'nam' ? 1 : 0
-      values.gioi_tinh = gt
-      await $http.putData(CONFIG.API_BASE_URL + '/user/profile', {profile: values})
-      dispatch(await fnGetUserInfo(profile.maso))
-      enqueueSnackbar('Cập nhật thành công', {variant: 'success', autoHideDuration: 3000})
-      setShowModal(false)
+      const gt = values.gioi_tinh === "nam" ? 1 : 0;
+      values.gioi_tinh = gt;
+      await $http.putData(CONFIG.API_BASE_URL + "/user/profile", {
+        profile: values,
+      });
+      dispatch(await fnGetUserInfo(profile.maso));
+      enqueueSnackbar("Cập nhật thành công", {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      setShowModal(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(file)
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        resolve(fileReader.result)
-      }
+        resolve(fileReader.result);
+      };
 
       fileReader.onerror = (err) => {
-        reject(err)
-      }
-    })
-  }
+        reject(err);
+      };
+    });
+  };
 
   const uploadImage = async (e) => {
-    setListImage(e.target.files)
-    const imageNumber = e.target.files.length + imageUrl.length
+    setListImage(e.target.files);
+    const imageNumber = e.target.files.length + imageUrl.length;
     if (imageNumber <= 5) {
-      let i = 0
+      let i = 0;
       for (i; i < e.target.files.length; i++) {
-        const file = e.target.files[i]
-        if (!file) return
-        const base64 = await getBase64(file)
-        setImageUrl([{url: base64}])
+        const file = e.target.files[i];
+        if (!file) return;
+        const base64 = await getBase64(file);
+        setImageUrl([{ url: base64 }]);
       }
     }
-    setCheck(true)
-  }
+    setCheck(true);
+  };
 
   const btnActive = () => {
-    document.getElementById('default-btn').click()
-  }
+    document.getElementById("default-btn").click();
+  };
 
   const submitAvt = async () => {
     try {
-      const formDt = new FormData()
-      formDt.append('avatar', listImage[0])
-      await $http.postData(CONFIG.API_BASE_URL + '/user/profile/upload', formDt, {
-        'content-type': 'multipart/form-data',
-      })
-      enqueueSnackbar('Cập nhật ảnh đại diện thành công', {
-        variant: 'success',
+      const formDt = new FormData();
+      formDt.append("avatar", listImage[0]);
+      await $http.postData(
+        CONFIG.API_BASE_URL + "/user/profile/upload",
+        formDt,
+        {
+          "content-type": "multipart/form-data",
+        }
+      );
+      enqueueSnackbar("Cập nhật ảnh đại diện thành công", {
+        variant: "success",
         autoHideDuration: 3000,
-      })
-      dispatch(await fnGetUserInfo(profile.maso))
-      setCheck(false)
+      });
+      dispatch(await fnGetUserInfo(profile.maso));
+      setCheck(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const renderImage =
-    imageUrl[0]?.url !== CONFIG.API_BASE_URL + '/avatar/undefined' || !!profile.avatar?.path_name ? (
+    imageUrl[0]?.url !== CONFIG.API_BASE_URL + "/avatar/undefined" ||
+    !!profile.avatar?.path_name ? (
       <div className="relative">
-        <img className="w-[200px] h-[200px] rounded-lg" src={imageUrl[0]?.url} alt="anhsanpham" />
+        <img
+          className="w-[200px] h-[200px] rounded-lg"
+          src={imageUrl[0]?.url}
+          alt="anhsanpham"
+        />
       </div>
     ) : (
       <FaUser
@@ -110,7 +128,7 @@ function MyProfile() {
         color="#747474"
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       />
-    )
+    );
 
   return (
     <div>
@@ -125,7 +143,7 @@ function MyProfile() {
                 className="hidden"
                 name="file"
                 onChange={(e) => {
-                  uploadImage(e)
+                  uploadImage(e);
                 }}
               />
               <AiOutlineCloudUpload
@@ -153,7 +171,7 @@ function MyProfile() {
               <strong>MSSV: </strong> {profile?.maso}
             </p>
             <p>
-              <strong>Giới tính: </strong> {profile?.gioi_tinh ? 'Nam' : 'Nữ'}
+              <strong>Giới tính: </strong> {profile?.gioi_tinh ? "Nam" : "Nữ"}
             </p>
             <p>
               <strong>Ngày sinh:</strong> 1/1/2111
@@ -167,101 +185,123 @@ function MyProfile() {
             <p>
               <strong>Số điện thoại: </strong> {profile?.sdt}
             </p>
-            {
-              user?.maso === profile?.maso &&   <div className="flex gap-5 mt-5">
-              <Link to="/app/forgot_password">
-                <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
-                  Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
+            {user?.maso === profile?.maso && (
+              <div className="flex gap-5 mt-5">
+                <Link to="/app/forgot_password">
+                  <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
+                    Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
+                  </button>
+                </Link>
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md"
+                >
+                  Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
                 </button>
-              </Link>
-              <button
-                onClick={() => setShowModal(true)}
-                className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md"
-              >
-                Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
-              </button>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <ModalEditProFile
-                  title="Chỉnh sửa thông tin cá nhân"
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                  content={
-                    <>
-                      <input
-                        className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                        type="text"
-                        name="ho_ten"
-                        placeholder="Họ và tên"
-                        {...register('ho_ten', {value: profile?.ho_ten, required: true})}
-                      />
-                      <div className="flex items-center my-4">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <ModalEditProFile
+                    title="Chỉnh sửa thông tin cá nhân"
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    content={
+                      <>
                         <input
-                          id="default-radio-1"
-                          type="radio"
-                          name="gioi_tinh"
-                          value="nam"
-                          {...register('gioi_tinh', {value: profile?.gioi_tinh ? 'nam' : 'nu'})}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                          type="text"
+                          name="ho_ten"
+                          placeholder="Họ và tên"
+                          {...register("ho_ten", {
+                            value: profile?.ho_ten,
+                            required: true,
+                          })}
                         />
-                        <label
-                          htmlFor="default-radio-1"
-                          className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                        >
-                          Nam
-                        </label>
                         <input
-                          id="default-radio-2"
-                          type="radio"
-                          name="gioi_tinh"
-                          value="nu"
-                          {...register('gioi_tinh', {value: profile?.gioi_tinh ? 'nam' : 'nu'})}
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          className="my-4 block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                          type="date"
+                          name="ngay_sinh"
+                          placeholder="Ngày sinh"
+                          {...register("ngay_sinh", {
+                            value: profile?.ngay_sinh,
+                            required: true,
+                          })}
                         />
-                        <label
-                          htmlFor="default-radio-2"
-                          className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        <div className="flex items-center my-4">
+                          <input
+                            id="default-radio-1"
+                            type="radio"
+                            name="gioi_tinh"
+                            value="nam"
+                            {...register("gioi_tinh", {
+                              value: profile?.gioi_tinh ? "nam" : "nu",
+                            })}
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label
+                            htmlFor="default-radio-1"
+                            className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          >
+                            Nam
+                          </label>
+                          <input
+                            id="default-radio-2"
+                            type="radio"
+                            name="gioi_tinh"
+                            value="nu"
+                            {...register("gioi_tinh", {
+                              value: profile?.gioi_tinh ? "nam" : "nu",
+                            })}
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label
+                            htmlFor="default-radio-2"
+                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          >
+                            Nữ
+                          </label>
+                        </div>
+                        <input
+                          className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                          type="text"
+                          name="dia_chi"
+                          placeholder="Địa chỉ"
+                          {...register("dia_chi", {
+                            value: profile?.dia_chi,
+                            required: true,
+                          })}
+                        />
+                        <input
+                          className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                          type="text"
+                          name="sdt"
+                          placeholder="Số điện thoại"
+                          {...register("sdt", {
+                            value: profile?.sdt,
+                            required: true,
+                          })}
+                        />
+                      </>
+                    }
+                    action={
+                      <>
+                        <button
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => setShowModal(false)}
                         >
-                          Nữ
-                        </label>
-                      </div>
-                      <input
-                        className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                        type="text"
-                        name="dia_chi"
-                        placeholder="Địa chỉ"
-                        {...register('dia_chi', {value: profile?.dia_chi, required: true})}
-                      />
-                      <input
-                        className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                        type="text"
-                        name="sdt"
-                        placeholder="Số điện thoại"
-                        {...register('sdt', {value: profile?.sdt, required: true})}
-                      />
-                    </>
-                  }
-                  action={
-                    <>
-                      <button
-                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Đóng
-                      </button>
-                      <button
-                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="submit"
-                      >
-                        Lưu
-                      </button>
-                    </>
-                  }
-                />
-              </form>
-            </div>
-            }
-          
+                          Đóng
+                        </button>
+                        <button
+                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="submit"
+                        >
+                          Lưu
+                        </button>
+                      </>
+                    }
+                  />
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -319,7 +359,7 @@ function MyProfile() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default MyProfile
+export default MyProfile;

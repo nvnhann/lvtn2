@@ -25,7 +25,6 @@ const style = {
 const schema = yup
   .object({
     tentailieu: yup.string().required("Vui lòng nhập tên tài liệu"),
-    mota: yup.string().required("Vui lòng viết mô tả"),
   })
   .required();
 
@@ -61,27 +60,41 @@ function DocumentUpload() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = async (values) => {
     try {
-      const tl = {};
-      tl.tentailieu = values.tentailieu;
-      tl.mota = values.mota;
-      tl.lv = LV;
-      console.log(tl);
-      const formDt = new FormData();
-      formDt.append("document", values.file[0]);
-      formDt.append("tailieu", JSON.stringify(tl));
-      await $http.postData(CONFIG.API_BASE_URL + "/tailieu", formDt, {
-        "content-type": "multipart/form-data",
-      });
-      enqueueSnackbar("Thêm thành công", {
-        variant: "success",
-        autoHideDuration: 3000,
-      });
-      handleClose();
-      setLoad((e) => e + 1);
+      if (values.file.length === 0) {
+        enqueueSnackbar("Vui lòng chọn file", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+        return;
+      }
+      if (values.file[0].size / 1024 / 1024 > 25) {
+        enqueueSnackbar("File không được lớn hơn 25MB", {
+          variant: "error",
+          autoHideDuration: 3000,
+        });
+      } else {
+        const tl = {};
+        tl.tentailieu = values.tentailieu;
+        tl.mota = values.mota;
+        tl.lv = LV;
+        console.log(tl);
+        const formDt = new FormData();
+        formDt.append("document", values.file[0]);
+        formDt.append("tailieu", JSON.stringify(tl));
+        await $http.postData(CONFIG.API_BASE_URL + "/tailieu", formDt, {
+          "content-type": "multipart/form-data",
+        });
+        enqueueSnackbar("Thêm thành công", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        handleClose();
+        setLoad((e) => e + 1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -132,23 +145,34 @@ function DocumentUpload() {
         <Box sx={style}>
           <p className="text-center text-[25px] font-medium">Thêm tài liệu</p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <p>Tên tài liệu</p>
-            <input
-              type="text"
-              className="my-2 py-1 px-4 w-full border border-[#ccc] rounded-md"
-              placeholder="Nhập tên tài liệu"
-              name="tentailieu"
-              {...register("tentailieu")}
-            />
-            <p>Mô tả</p>
-            <textarea
-              type="text"
-              rows={4}
-              className="my-2 py-1 px-4 w-full border border-[#ccc] rounded-md"
-              placeholder="Nhập mô tả"
-              name="mota"
-              {...register("mota")}
-            />
+            <p>
+              <strong>Tên tài liệu</strong>
+            </p>
+            <div className="relative mt-2 mb-4">
+              <input
+                type="text"
+                className=" py-1 px-4 w-full border border-[#ccc] rounded-md"
+                placeholder="Nhập tên tài liệu"
+                name="tentailieu"
+                {...register("tentailieu")}
+              />
+              <p className="absolute -bottom-5 text-[14px] text-red-600">
+                {errors.tentailieu?.message}
+              </p>
+            </div>
+            <div className="mt-6 mb-2">
+              <p>
+                <strong>Mô tả</strong>
+              </p>
+              <textarea
+                type="text"
+                rows={4}
+                className=" py-1 px-4 w-full border border-[#ccc] rounded-md"
+                placeholder="Nhập mô tả"
+                name="mota"
+                {...register("mota")}
+              />
+            </div>
             <div className="flex flex-wrap justify-center space-x-2">
               {LV?.map((e, idx) => (
                 <span
@@ -177,7 +201,9 @@ function DocumentUpload() {
                 </span>
               ))}
             </div>
-            <p>Chọn file</p>
+            <p>
+              <strong>Chọn file</strong>
+            </p>
             <input
               type="file"
               className="my-2"
