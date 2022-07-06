@@ -68,8 +68,7 @@ function DocumentUpload() {
       const tl = {};
       tl.tentailieu = values.tentailieu;
       tl.mota = values.mota;
-      tl.lv = LV;
-      console.log(tl);
+      tl.lv =  await LV;
       const formDt = new FormData();
       formDt.append("document", values.file[0]);
       formDt.append("tailieu", JSON.stringify(tl));
@@ -84,6 +83,10 @@ function DocumentUpload() {
       setLoad((e) => e + 1);
     } catch (error) {
       console.log(error);
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
     }
   };
 
@@ -191,7 +194,7 @@ function DocumentUpload() {
               >
                 Hủy
               </button>
-              <button className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300">
+              <button type="submit" className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300">
                 Thêm
               </button>
             </div>

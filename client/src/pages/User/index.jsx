@@ -22,6 +22,7 @@ import DocumentUpload from "./document_upload";
 import * as CONFIG from "../../config/configUrl";
 import { userLogout } from "../../actions/profile";
 import { useTranslation } from "react-i18next";
+import RegisterCourse from "./register_course";
 //-----------------------------------------------------------------
 
 function User() {
@@ -172,6 +173,10 @@ function User() {
             <Route path="/document/upload" element={<DocumentUpload />} />
             <Route path="/article" element={<Article />} />
             <Route path="/course" element={<Course />} />
+            <Route
+              path="/course/register_course"
+              element={<RegisterCourse />}
+            />
             <Route
               path="/course/detail/id=:id&gv=:gv"
               element={<CourseDetailList />}

@@ -62,50 +62,65 @@ function Account() {
   //Data form
   const createAccount = (data) => console.log(data);
 
+  const editAccount = (id) => {
+    console.log(id);
+  };
+
+  const hiddenAccount = (id) => {
+    console.log(id);
+  };
+
   //table
   const columns = [
-    { field: "id", headerName: "ID", headerAlign: "center", width: 50 },
     {
-      field: "ten",
-      headerName: "Tên sinh viên",
+      field: "hanhdong",
+      headerName: "Hành động",
+      headerAlign: "center",
+      width: 200,
+      renderCell: () => (
+        <div className="flex gap-2 justify-center items-center">
+          <button
+            onClick={() => editAccount()}
+            className="p-2 font-medium min-w-[75px] bg-blue-500 text-white rounded-md shadow-md hover:opacity-90 active:opacity-50 duration-300"
+          >
+            Chỉnh sửa
+          </button>
+          <button
+            onClick={() => hiddenAccount()}
+            className="p-2 font-medium min-w-[75px] bg-red-500 text-white rounded-md shadow-md hover:opacity-90 active:opacity-50 duration-300"
+          >
+            Ẩn
+          </button>
+        </div>
+      ),
+    },
+    { field: "maso", headerName: "Mã số", headerAlign: "center", width: 150 },
+    {
+      field: "hoten",
+      headerName: "Họ tên",
       headerAlign: "center",
       width: 250,
-    },
-    {
-      field: "bomon",
-      headerName: "Bộ môn",
-      headerAlign: "center",
-      width: 250,
-    },
-    { field: "mssv", headerName: "MSSV", headerAlign: "center", width: 130 },
-    {
-      field: "gioitinh",
-      headerName: "Giới tính",
-      type: "number",
-      width: 90,
-      headerAlign: "center",
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      width: 250,
-      headerAlign: "center",
     },
     {
       field: "sodienthoai",
       headerName: "Số điện thoại",
-      width: 160,
       headerAlign: "center",
+      width: 150,
     },
+    { field: "mssv", headerName: "MSSV", headerAlign: "center", width: 130 },
+
     {
       field: "diachi",
       headerName: "Địa chỉ",
-      width: 250,
+      width: 300,
       headerAlign: "center",
     },
   ];
 
-  const rows = [];
+  const rows = [
+    { id: 1, maso: "DMK", hoten: "Dao Minh Khoa" },
+    { id: 2, maso: "DMK", hoten: "Dao Minh Khoa" },
+  ];
 
   const search = (data) => {
     console.log(data);
@@ -117,11 +132,11 @@ function Account() {
         <div className="flex gap-4 items-center">
           <button
             onClick={handleOpen}
-            className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md"
+            className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md hover:opacity-90 active:opacity-50 duration-300"
           >
             Thêm tài khoản
           </button>
-          <button className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md inline-flex items-center">
+          <button className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md inline-flex items-center hover:opacity-90 active:opacity-50 duration-300">
             Thêm tài khoản
             <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
           </button>
@@ -279,7 +294,6 @@ function Account() {
             columns={columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            checkboxSelection
           />
         </div>
       </div>

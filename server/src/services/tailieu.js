@@ -15,9 +15,10 @@ const createTaiLieu = async (maso, tailieu) => {
         maso: maso,
       },
     });
+    console.log('=======================')
+    console.log(user)
     if (user) {
       tl = await TaiLieu.create(tl);
-      console.log(tl.id);
       await tl.addUser(user, { through: "ct_tai_lieu" });
       tailieu.lv.map(async (e) => {
         const lv = await LinhVuc.findByPk(e.id);
