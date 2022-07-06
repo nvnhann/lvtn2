@@ -5,12 +5,22 @@ import Modal from "@mui/material/Modal";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import * as $http from '../../utils/httpProvider';
-import * as CONFIG from '../../config/configUrl';
+import * as $http from "../../utils/httpProvider";
+import * as CONFIG from "../../config/configUrl";
 import { useSnackbar } from "notistack";
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material";
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
+import {
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 const schema = yup
   .object({
@@ -36,18 +46,20 @@ function Course() {
   const handleOpenCourse = () => setOpenCourse(true);
   const handleCloseCourse = () => setOpenCourse(false);
   const [load, setLoad] = useState(0);
-  const {enqueueSnackbar} = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const [uploadFileCourse, setUploadFileCourse] = useState();
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-};
+  };
 
   const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   const {
@@ -56,24 +68,42 @@ function Course() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const onSubmit =async (data) => {
-      try {
-        await $http.postData(CONFIG.API_BASE_URL +'/course',data);
-        enqueueSnackbar('Thêm thành công', {variant:'success', autoHideDuration: 3000});
-        setLoad(e=>e+1)
-      } catch (error) {
-        enqueueSnackbar(error?.response.data.message, {variant:'error', autoHideDuration: 3000})
-      }
+  const onSubmit = async (data) => {
+    try {
+      await $http.postData(CONFIG.API_BASE_URL + "/course", data);
+      enqueueSnackbar("Thêm thành công", {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      setLoad((e) => e + 1);
+    } catch (error) {
+      enqueueSnackbar(error?.response.data.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    }
   };
   useEffect(() => {
     (async () => {
       const res = await $http.getData(CONFIG.API_BASE_URL + "/course");
       setData(res.data);
-      console.log(res.data)
+      console.log(res.data);
     })();
   }, [load]);
-  
-  const columnName = ['Mã khóa học', 'Tên khóa học', 'Tên giảng viên', 'Trạng thái',''];
+
+  const columnName = [
+    "Mã khóa học",
+    "Tên khóa học",
+    "Tên giảng viên",
+    "Trạng thái",
+    "",
+  ];
+
+  console.log(uploadFileCourse)
+
+  const clickBtn = () => {
+    document.getElementById("uploadFileCourse").click();
+  };
 
   return (
     <div>
@@ -83,55 +113,84 @@ function Course() {
       >
         Thêm khóa học
       </button>
-      <button className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md inline-flex items-center">
+      <button
+        onClick={clickBtn}
+        className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md inline-flex items-center"
+      >
         Thêm khóa học <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
       </button>
+      <input
+        onChange={(e) => setUploadFileCourse(e.target.files)}
+        type="file"
+        id="uploadFileCourse"
+        className="hidden"
+      />
 
       <Box>
         <TableContainer component={Paper}>
-            <Table>
-              <TableHead sx={{backgroundColor: '#2554A6'}}>
-                  <TableRow>
-                  {columnName.map((column, idx) => (
-                                    <TableCell sx={{ color: '#fff'}} key={idx}>{column}</TableCell>
-                                ))}
-                  </TableRow>
-              </TableHead>
-              <TableBody>
-                  {
-                      (rowsPerPage > 0 ? data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data)?.map((e, idx) => (
-                        <TableRow key={idx}>
-                            <TableCell>{e?.ma_khoa_hoc}</TableCell>
-                            <TableCell>{e?.ten_khoa_hoc}</TableCell>
-                            <TableCell>{e?.ho_ten}</TableCell>
-                            <TableCell>{e?.active === 1 ? 'Hoạt động' : 'Ẩn'}</TableCell>
-                            <TableCell>
-                              {e?.active === 1 ? <Button variant="contained" sx={{textTransform: 'none'}} endIcon={<VisibilityOff />}>Ẩn</Button>
-                             : <Button variant="contained" sx={{textTransform: 'none'}} endIcon={<Visibility />}>Hiện</Button>}
-                              </TableCell>
-                        </TableRow>
-                        ))
-                  }
-              </TableBody>
-            </Table>
-            <TablePagination
-                        component="div"
-                        rowsPerPageOptions={[5, 10, 25, { label: 'all', value: -1 }]}
-                        count={data.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        labelRowsPerPage='Hàng mỗi dòng'
-                        backIconButtonProps={{
-                            'aria-label': 'Previous Page'
-                        }}  
-                        nextIconButtonProps={{
-                            'aria-label': 'Next Page'
-                        }}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+          <Table>
+            <TableHead sx={{ backgroundColor: "#2554A6" }}>
+              <TableRow>
+                {columnName.map((column, idx) => (
+                  <TableCell sx={{ color: "#fff" }} key={idx}>
+                    {column}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? data?.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : data
+              )?.map((e, idx) => (
+                <TableRow key={idx}>
+                  <TableCell>{e?.ma_khoa_hoc}</TableCell>
+                  <TableCell>{e?.ten_khoa_hoc}</TableCell>
+                  <TableCell>{e?.ho_ten}</TableCell>
+                  <TableCell>{e?.active === 1 ? "Hoạt động" : "Ẩn"}</TableCell>
+                  <TableCell>
+                    {e?.active === 1 ? (
+                      <Button
+                        variant="contained"
+                        sx={{ textTransform: "none" }}
+                        endIcon={<VisibilityOff />}
+                      >
+                        Ẩn
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        sx={{ textTransform: "none" }}
+                        endIcon={<Visibility />}
+                      >
+                        Hiện
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TablePagination
+            component="div"
+            rowsPerPageOptions={[5, 10, 25, { label: "all", value: -1 }]}
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            labelRowsPerPage="Hàng mỗi dòng"
+            backIconButtonProps={{
+              "aria-label": "Previous Page",
+            }}
+            nextIconButtonProps={{
+              "aria-label": "Next Page",
+            }}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </TableContainer>
-
       </Box>
 
       <Modal
