@@ -16,7 +16,6 @@ function Course() {
     })();
   }, [page]);
 
-  console.log(data);
   return (
     <>
     <div className="flex flex-wrap gap-4 mb-5">
