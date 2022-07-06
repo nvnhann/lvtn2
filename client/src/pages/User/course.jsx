@@ -19,7 +19,7 @@ function Course() {
   console.log(data);
   return (
     <>
-    <div className="flex flex-wrap gap-4 mb-5">
+      <div className="flex flex-wrap gap-4 mb-5">
         {data?.map((e, idx) => {
           if(e?.active === 1){
             return (

@@ -49,7 +49,7 @@ function Course() {
     const {enqueueSnackbar} = useSnackbar();
     const [data, setData] = useState([]);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [check, setCheck] = useState(false);
     const [uploadFileCourse, setUploadFileCourse] = useState();
 
