@@ -5,8 +5,8 @@ import Modal from "@mui/material/Modal";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
-import * as $http from '../../utils/httpProvider';
-import * as CONFIG from '../../config/configUrl';
+import * as $http from "../../utils/httpProvider";
+import * as CONFIG from "../../config/configUrl";
 import {useSnackbar} from "notistack";
 import {
     Button,
@@ -17,10 +17,10 @@ import {
     TableContainer,
     TableHead,
     TablePagination,
-    TableRow
+    TableRow,
 } from "@mui/material";
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 const schema = yup
     .object({
@@ -51,6 +51,7 @@ function Course() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [check, setCheck] = useState(false);
+    const [uploadFileCourse, setUploadFileCourse] = useState();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -69,11 +70,17 @@ function Course() {
 
     const onSubmit = async (data) => {
         try {
-            await $http.postData(CONFIG.API_BASE_URL + '/course', data);
-            enqueueSnackbar('Thêm thành công', {variant: 'success', autoHideDuration: 3000});
-            setLoad(e => e + 1)
+            await $http.postData(CONFIG.API_BASE_URL + "/course", data);
+            enqueueSnackbar("Thêm thành công", {
+                variant: "success",
+                autoHideDuration: 3000,
+            });
+            setLoad((e) => e + 1);
         } catch (error) {
-            enqueueSnackbar(error?.response.data.message, {variant: 'error', autoHideDuration: 3000})
+            enqueueSnackbar(error?.response.data.message, {
+                variant: "error",
+                autoHideDuration: 3000,
+            });
         }
     };
     const setActive = async (idkh, active) => {
@@ -84,94 +91,148 @@ function Course() {
             }
             await $http.postData(CONFIG.API_BASE_URL + '/course/active', dt);
             enqueueSnackbar('Cập nhật thành công!', {variant: 'success', autoHideDuration: 3000});
-            setLoad(e => e+1);
+            setLoad(e => e + 1);
         } catch (e) {
             console.log(e)
         }
     }
+
     useEffect(() => {
         (async () => {
             const res = await $http.getData(CONFIG.API_BASE_URL + "/course");
             setData(res.data);
-            console.log(res.data)
+            console.log(res.data);
         })();
     }, [load]);
 
-    const columnName = ['Mã khóa học', 'Tên khóa học', 'Tên giảng viên', 'Trạng thái', ''];
+    const columnName = [
+        "Mã khóa học",
+        "Tên khóa học",
+        "Tên giảng viên",
+        "Trạng thái",
+        "",
+    ];
+
+
+    const clickBtn = () => {
+        document.getElementById("uploadFileCourse").click();
+    };
+
+    const createKHFile = async () => {
+        if (!uploadFileCourse) return;
+        if (uploadFileCourse.length > 1) return enqueueSnackbar('Chỉ được upload 1 file', {
+            variant: 'error',
+            autoHideDuration: 3000
+        })
+        if (uploadFileCourse[0].type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') return enqueueSnackbar('Vui lòng upload file Excel', {
+            variant: 'error',
+            autoHideDuration: 3000
+        })
+        const formDt = new FormData();
+        formDt.append('document', uploadFileCourse[0]);
+        await $http.postData(CONFIG.API_BASE_URL + "/course/file", formDt, {
+            "content-type": "multipart/form-data",
+        });
+        setLoad(e => e + 1)
+        setCheck(false)
+        enqueueSnackbar("Thêm thành công", {
+            variant: "success",
+            autoHideDuration: 3000,
+        });
+
+    }
 
     return (
         <div>
             <button
                 onClick={handleOpenCourse}
-                className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md"
+                className="px-4 py-2 my-2  font-medium bg-yellow-400 rounded-md"
             >
                 Thêm khóa học
             </button>
-            <input type="file" className="px-4 py-2 my-2 mx-6 font-medium bg-yellow-400 rounded-md inline-flex items-center"
-
+            <button
+                onClick={clickBtn}
+                className="px-4 py-2 my-2 mx-6 font-medium bg-yellow-400 rounded-md inline-flex items-center"
             >
                 Thêm khóa học <AiTwotoneFileExcel className="ml-2" color="#064e3b"/>
-            </input>
-            <button className="px-4 py-2 my-2 font-medium bg-cyan-700 text-white rounded-md">
-                Thêm
             </button>
+            {check && <button
+                onClick={createKHFile}
+                className="px-4 py-2 my-2  font-medium bg-cyan-700 text-white rounded-md"
+            >
+                Lưu
+            </button>}
+            <input
+                onChange={(e) => {
+                    setUploadFileCourse(e.target.files);
+                    setCheck(true)
+                }}
+                type="file"
+                id="uploadFileCourse"
+                className="hidden"
+            />
 
             <Box>
                 <TableContainer component={Paper}>
                     <Table>
-                        <TableHead sx={{backgroundColor: '#2554A6'}}>
+                        <TableHead sx={{backgroundColor: "#2554A6"}}>
                             <TableRow>
                                 {columnName.map((column, idx) => (
-                                    <TableCell sx={{color: '#fff'}} key={idx}>{column}</TableCell>
+                                    <TableCell sx={{color: "#fff"}} key={idx}>
+                                        {column}
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
-                                (rowsPerPage > 0 ? data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data)?.map((e, idx) => (
-                                    <TableRow key={idx}>
-                                        <TableCell>{e?.ma_khoa_hoc}</TableCell>
-                                        <TableCell>{e?.ten_khoa_hoc}</TableCell>
-                                        <TableCell>{e?.ho_ten}</TableCell>
-                                        <TableCell>{e?.active === 1 ? 'Hoạt động' : 'Ẩn'}</TableCell>
-                                        <TableCell>
-                                            {e?.active === 1 ?
-                                                <Button
-                                                    variant="contained"
-                                                    sx={{textTransform: 'none'}}
-                                                    endIcon={<VisibilityOff/>}
-                                                    onClick={()=> setActive(e.id,0)}
-                                                >Ẩn</Button>
-                                                : <Button
-                                                    variant="contained"
-                                                    sx={{textTransform: 'none'}}
-                                                    endIcon={<Visibility/>}
-                                                    onClick={()=> setActive(e.id,1)}
-                                                >Hiện</Button>}
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            }
+                            {(rowsPerPage > 0
+                                    ? data?.slice(
+                                        page * rowsPerPage,
+                                        page * rowsPerPage + rowsPerPage
+                                    )
+                                    : data
+                            )?.map((e, idx) => (
+                                <TableRow key={idx}>
+                                    <TableCell>{e?.ma_khoa_hoc}</TableCell>
+                                    <TableCell>{e?.ten_khoa_hoc}</TableCell>
+                                    <TableCell>{e?.ho_ten}</TableCell>
+                                    <TableCell>{e?.active === 1 ? "Hoạt động" : "Ẩn"}</TableCell>
+                                    <TableCell>
+                                        {e?.active === 1 ?
+                                            <Button
+                                                variant="contained"
+                                                sx={{textTransform: 'none'}}
+                                                endIcon={<VisibilityOff/>}
+                                                onClick={() => setActive(e.id, 0)}
+                                            >Ẩn</Button>
+                                            : <Button
+                                                variant="contained"
+                                                sx={{textTransform: 'none'}}
+                                                endIcon={<Visibility/>}
+                                                onClick={() => setActive(e.id, 1)}
+                                            >Hiện</Button>}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                     <TablePagination
                         component="div"
-                        rowsPerPageOptions={[5, 10, 25, {label: 'all', value: -1}]}
+                        rowsPerPageOptions={[5, 10, 25, {label: "all", value: -1}]}
                         count={data.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
-                        labelRowsPerPage='Hàng mỗi dòng'
+                        labelRowsPerPage="Hàng mỗi dòng"
                         backIconButtonProps={{
-                            'aria-label': 'Previous Page'
+                            "aria-label": "Previous Page",
                         }}
                         nextIconButtonProps={{
-                            'aria-label': 'Next Page'
+                            "aria-label": "Next Page",
                         }}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </TableContainer>
-
             </Box>
 
             <Modal
