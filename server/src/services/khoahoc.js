@@ -11,8 +11,8 @@ const getAllKhoaHoc = async (pageURL) =>{
     WHERE kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN" LIMIT ' +limit,  { type: db.sequelize.QueryTypes.SELECT })
 }
 
-const setActiveKhoahoc = async (idkh,idgv,active) => {
-    return await db.sequelize.query('UPDATE `chi_tiet_kh` SET `active` = '+active+' WHERE `chi_tiet_kh`.`user_id` = '+idgv+' AND `chi_tiet_kh`.`khoahoc_id` = '+ idkh);
+const setActiveKhoahoc = async (idkh,active) => {
+    return await db.sequelize.query('UPDATE `chi_tiet_kh` SET `active` = '+active+' WHERE `chi_tiet_kh`.`id` = '+idkh);
 }
 
 const getKhoaHocById = async (kh) => {

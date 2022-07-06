@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiTwotoneFileExcel, AiOutlineSearch } from "react-icons/ai";
+import { AiTwotoneFileExcel } from "react-icons/ai";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -50,7 +50,7 @@ function Course() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
+  const [check, setCheck] = useState(false);
   const [uploadFileCourse, setUploadFileCourse] = useState();
 
   const handleChangePage = (event, newPage) => {
@@ -68,9 +68,6 @@ function Course() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
-    useForm();
-
   const onSubmit = async (data) => {
     try {
       await $http.postData(CONFIG.API_BASE_URL + "/course", data);
@@ -86,6 +83,23 @@ function Course() {
       });
     }
   };
+  const setActive = async (idkh, active) => {
+    try {
+      const dt = {
+        idkh: idkh,
+        active: active,
+      };
+      await $http.postData(CONFIG.API_BASE_URL + "/course/active", dt);
+      enqueueSnackbar("Cập nhật thành công!", {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      setLoad((e) => e + 1);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     (async () => {
       const res = await $http.getData(CONFIG.API_BASE_URL + "/course");
@@ -102,51 +116,69 @@ function Course() {
     "",
   ];
 
-  console.log(uploadFileCourse);
-
   const clickBtn = () => {
     document.getElementById("uploadFileCourse").click();
   };
 
-  const search = (data) => {
-    console.log(data);
+  const createKHFile = async () => {
+    if (!uploadFileCourse) return;
+    if (uploadFileCourse.length > 1)
+      return enqueueSnackbar("Chỉ được upload 1 file", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    if (
+      uploadFileCourse[0].type !==
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+      return enqueueSnackbar("Vui lòng upload file Excel", {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    const formDt = new FormData();
+    formDt.append("document", uploadFileCourse[0]);
+    await $http.postData(CONFIG.API_BASE_URL + "/course/file", formDt, {
+      "content-type": "multipart/form-data",
+    });
+    setLoad((e) => e + 1);
+    setCheck(false);
+    enqueueSnackbar("Thêm thành công", {
+      variant: "success",
+      autoHideDuration: 3000,
+    });
   };
 
   return (
     <div>
-      <div className="flex items-center gap-4">
+      <button
+        onClick={handleOpenCourse}
+        className="px-4 py-2 my-2  font-medium bg-yellow-400 rounded-md"
+      >
+        Thêm khóa học
+      </button>
+      <button
+        onClick={clickBtn}
+        className="px-4 py-2 my-2 mx-6 font-medium bg-yellow-400 rounded-md inline-flex items-center"
+      >
+        Thêm khóa học <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
+      </button>
+      {check && (
         <button
-          onClick={handleOpenCourse}
-          className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md"
+          onClick={createKHFile}
+          className="px-4 py-2 my-2  font-medium bg-cyan-700 text-white rounded-md"
         >
-          Thêm khóa học
+          Lưu
         </button>
-        <button
-          onClick={clickBtn}
-          className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md inline-flex items-center"
-        >
-          Thêm khóa học <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
-        </button>
-        <input
-          onChange={(e) => setUploadFileCourse(e.target.files)}
-          type="file"
-          id="uploadFileCourse"
-          className="hidden"
-        />
-        <form onSubmit={handleSubmitSearch((data) => search(data))}>
-          <div className="flex items-center gap-2">
-            <input
-              name="search"
-              {...registerSearch("search")}
-              className="w-[500px] py-2 px-2 border border-[#ccc] rounded-md outline-none"
-              type="text"
-            />
-            <button className=" bg-blue-500 rounded-md p-2">
-              <AiOutlineSearch size={25} color="#fff" />
-            </button>
-          </div>
-        </form>
-      </div>
+      )}
+      <input
+        onChange={(e) => {
+          setUploadFileCourse(e.target.files);
+          setCheck(true);
+        }}
+        type="file"
+        id="uploadFileCourse"
+        className="hidden"
+      />
 
       <Box>
         <TableContainer component={Paper}>
@@ -179,6 +211,7 @@ function Course() {
                         variant="contained"
                         sx={{ textTransform: "none" }}
                         endIcon={<VisibilityOff />}
+                        onClick={() => setActive(e.id, 0)}
                       >
                         Ẩn
                       </Button>
@@ -187,6 +220,7 @@ function Course() {
                         variant="contained"
                         sx={{ textTransform: "none" }}
                         endIcon={<Visibility />}
+                        onClick={() => setActive(e.id, 1)}
                       >
                         Hiện
                       </Button>
