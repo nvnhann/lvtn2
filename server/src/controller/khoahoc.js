@@ -45,8 +45,8 @@ const createKhoaHoc = async (req, res) => {
 
 const setActiveKhoahoc = async (req, res) => {
    try {
-    const { idkh, idgv, active} = req.body;
-    await KhoaHocService.setActiveKhoahoc(idkh, idgv,active);
+    const { idkh, active} = req.body;
+    await KhoaHocService.setActiveKhoahoc(idkh,active);
     return res.status(200).json({message: 'Thành công!'})
    } catch (error) {
     console.log(error);
