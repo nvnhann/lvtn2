@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiTwotoneFileExcel } from "react-icons/ai";
+import { AiTwotoneFileExcel, AiOutlineSearch } from "react-icons/ai";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -67,6 +67,9 @@ function Course() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+
+  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
+    useForm();
 
   const onSubmit = async (data) => {
     try {
@@ -148,37 +151,56 @@ function Course() {
     });
   };
 
+  const search = (data) => {
+    console.log(data);
+  };
+
   return (
     <div>
-      <button
-        onClick={handleOpenCourse}
-        className="px-4 py-2 my-2  font-medium bg-yellow-400 rounded-md"
-      >
-        Thêm khóa học
-      </button>
-      <button
-        onClick={clickBtn}
-        className="px-4 py-2 my-2 mx-6 font-medium bg-yellow-400 rounded-md inline-flex items-center"
-      >
-        Thêm khóa học <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
-      </button>
-      {check && (
+      <div className="flex items-center gap-4">
         <button
-          onClick={createKHFile}
-          className="px-4 py-2 my-2  font-medium bg-cyan-700 text-white rounded-md"
+          onClick={handleOpenCourse}
+          className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md"
         >
-          Lưu
+          Thêm khóa học
         </button>
-      )}
-      <input
-        onChange={(e) => {
-          setUploadFileCourse(e.target.files);
-          setCheck(true);
-        }}
-        type="file"
-        id="uploadFileCourse"
-        className="hidden"
-      />
+        <button
+          onClick={clickBtn}
+          className="px-4 py-2 my-2 font-medium bg-yellow-400 rounded-md inline-flex items-center"
+        >
+          Thêm khóa học <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
+        </button>
+        {check && (
+          <button
+            onClick={createKHFile}
+            className="px-4 py-2 my-2  font-medium bg-cyan-700 text-white rounded-md"
+          >
+            Lưu
+          </button>
+        )}
+        <input
+          onChange={(e) => {
+            setUploadFileCourse(e.target.files);
+            setCheck(true);
+          }}
+          type="file"
+          id="uploadFileCourse"
+          className="hidden"
+        />
+        <form onSubmit={handleSubmitSearch((data) => search(data))}>
+          <div className="flex items-center gap-2">
+            <input
+              name="search"
+              {...registerSearch("search")}
+              className="w-[500px] py-2 px-2 border border-[#ccc] rounded-md outline-none"
+              type="text"
+            />
+            <button className=" bg-blue-500 rounded-md p-2">
+              <AiOutlineSearch size={25} color="#fff" />
+            </button>
+          </div>
+        </form>
+      </div>
 
       <Box>
         <TableContainer component={Paper}>
