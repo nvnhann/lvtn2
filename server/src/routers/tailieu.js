@@ -5,8 +5,8 @@ const router = Router();
 const TaiLieuController = require('../controller/tailieu');
 
 router.post('/tailieu', [checkToken, TaiLieuController.uploadFile, TaiLieuController.createTaiLieu])
-router.get('/tailieu', [checkToken, TaiLieuController.getTailieuByMaso])
+router.get('/tailieugv/:maso', [TaiLieuController.getTailieuByMaso]);
+router.post('/tailieu/active', asyncHandler(TaiLieuController.setActiveTaiLieu))
 router.get('/tailieu/:id', [ TaiLieuController.getTailieuById])
 router.get('/tailieu/file/:name', [ TaiLieuController.getFileByName])
-
 export default router;

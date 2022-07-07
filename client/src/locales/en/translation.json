@@ -1,17 +1,36 @@
 {
-    "header" : {
-        "home"  : "Home",
-        "en"    : "English",
-        "vi"    : "Vietnamese",
-        "logout": "Logout",
-        "profile": "My profile"
-    },
-    "sidebar" : {
-        "suggest" : "Suggest to you",
-        "courses" : "Courses",
-        "lectures": "Lectures",
-        "my_doc": "My documents",
-        "paper": "Papers",
-        "schedule": "Practice schedule"
-    }
+  "header": {
+    "home": "Home",
+    "en": "English",
+    "vi": "Vietnamese",
+    "logout": "Logout",
+    "profile": "My profile"
+  },
+  "sidebar": {
+    "suggest": "Suggest to you",
+    "courses": "Courses",
+    "lectures": "Lectures",
+    "my_doc": "My documents",
+    "paper": "Papers",
+    "schedule": "Practice schedule"
+  },
+  "button": {
+    "saved": "Saved",
+    "save": "Save",
+    "upload": "Upload",
+    "add": "Add",
+    "cancel": "Cancel",
+    "add_document": "Add document",
+    "change_password": "Change password",
+    "edit_information": "Edit document"
+  },
+  "label": {
+    "document_name": "Document name",
+    "describe": "Describe",
+    "select_file": "Select file",
+    "change_password": "Change password",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "confirm_password": "Confirm password"
+  }
 }

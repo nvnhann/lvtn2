@@ -1,17 +1,37 @@
 {
-    "header" : {
-        "home"  : "Trang chủ",
-        "en"    : "Tiếng Anh",
-        "vi"    : "Tiếng việt",
-        "logout": "Đăng xuất",
-        "profile": "Trang cá nhân"
-    },
-    "sidebar" : {
-        "suggest" : "Gợi ý cho bạn",
-        "courses" : "Các khóa học",
-        "lectures": "Giảng viên",
-        "my_doc": "Tài liệu của tôi",
-        "paper": "Bài báo",
-        "schedule": "Lịch thực hành"
-    }
+  "header": {
+    "home": "Trang chủ",
+    "en": "Tiếng Anh",
+    "vi": "Tiếng việt",
+    "logout": "Đăng xuất",
+    "profile": "Trang cá nhân"
+  },
+  "sidebar": {
+    "suggest": "Gợi ý cho bạn",
+    "courses": "Các khóa học",
+    "lectures": "Giảng viên",
+    "my_doc": "Tài liệu của tôi",
+    "paper": "Bài báo",
+    "schedule": "Lịch thực hành"
+  },
+  "button": {
+    "saved": "Đã lưu",
+    "save": "Lưu",
+    "upload": "Tải lên",
+    "create_by": "tạo bởi",
+    "add": "Thêm",
+    "cancel": "Hủy",
+    "add_document": "Thêm tài liệu",
+    "change_password": "Đổi mật khẩu",
+    "edit_information": "Chỉnh sửa thông tin"
+  },
+  "label": {
+    "document_name": "Tên tài liệu",
+    "describe": "Mô tả",
+    "select_file": "Chọn file",
+    "change_password": "Đổi mật khẩu",
+    "current_password": "Mật khẩu hiện tại",
+    "new_password": "Mật khẩu mới",
+    "confirm_password": "Nhập lại mật khẩu"
+  }
 }

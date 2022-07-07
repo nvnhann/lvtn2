@@ -1,13 +1,22 @@
 const { User, Group, BoMon, Avatar } = require("../database/models");
 
 const getAll = async () => {
-    return await User.findAll();
+    return await User.findAll({
+        include: [{
+            model: Group
+        }, {
+            model: BoMon
+        }]
+    });
 }
 
 const getByMaSo = async maso => {
     if(!maso) return;
     return User.findOne({
-        where: { maso: maso}
+        where: { maso: maso},
+        include: [{
+            model: Group
+        }]
     })
 };
 

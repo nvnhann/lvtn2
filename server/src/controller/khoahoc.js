@@ -5,7 +5,7 @@ const UserService = require('../services/user');
 
 const getAllKhoaHoc = async (req, res)=>{
     try {
-        return res.json(await KhoaHocService.getAllKhoaHoc(req.query.pageURL))
+        return res.json(await KhoaHocService.getAllKhoaHoc(req.query.pageURL, req.query.search))
     } catch (error) {
         console.log(error);
         res.status(400).json({
@@ -17,7 +17,7 @@ const getAllKhoaHoc = async (req, res)=>{
 
 const getKhoaHocById = async (req, res) =>{
     try {
-        return res.json(await KhoaHocService.getKhoaHocById(req.query))
+        return res.json(await KhoaHocService.getKhoaHocById(req.params.id))
     } catch (error) {
         console.log(error);
         res.status(400).json({
@@ -62,18 +62,27 @@ const createKHbyFile = async (req, res) =>{
     await KhoaHocService.createKHbyFile(req.file.filename)
     res.status(200).json({message: 'Thanh cong'});
    } catch (error) {
-    console.log(error);
-    res.status(400).json({
-        code: "Error",
-        message: error.message
-      });
+
    }
     
+}
+
+const getKhoaHocByMaSo = async (req, res) =>{
+    try{
+        res.status(200).json(await KhoaHocService.getKhoaHocByMaSo(req.params.maso))
+    }catch (error) {
+        console.log(error);
+        res.status(400).json({
+            code: "Error",
+            message: error.message
+        });
+    }
 }
 module.exports = {
     getAllKhoaHoc,
     getKhoaHocById,
     createKhoaHoc,
     setActiveKhoahoc,
-    createKHbyFile
+    createKHbyFile,
+    getKhoaHocByMaSo
 }
