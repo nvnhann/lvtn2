@@ -11,15 +11,15 @@ export default function Test() {
   console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
 
   return (
-    <div className="bg-[#fff]">
-      <div className="border border-gray-300 rounded-md">
+    <div>
+      <p>Thêm bài viết</p>
+      <div className="p-1 min-h-[400px] bg-white border border-gray-400 rounded-md">
         <Editor
           editorState={editorState}
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
           onEditorStateChange={setEditorState}
         />
       </div>
+      <button>akhkjds</button>
     </div>
   );
 }
