@@ -1,4 +1,4 @@
-import db, {Avatar, CTKH, Group, KhoaHoc, User} from "../database/models"
+import db, {CTKH, KhoaHoc, User} from "../database/models"
 import {getProfileByMaSo} from "./user";
 
 const getAllKhoaHoc = async (pageURL, search) => {
@@ -9,7 +9,7 @@ const getAllKhoaHoc = async (pageURL, search) => {
     if (search) {
         return await db.sequelize.query('SELECT kh.ma_khoa_hoc, ctkh.id, kh.ten_khoa_hoc, u.ho_ten, u.maso, u.id as idgv, ctkh.active  , avatar.path_name \
     from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m \
-    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND ( kh.ma_khoa_hoc LIKE \'%'+search+'%\' OR kh.ten_khoa_hoc LIKE  \'%'+search+'%\' OR u.maso LIKE  \'%'+search+'%\' OR u.id LIKE  \'%'+search+'%\'  OR u.ho_ten LIKE  \'%'+search+'%\')  LIMIT ' + limit, {type: db.sequelize.QueryTypes.SELECT})
+    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND ( kh.ma_khoa_hoc LIKE \'%' + search + '%\' OR kh.ten_khoa_hoc LIKE  \'%' + search + '%\' OR u.maso LIKE  \'%' + search + '%\' OR u.id LIKE  \'%' + search + '%\'  OR u.ho_ten LIKE  \'%' + search + '%\')  LIMIT ' + limit, {type: db.sequelize.QueryTypes.SELECT})
     } else {
         return await db.sequelize.query('SELECT kh.ma_khoa_hoc, ctkh.id, kh.ten_khoa_hoc, u.ho_ten, u.maso, u.id as idgv, ctkh.active  , avatar.path_name \
     from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m \
@@ -18,12 +18,12 @@ const getAllKhoaHoc = async (pageURL, search) => {
 
 }
 
-const getKhoaHocByMaSo = async (maso) =>{
+const getKhoaHocByMaSo = async (maso) => {
     const u = await getProfileByMaSo(maso);
-    if(u.groups[0].groupname === "GIANGVIEN"){
-        return await  db.sequelize.query('SELECT chi_tiet_kh.id as idkh, chi_tiet_kh.active, khoahoc.ten_khoa_hoc, khoahoc.ma_khoa_hoc, u.maso '+
+    if (u.groups[0].groupname === "GIANGVIEN") {
+        return await db.sequelize.query('SELECT chi_tiet_kh.id as idkh, chi_tiet_kh.active, khoahoc.ten_khoa_hoc, khoahoc.ma_khoa_hoc, u.maso ' +
             'FROM chi_tiet_kh LEFT JOIN khoahoc ON khoahoc.id = chi_tiet_kh.khoahoc_id LEFT JOIN `user` u ON u.id = chi_tiet_kh.user_id \n' +
-            'WHERE chi_tiet_kh.user_id= '+u.id, {type: db.sequelize.QueryTypes.SELECT})
+            'WHERE chi_tiet_kh.user_id= ' + u.id, {type: db.sequelize.QueryTypes.SELECT})
     }
 }
 
@@ -76,10 +76,14 @@ const createKHbyFile = async file => {
             await createKhoahoc(e.MaKhoaHoc, e.TenKhoaHoc, e.MaSoCB)
         }
     })
+}
 
-
+const addMemberKH = async (id, idkh) => {
+    const user = await User.findOne({where: {id: id}});
+    const ctkh = await CTKH.findOne({where: {id: idkh}})
+    await ctkh.addUser(user, {through: 'tv_kh'})
 }
 module.exports = {
-    getAllKhoaHoc, getKhoaHocById, createKhoahoc, setActiveKhoahoc, createKHbyFile, getKhoaHocByMaSo
+    getAllKhoaHoc, getKhoaHocById, createKhoahoc, setActiveKhoahoc, createKHbyFile, getKhoaHocByMaSo, addMemberKH
 
 }

@@ -4,5 +4,5 @@ const router = Router();
 const BaiVietController = require("../controller/baiviet");
 
 router.post("/baiviet", asyncHandler(BaiVietController.createBaiViet));
-
+router.get('/baiviet/:id', asyncHandler(BaiVietController.getBaiVietByKH))
 export default router;

@@ -8,6 +8,7 @@ const TaiLieuController = require('../controller/tailieu');
 
 router.get('/course', asyncHandler(KhoaHocController.getAllKhoaHoc))
 router.post('/course', asyncHandler(KhoaHocController.createKhoaHoc));
+router.post('/course/add', asyncHandler(KhoaHocController.addMemeberKH));
 router.post('/course/file', [TaiLieuController.uploadFile,asyncHandler(KhoaHocController.createKHbyFile)])
 router.get('/course/maso/:maso',[checkToken, asyncHandler(KhoaHocController.getKhoaHocByMaSo)]);
 router.post('/course/active', [asyncHandler(KhoaHocController.setActiveKhoahoc)])

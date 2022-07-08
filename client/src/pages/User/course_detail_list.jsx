@@ -1,5 +1,5 @@
-import React, {useState, useRef, useEffect} from "react";
-import {Link, useParams, useSearchParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {FiUpload} from "react-icons/fi";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
@@ -9,7 +9,10 @@ import Modal from "@mui/material/Modal";
 import {AiFillPlusCircle} from "react-icons/ai";
 import * as $http from '../../utils/httpProvider';
 import * as CONFIG from '../../config/configUrl';
-import { useSnackbar } from "notistack";
+import {useSnackbar} from "notistack";
+import {useSelector} from "react-redux";
+import {getUserInfo} from "../../reducers/profile";
+import {formatDate} from "../../utils/formatDate";
 
 const styleFile = {
     position: "absolute",
@@ -63,33 +66,47 @@ function CourseDetailList() {
     const [data, setData] = useState(null);
     const [course, setCourse] = useState([]);
     const {id} = useParams();
-
+    const navigate = useNavigate();
+    const user = useSelector(state => getUserInfo(state))
     const [openFile, setOpenFile] = useState(false);
     const handleOpenFile = () => setOpenFile(true);
     const handleCloseFile = () => setOpenFile(false);
     const [tailieu, setTaiLieu] = useState([]);
     const [selectTL, setSelectTL] = useState([]);
     const [search, setSearch] = useState(null);
-
-    const { enqueueSnackbar } = useSnackbar();
+    const [baiviet, setBaiviet] = useState([]);
+    const {enqueueSnackbar} = useSnackbar();
+    const [load, setLoad] = useState(0)
 
     useEffect(() => {
         (async () => {
+            const res = await $http.getData(CONFIG.API_BASE_URL + '/baiviet/' + id);
+            setBaiviet(res.data);
+        })()
+    }, [load]);
+    console.log(baiviet)
+    useEffect(() => {
+        (async () => {
             const res = await $http.getData(CONFIG.API_BASE_URL + '/course/detail/' + id);
+            let isMember = false;
+            if (res.data?.kh.maso === user.maso) isMember = true;
+            res.data?.member.map(e => {
+                if (e.maso === user.maso) {
+                    isMember = true;
+                }
+            })
+            if (!isMember) navigate('/app/course/register-course/' + res.data?.kh.idkh)
             setCourse(res.data);
             let tl = [];
-            if(!search){
-                 tl = await $http.getData(CONFIG.API_BASE_URL +'/tailieu');
+            if (!search) {
+                tl = await $http.getData(CONFIG.API_BASE_URL + '/tailieugv/' + user?.maso);
             } else {
-                tl = await $http.getData(CONFIG.API_BASE_URL +'/tailieu?search='+search);
+                tl = await $http.getData(CONFIG.API_BASE_URL + `/tailieugv/${user?.maso}?search=${search}`);
 
             }
             setTaiLieu(tl.data)
-
         })()
     }, [search]);
-
-
 
     const openInputFile = () => {
         document.querySelector(".inputfile").click();
@@ -99,15 +116,22 @@ function CourseDetailList() {
         setData(value);
     };
 
-    const postTL = async () =>{
+    const postTL = async () => {
         const tl = [];
-        if(selectTL.length > 0) selectTL.forEach(e => tl.push(parseInt(e.value)))
+        if (selectTL.length > 0) selectTL.forEach(e => tl.push(parseInt(e.value)))
         const dt = {};
         dt.mota = data;
         dt.tailieu = tl;
+        await $http.postData(CONFIG.API_BASE_URL + '/baiviet', {noidung: dt.mota, idkh: id, tailieu: dt.tailieu});
+        setLoad(e => e+1)
+        enqueueSnackbar('Thêm thành công', {variant: 'success', autoHideDuration: 3000})
 
     }
-    
+    const selectedTL = () => {
+        const tl = [];
+        if (selectTL.length > 0) selectTL.forEach(e => tl.push(parseInt(e.value)))
+        return tl;
+    }
 
     return (
         <div className="flex gap-4">
@@ -130,10 +154,24 @@ function CourseDetailList() {
                                 onChange={handleChange}
                             />
                         </div>
+                        <div className="my-16">
+                            {selectTL.length > 0 && tailieu?.map(e => (
+                                selectedTL()?.map((e1) => {
+                                    if (e.id === e1) {
+                                        return (
+                                            <div key={e.id} className="w-full  grid grid-cols-3 gap-2">
+                                                <div className="bg-cyan-700 text-white mb-2 p-3 rounded-md">
+                                                    {e.name}
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                })
+                            ))}
+                        </div>
                         <div className="flex gap-4 justify-between mt-16 font-medium text-[18px] text-gray-500">
                             <div
                                 onClick={handleOpenFile}
-                                File
                                 className="flex items-center gap-2 cursor-pointer"
                             >
                                 <FiUpload
@@ -154,7 +192,7 @@ function CourseDetailList() {
                                         <input
                                             className="w-full py-1 px-4 outline-none rounded-md border border-slate-600"
                                             type="text"
-                                            onChange={(e) =>  setSearch(e.target.value)}
+                                            onChange={(e) => setSearch(e.target.value)}
                                             placeholder="Tìm kiếm tài liệu"
                                         />
 
@@ -165,7 +203,8 @@ function CourseDetailList() {
                                         />
                                     </div>
                                     {tailieu.length > 0 ? tailieu.map(({id, name}, idx) => (
-                                        <div className="flex gap-2 items-center my-4 p-2 bg-slate-300 rounded-md">
+                                        <div key={idx}
+                                             className="flex gap-2 items-center my-4 p-2 bg-slate-300 rounded-md">
                                             <input type="checkbox" name={id} value={id}/>
                                             <p>{name}</p>
                                         </div>
@@ -177,9 +216,9 @@ function CourseDetailList() {
                                         >
                                             Hủy
                                         </button>
-                                        <button onClick={()=>{
-                                             setSelectTL(document.querySelectorAll('input[type="checkbox"]:checked'))
-                                                handleCloseFile()
+                                        <button onClick={() => {
+                                            setSelectTL(document.querySelectorAll('input[type="checkbox"]:checked'))
+                                            handleCloseFile()
                                         }} className="py-2 px-4 bg-orange-400 rounded-md font-medium">
                                             Thêm
                                         </button>
@@ -198,7 +237,9 @@ function CourseDetailList() {
                                 >
                                     Hủy
                                 </button>
-                                <button onClick={()=>{postTL()}} className="ml-4 hover:text-gray-800 duration-300">
+                                <button onClick={() => {
+                                    postTL()
+                                }} className="ml-4 hover:text-gray-800 duration-300">
                                     Đăng
                                 </button>
                             </div>
@@ -207,48 +248,66 @@ function CourseDetailList() {
                 ) : (
                     <></>
                 )}
-                {!openEditor ? (
+                {!openEditor && (course?.kh?.maso === user.maso) ? (
                     <div
                         onClick={() => setOpenEditor(true)}
                         className=" my-4  flex items-center gap-5 p-2 bg-white rounded-md cursor-text"
                     >
-                        <div className="w-[50px] h-[50px] rounded-full bg-slate-500"></div>
+                        <div className="w-[50px] h-[50px] rounded-full bg-slate-500"/>
                         <p className="text-slate-400">Thêm bài viết</p>
                     </div>
                 ) : (
                     <></>
                 )}
+                {baiviet?.map((e, idx) => (
+                    <div key={idx} className=" my-2 p-2  bg-white rounded-md ">
+                        <div><span className="font-bold">Cập nhật: </span>{formatDate(e.updatedAt)}</div>
+                        <div className="my-2" dangerouslySetInnerHTML={{__html: e?.noidung}}/>
+                        <div className="w-full  grid grid-cols-4 gap-2">
+                            {e?.tailieus.map(e1 => (
+                                <div key={e1.id} className="bg-cyan-100 p-3 rounded-md">
+                                    <Link to={"/app/document/detail/" + e1.id}>
+                                        <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"/>
+                                        <p>
+                                            <strong>{e1.name}</strong>
+                                        </p>
+                                    </Link>
+                                    <span>tạo bởi <strong>{e1.user.ho_ten}</strong></span>
+                                    <div className="flex flex-wrap space-x-2 items-start">
+                                        {e1.linhvucs?.map((e2, id) => (
+                                            <span key={id}
+                                                  className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
 
-                <div className=" ">
-                {/* <div dangerouslySetInnerHTML={{__html: data}}></div> */}
-                    <div id="editorText"></div>
-                </div>
-
-                <div className=" "></div>
-                
             </div>
 
             <div className="grid grid-cols-1 gap-2 w-[25%] bg-white rounded-md p-2">
                 <div>
                     <Link to={`/app/user/${course?.kh?.maso}`}>
-                    <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
-                        Giảng viên
-                    </p>
-                    <div>
-                        <div className="flex justify-start items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
-                            <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"><img
-                                className="w-[50px] h-[50px]  rounded-full bg-slate-300"
-                                src={course.kh?.path_name ? CONFIG.API_BASE_URL + '/avatar/' + course.kh?.path_name : '/avt.jpg'}/>
+                        <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
+                            Giảng viên
+                        </p>
+                        <div>
+                            <div className="flex justify-start items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
+                                <div className="w-[50px] h-[50px]  rounded-full bg-slate-300"><img
+                                    className="w-[50px] h-[50px]  rounded-full bg-slate-300"
+                                    src={course.kh?.path_name ? CONFIG.API_BASE_URL + '/avatar/' + course.kh?.path_name : '/avt.jpg'}/>
+                                </div>
+                                <p className="">{course?.kh?.ho_ten}</p>
                             </div>
-                            <p className="">{course?.kh?.ho_ten}</p>
                         </div>
-                    </div>
                     </Link>
                     <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
                         Thành Viên
                     </p>
                     {course?.member?.map((e, idx) => (
-                        <div>
+                        <div key={idx}>
                             <Link to={`/app/user/${e.maso}`}>
                                 <div
                                     className="flex cursor-pointer justify-start items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">

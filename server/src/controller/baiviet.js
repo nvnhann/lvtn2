@@ -9,3 +9,12 @@ export  const createBaiViet = async (req, res) =>{
         })
     }
 }
+
+export const getBaiVietByKH = async (req, res) =>{
+    try{
+        res.status(200).json(await BaiVietService.getBaiVietByKH(req.params.id))
+    }catch (e){
+        console.log(e);
+        res.status(500).json({message: e})
+    }
+}

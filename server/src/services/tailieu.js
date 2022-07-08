@@ -17,6 +17,9 @@ const createTaiLieu = async (maso, tailieu) => {
                 maso: maso,
             },
         });
+        console.log('=======================')
+        console.log(user)
+
         if (user) {
             tl = await TaiLieu.create(tl);
             await user.addTailieu(tl);
@@ -97,11 +100,33 @@ const deleteTaiLieuById = async id =>{
 const setActiveTaiLieu = async (id, active) => {
     await db.sequelize.query('UPDATE `tailieu` SET `active` = '+active+' WHERE `tailieu`.`id` = '+ id);
 }
+
+const saveTaiLieu = async (id, idtl) =>{
+    const u = await  User.findOne({where: { id: id}});
+    const tl = await TaiLieu.findOne({where:{ id: idtl}});
+    await  tl.addUser(u, {through: 'tl_luu'})
+
+}
+
+const getTaiLieuSave = async (maso) =>{
+    return await User.findOne({
+        where: { maso : maso},
+        include: [{
+            model: TaiLieu,
+            include: [{
+                model: LinhVuc
+            }, {model: User}]
+        }]
+    })
+}
+
 module.exports = {
     createTaiLieu,
     getTailieuByMaso,
     getTailieuById,
     getFileByName,
     deleteTaiLieuById,
-    setActiveTaiLieu
+    setActiveTaiLieu,
+    saveTaiLieu,
+    getTaiLieuSave
 };

@@ -24,6 +24,7 @@ import { userLogout } from "../../actions/profile";
 import { useTranslation } from "react-i18next";
 import RegisterCourse from "./register_course";
 import Test from "./test";
+import DocumentSave from "./document_save";
 //-----------------------------------------------------------------
 
 function User() {
@@ -172,10 +173,11 @@ function User() {
             <Route path="/document/*" element={<Document />} />
             <Route path="/document/detail/:id" element={<DocumentDetail />} />
             <Route path="/document/upload" element={<DocumentUpload />} />
+            <Route path="/document/save" element={<DocumentSave />} />
             <Route path="/article" element={<Article />} />
             <Route path="/course" element={<Course />} />
             <Route
-              path="/course/register_course"
+              path="/course/register-course/:id"
               element={<RegisterCourse />}
             />
             <Route path="/course/detail/:id" element={<CourseDetailList />} />

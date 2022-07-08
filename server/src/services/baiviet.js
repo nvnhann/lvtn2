@@ -1,23 +1,41 @@
 
-const {BaiViet, CTKH, TaiLieu } = require('../database/models')
+const {BaiViet, CTKH, TaiLieu, User, LinhVuc } = require('../database/models')
 export const createBaiViet = async (noidung, idkh, tailieu) => {
    try{
-       console.log(noidung, idkh, tailieu)
+       console.log('======================',noidung, idkh, tailieu)
        //if(idkh === undefined || noidung !== undefined) return;
        const kh = await CTKH.findOne({
-           id: idkh
+           where: {id: idkh}
        })
         const bv = await BaiViet.create({noidung: noidung});
-        kh.addBaiviet(bv);
+        await kh.addBaiviet(bv);
           tailieu?.map(async e => {
               const tl = await TaiLieu.findOne({
                   where: { id: e}
               });
-           bv.addTailieu(tl,  {through: 'ct_bv'})
+          await bv.addTailieu(tl,  {through: 'ct_bv'})
           })
 
 
    }catch (e) {
        console.log(e)
    }
+}
+
+export const getBaiVietByKH = async id => {
+    return await BaiViet.findAll({
+        include: [{
+            model: CTKH,
+            where: {
+                id: id
+            }
+        }, {
+            model: TaiLieu,
+            include: [{
+                model: LinhVuc
+            }, {
+                model: User
+            }]
+        }]
+    })
 }
