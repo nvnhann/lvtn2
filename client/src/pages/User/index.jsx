@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import RegisterCourse from "./register_course";
 import Test from "./test";
 import DocumentSave from "./document_save";
+import EditPost from "./edit_post";
 //-----------------------------------------------------------------
 
 function User() {
@@ -181,6 +182,10 @@ function User() {
               element={<RegisterCourse />}
             />
             <Route path="/course/detail/:id" element={<CourseDetailList />} />
+            <Route
+              path="/course/detail/:id/post=:params"
+              element={<EditPost />}
+            />
             <Route
               path="/course/detail=:id1/subject=:id2"
               element={<CourseDetail />}

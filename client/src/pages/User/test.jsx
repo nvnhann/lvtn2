@@ -1,25 +1,53 @@
 import React, { useState } from "react";
-import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-export default function Test() {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+var value = "<p>KHOA</p>";
+
+const Test = () => {
+  const contentDataState = ContentState.createFromBlockArray(
+    convertFromHTML(`${value}`)
   );
+  
+  const editorDataState = EditorState.createWithContent(contentDataState);
 
-  console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+  const [editorState, setEditorState] = useState(editorDataState);
+
+  const onEditorStateChange = (editorStateData) => {
+    setEditorState(editorStateData);
+    console.log(draftToHtml(convertToRaw(editorStateData.getCurrentContent())));
+  };
 
   return (
-    <div>
-      <p>Thêm bài viết</p>
-      <div className="p-1 min-h-[400px] bg-white border border-gray-400 rounded-md">
-        <Editor
-          editorState={editorState}
-          onEditorStateChange={setEditorState}
-        />
-      </div>
-      <button>akhkjds</button>
-    </div>
+    <React.Fragment>
+      <Editor
+        editorState={editorState}
+        onEditorStateChange={onEditorStateChange}
+        wrapperClassName="wrapperClassName"
+        editorClassName="editorClassName"
+        toolbarClassName="toolbar-class"
+        toolbar={{
+          options: ["inline", "list", "textAlign"],
+          inline: {
+            options: ["bold", "italic", "underline"],
+          },
+          list: {
+            options: ["unordered", "ordered", "indent", "outdent"],
+          },
+          textAlign: {
+            options: ["left", "center", "right"],
+          },
+        }}
+      />
+    </React.Fragment>
   );
-}
+};
+
+export default Test;
