@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
-import "react-quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
 import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
+import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -31,45 +30,8 @@ const styleFile = {
   p: 2,
 };
 
-const formats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "size",
-  "color",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-  "video",
-  "align",
-];
-
-const modules = {
-  toolbar: {
-    container: [
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ size: ["small", false, "large", "huge"] }, { color: [] }],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-        { align: [] },
-      ],
-      ["link", "image"],
-      ["clean"],
-    ],
-  },
-};
-
 function CourseDetailList() {
   const [openEditor, setOpenEditor] = useState(false);
-  const [data, setData] = useState(null);
   const [course, setCourse] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -86,6 +48,7 @@ function CourseDetailList() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -177,7 +140,7 @@ function CourseDetailList() {
         {!!openEditor ? (
           <div className="my-4 p-4 bg-white rounded-md">
             <p className="mb-2 text-[25px] text-center font-medium">
-              Thêm bài viết
+              {t("title.add_posts")}
             </p>
             <div>
               <div className="p-1 min-h-[350px] bg-white border border-gray-400 rounded-md">
@@ -189,14 +152,10 @@ function CourseDetailList() {
               <div className="flex gap-4 justify-between mt-4 font-medium text-[18px] text-gray-500">
                 <div
                   onClick={handleOpenFile}
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer hover:text-gray-800 duration-300"
                 >
-                  <FiUpload
-                    onClick={() => openInputFile()}
-                    className="hover:text-gray-800 duration-300"
-                    size={25}
-                  />
-                  <p>Thêm tài liệu</p>
+                  <FiUpload onClick={() => openInputFile()} size={25} />
+                  <p>{t("title.add_document")}</p>
                 </div>
                 <Modal
                   open={openFile}
@@ -210,7 +169,7 @@ function CourseDetailList() {
                         className="w-full py-1 px-4 outline-none rounded-md border border-slate-600"
                         type="text"
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Tìm kiếm tài liệu"
+                        placeholder={`${t("title.document_search")}`}
                       />
 
                       <AiFillPlusCircle
@@ -230,14 +189,18 @@ function CourseDetailList() {
                         </div>
                       ))
                     ) : (
-                      <div>Tài liệu trống</div>
+                      <div className="flex justify-center items-center h-[50px]">
+                        <p className="text-gray-400">
+                          {t("title.document_empty")}
+                        </p>
+                      </div>
                     )}
                     <div className="flex justify-end gap-2">
                       <button
                         onClick={handleCloseFile}
                         className="py-2 px-4 bg-gray-400 rounded-md text-white font-medium"
                       >
-                        Hủy
+                        {t("button.cancel")}
                       </button>
                       <button
                         onClick={() => {
@@ -250,7 +213,7 @@ function CourseDetailList() {
                         }}
                         className="py-2 px-4 bg-orange-400 rounded-md font-medium"
                       >
-                        Thêm
+                        {t("button.add")}
                       </button>
                     </div>
                   </Box>
@@ -265,7 +228,7 @@ function CourseDetailList() {
                       setSelectTL([]);
                     }}
                   >
-                    Hủy
+                    {t("button.cancel")}
                   </button>
                   <button
                     onClick={() => {
@@ -273,7 +236,7 @@ function CourseDetailList() {
                     }}
                     className="ml-4 hover:text-gray-800 duration-300"
                   >
-                    Đăng
+                    {t("button.post")}
                   </button>
                 </div>
               </div>
@@ -307,7 +270,7 @@ function CourseDetailList() {
             className=" my-4  flex items-center gap-5 p-2 bg-white rounded-md cursor-text"
           >
             <div className="w-[50px] h-[50px] rounded-full bg-slate-500" />
-            <p className="text-slate-400">Thêm bài viết</p>
+            <p className="text-slate-400">{t("title.add_posts")} . . .</p>
           </div>
         ) : (
           <></>
@@ -318,7 +281,7 @@ function CourseDetailList() {
               <div key={idx} className=" my-2 p-2  bg-white rounded-md ">
                 <div className="flex">
                   <div>
-                    <span className="font-bold">Cập nhật: </span>
+                    <span className="font-bold">{t("title.update")}: </span>
                     {formatDate(e.updatedAt)}
                   </div>
                   {course?.kh?.maso === user.maso && (
@@ -394,7 +357,7 @@ function CourseDetailList() {
         <div>
           <Link to={`/app/user/${course?.kh?.maso}`}>
             <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
-              Giảng viên
+              {t("title.lecturer")}
             </p>
             <div>
               <div className="flex justify-start items-center gap-2 mb-2 p-2 bg-slate-200 rounded-md">
@@ -415,7 +378,7 @@ function CourseDetailList() {
             </div>
           </Link>
           <p className="mb-2 text-[20px] text-gray-800 font-medium text-center">
-            Thành Viên
+            {t("title.member")}
           </p>
           {course?.member?.map((e, idx) => (
             <div key={idx}>

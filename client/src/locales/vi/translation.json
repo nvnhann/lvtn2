@@ -22,12 +22,14 @@
     "cancel": "Hủy",
     "add_document": "Thêm tài liệu",
     "change_password": "Đổi mật khẩu",
-    "edit_information": "Chỉnh sửa thông tin"
+    "edit_information": "Chỉnh sửa thông tin",
+    "post": "Đăng"
   },
-  "label": {
+  "title": {
     "document": "Tài liệu",
     "document_name": "Tên tài liệu",
     "add_document": "Thêm tài liệu",
+    "add_posts": "Thêm tài liệu",
     "describe": "Mô tả",
     "create_by": "tạo bởi",
     "select_file": "Chọn file",
@@ -35,14 +37,21 @@
     "current_password": "Mật khẩu hiện tại",
     "new_password": "Mật khẩu mới",
     "confirm_password": "Nhập lại mật khẩu",
-    "edit_information": "Chỉnh sửa thông tin",
+    "edit_information": "Chỉnh sửa thông tin cá nhân",
     "male": "Nam",
     "female": "Nữ",
     "registered_course": "Khóa học đã ghi danh",
     "enter_name_document": "Nhập tên tài liệu",
-    "enter_describe": "Nhập mô tả"
+    "enter_describe": "Nhập mô tả",
+    "document_search": "Tìm kiếm tài liệu",
+    "document_empty": "Tài liệu trống",
+    "update": "Cập nhật",
+    "lecturer": "Giảng viên",
+    "student": "Sinh viên",
+    "member": "Thành viên"
   },
   "infor": {
+    "name": "Họ và tên",
     "no": "MSSV",
     "gender": "Giới tính",
     "birthday": "Ngày sinh",

@@ -50,14 +50,14 @@ function ForgotPassword() {
       <div className="flex gap-5 items-center py-4 px-6 mx-auto w-[70%] bg-[#2554A6] rounded-md">
         <VscKey size={30} color="#fff" />
         <p className="text-[25px] font-medium text-white">
-          {t("label.change_password")}
+          {t("title.change_password")}
         </p>
       </div>
       <form onSubmit={handleSubmit(updatePassword)}>
         <div className="mt-5 mx-auto w-[70%] p-6 bg-white rounded-md">
           <div className="relative flex items-center mb-8">
             <p className="w-[40%] font-medium text-[18px]">
-              {t("label.current_password")}
+              {t("title.current_password")}
             </p>
             <input
               className="items-center px-4 py-2 w-[60%] rounded-lg bg-slate-200 outline-none"
@@ -73,7 +73,7 @@ function ForgotPassword() {
           </div>
           <div className="relative flex items-center mb-8">
             <p className="w-[40%] font-medium text-[18px]">
-              {t("label.new_password")}
+              {t("title.new_password")}
             </p>
             <input
               className=" px-4 py-2 w-[60%] rounded-lg bg-slate-200 outline-none"
@@ -89,7 +89,7 @@ function ForgotPassword() {
           </div>
           <div className="relative flex items-center mb-8">
             <p className="w-[40%] font-medium text-[18px]">
-              {t("label.confirm_password")}
+              {t("title.confirm_password")}
             </p>
             <input
               className=" px-4 py-2 w-[60%] rounded-lg bg-slate-200 outline-none"

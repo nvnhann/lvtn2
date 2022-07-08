@@ -22,12 +22,14 @@
     "cancel": "Cancel",
     "add_document": "Add document",
     "change_password": "Change password",
-    "edit_information": "Edit document"
+    "edit_information": "Edit document",
+    "post": "Post"
   },
-  "label": {
+  "title": {
     "document": "Document",
     "document_name": "Name document",
     "add_document": "Add document",
+    "add_posts": "Add posts",
     "describe": "Describe",
     "select_file": "Choose file",
     "change_password": "Change password",
@@ -40,9 +42,16 @@
     "registered_course": "Registered course",
     "edit_information": "Edit document profile",
     "enter_name_document": "Enter name document",
-    "enter_describe": "Enter describe"
+    "enter_describe": "Enter describe",
+    "document_search": "Document search ",
+    "document_empty": "Document empty",
+    "update": "Update",
+    "lecturer": "Lecturer",
+    "student": "Student",
+    "member": "Member"
   },
   "infor": {
+    "name": "Full name",
     "no": "No",
     "gender": "Gender",
     "birthday": "Birthday",
