@@ -25,6 +25,14 @@ const getKhoaHocByMaSo = async (maso) => {
             'FROM chi_tiet_kh LEFT JOIN khoahoc ON khoahoc.id = chi_tiet_kh.khoahoc_id LEFT JOIN `user` u ON u.id = chi_tiet_kh.user_id \n' +
             'WHERE chi_tiet_kh.user_id= ' + u.id, {type: db.sequelize.QueryTypes.SELECT})
     }
+    if(u.groups[0].groupname === "SINHVIEN"){
+        return await db.sequelize.query('SELECT tv_kh.chi_tiet_kh_id as idkh, chi_tiet_kh.active, khoahoc.ten_khoa_hoc, khoahoc.ma_khoa_hoc, u.maso\
+    FROM tv_kh\
+        LEFT JOIN chi_tiet_kh ON tv_kh.chi_tiet_kh_id = chi_tiet_kh.id\
+        LEFT JOIN khoahoc ON chi_tiet_kh.khoahoc_id = khoahoc.id\
+        LEFT JOIN `user` u ON u.id = tv_kh.user_id\
+        WHERE tv_kh.user_id = ' + u.id, {type: db.sequelize.QueryTypes.SELECT})
+    }
 }
 
 const setActiveKhoahoc = async (idkh, active) => {

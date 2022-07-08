@@ -68,6 +68,7 @@ const getTailieuByMaso = async (maso, search) => {
     }
 };
 
+
 const getTailieuById = async (id) => {
     return await TaiLieu.findByPk(id, {
         include: [
@@ -128,5 +129,5 @@ module.exports = {
     deleteTaiLieuById,
     setActiveTaiLieu,
     saveTaiLieu,
-    getTaiLieuSave
+    getTaiLieuSave,
 };
