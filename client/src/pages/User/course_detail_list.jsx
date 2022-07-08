@@ -18,6 +18,7 @@ import { formatDate } from "../../utils/formatDate";
 import { BsFillEyeSlashFill } from "react-icons/bs";
 import { IoEyeSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import EditPost from "./edit_post";
 
 const styleFile = {
   position: "absolute",
@@ -48,8 +49,12 @@ function CourseDetailList() {
   const navigate = useNavigate();
   const user = useSelector((state) => getUserInfo(state));
   const [openFile, setOpenFile] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const handleOpenFile = () => setOpenFile(true);
   const handleCloseFile = () => setOpenFile(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+  const [dataModal, setDataModal] = useState([]);
   const [tailieu, setTaiLieu] = useState([]);
   const [selectTL, setSelectTL] = useState([]);
   const [search, setSearch] = useState(null);
@@ -297,11 +302,25 @@ function CourseDetailList() {
                   </div>
                   {course?.kh?.maso === user.maso && (
                     <AiTwotoneEdit
+                      onClick={() => {
+                        setDataModal(e);
+                        handleOpenEdit();
+                      }}
                       size={25}
                       color="#ff7961"
                       className="ml-auto my-2 mr-0 cursor-pointer"
                     />
                   )}
+                  <Modal
+                    open={openEdit}
+                    onClose={handleCloseEdit}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={styleEditPost}>
+                      <EditPost data={dataModal} />
+                    </Box>
+                  </Modal>
                 </div>
                 <div
                   className="my-2"
