@@ -3,6 +3,7 @@ const { Router } = require("express");
 const router = Router();
 const BaiVietController = require("../controller/baiviet");
 
-router.post("/baiviet", asyncHandler(BaiVietController.createBaiViet));
 router.get('/baiviet/:id', asyncHandler(BaiVietController.getBaiVietByKH))
+router.post("/baiviet", asyncHandler(BaiVietController.createBaiViet));
+router.post("/baiviet/active", asyncHandler(BaiVietController.setActiveBaiViet));
 export default router;

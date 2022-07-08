@@ -6,13 +6,16 @@ import ReactQuill from "react-quill";
 
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import {AiFillPlusCircle} from "react-icons/ai";
+import {AiFillPlusCircle, AiTwotoneEdit} from "react-icons/ai";
 import * as $http from '../../utils/httpProvider';
 import * as CONFIG from '../../config/configUrl';
 import {useSnackbar} from "notistack";
 import {useSelector} from "react-redux";
 import {getUserInfo} from "../../reducers/profile";
 import {formatDate} from "../../utils/formatDate";
+import {BsFillEyeSlashFill} from "react-icons/bs";
+import {IoEyeSharp} from "react-icons/io5";
+import {MdDelete} from "react-icons/md";
 
 const styleFile = {
     position: "absolute",
@@ -131,6 +134,15 @@ function CourseDetailList() {
         const tl = [];
         if (selectTL.length > 0) selectTL.forEach(e => tl.push(parseInt(e.value)))
         return tl;
+    }
+
+    const setActiveBaiViet = async (id, active) =>{
+        try {
+            await $http.postData(CONFIG.API_BASE_URL + '/baiviet/active',{id: id, active: active});
+            setLoad(e => e+1)
+        }catch (e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -259,31 +271,49 @@ function CourseDetailList() {
                 ) : (
                     <></>
                 )}
-                {baiviet?.map((e, idx) => (
-                    <div key={idx} className=" my-2 p-2  bg-white rounded-md ">
-                        <div><span className="font-bold">Cập nhật: </span>{formatDate(e.updatedAt)}</div>
-                        <div className="my-2" dangerouslySetInnerHTML={{__html: e?.noidung}}/>
-                        <div className="w-full  grid grid-cols-4 gap-2">
-                            {e?.tailieus.map(e1 => (
-                                <div key={e1.id} className="bg-cyan-100 p-3 rounded-md">
-                                    <Link to={"/app/document/detail/" + e1.id}>
-                                        <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"/>
-                                        <p>
-                                            <strong>{e1.name}</strong>
-                                        </p>
-                                    </Link>
-                                    <span>tạo bởi <strong>{e1.user.ho_ten}</strong></span>
-                                    <div className="flex flex-wrap space-x-2 items-start">
-                                        {e1.linhvucs?.map((e2, id) => (
-                                            <span key={id}
-                                                  className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
-                                        ))}
+                {baiviet?.map((e, idx) => {
+                    if(e.active || course?.kh?.maso === user.maso) return(
+                        <div key={idx} className=" my-2 p-2  bg-white rounded-md ">
+                            <div className="flex">
+                                <div><span className="font-bold">Cập nhật: </span>{formatDate(e.updatedAt)}</div>
+                                {course?.kh?.maso === user.maso &&  <AiTwotoneEdit size={25} color="#ff7961" className="ml-auto my-2 mr-0 cursor-pointer"/>}
+                            </div>
+                            <div className="my-2" dangerouslySetInnerHTML={{__html: e?.noidung}}/>
+                            <div className="w-full  grid grid-cols-4 gap-2">
+                                {e?.tailieus.map(e1 => (
+                                    <div key={e1.id} className="bg-cyan-100 p-3 rounded-md">
+                                        <Link to={"/app/document/detail/" + e1.id}>
+                                            <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"/>
+                                            <p>
+                                                <strong>{e1.name}</strong>
+                                            </p>
+                                        </Link>
+                                        <span>tạo bởi <strong>{e1.user.ho_ten}</strong></span>
+                                        <div className="flex flex-wrap space-x-2 items-start">
+                                            {e1.linhvucs?.map((e2, id) => (
+                                                <span key={id}
+                                                      className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
+                                            ))}
+                                        </div>
                                     </div>
+                                ))}
+                            </div>
+                            {(course?.kh?.maso === user.maso) && (
+                                <div className="flex">
+                                    <div className="my-2">
+                                        {e.active && <BsFillEyeSlashFill onClick={()=> setActiveBaiViet(e.id, 0)}  className="cursor-pointer" size={30} color="#2979ff"/>}
+                                        {!e.active && <IoEyeSharp onClick={()=> setActiveBaiViet(e.id, 1)}   className="cursor-pointer" size={30} color="#2979ff"/>}
+                                    </div>
+                                    <MdDelete
+                                        size={30}
+                                        color="#757575"
+                                        className="ml-auto my-2 mr-0 cursor-pointer"
+                                    />
                                 </div>
-                            ))}
+                            )}
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
 
             </div>
 

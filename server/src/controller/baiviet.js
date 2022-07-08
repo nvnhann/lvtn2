@@ -18,3 +18,13 @@ export const getBaiVietByKH = async (req, res) =>{
         res.status(500).json({message: e})
     }
 }
+
+export const setActiveBaiViet = async (req, res) => {
+    try{
+        await BaiVietService.setActiveBaiViet(req.body.id, req.body.active);
+        res.status(200).json({message: 'Thành công'})
+    }  catch (e) {
+        console.log(e);
+        res.status(200).json({message: e})
+    }
+}

@@ -1,3 +1,4 @@
+import db from "../database/models";
 
 const {BaiViet, CTKH, TaiLieu, User, LinhVuc } = require('../database/models')
 export const createBaiViet = async (noidung, idkh, tailieu) => {
@@ -38,4 +39,8 @@ export const getBaiVietByKH = async id => {
             }]
         }]
     })
+}
+
+export const setActiveBaiViet = async (id, active) => {
+    await db.sequelize.query('UPDATE `baiviet` SET `active` = '+active+' WHERE `baiviet`.`id` = '+ id);
 }
