@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
-import { EditorState, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromHTML,
+} from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import { useTranslation } from "react-i18next";
@@ -18,6 +23,7 @@ import { formatDate } from "../../utils/formatDate";
 import { BsFillEyeSlashFill } from "react-icons/bs";
 import { IoEyeSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import EditPost from "./edit_post";
 
 const styleFile = {
   position: "absolute",
@@ -30,6 +36,17 @@ const styleFile = {
   p: 2,
 };
 
+const styleEditPost = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 800,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 2,
+};
+
 function CourseDetailList() {
   const [openEditor, setOpenEditor] = useState(false);
   const [course, setCourse] = useState([]);
@@ -37,18 +54,26 @@ function CourseDetailList() {
   const navigate = useNavigate();
   const user = useSelector((state) => getUserInfo(state));
   const [openFile, setOpenFile] = useState(false);
-  const handleOpenFile = () => setOpenFile(true);
-  const handleCloseFile = () => setOpenFile(false);
+  const [openPost, setOpenPost] = useState(false);
   const [tailieu, setTaiLieu] = useState([]);
   const [selectTL, setSelectTL] = useState([]);
   const [search, setSearch] = useState(null);
   const [baiviet, setBaiviet] = useState([]);
-  const { enqueueSnackbar } = useSnackbar();
+  const [modalData, setModalData] = useState([]);
   const [load, setLoad] = useState(0);
+
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
+  const handleOpenFile = () => setOpenFile(true);
+  const handleCloseFile = () => setOpenFile(false);
+
+  const handleOpenPost = () => setOpenPost(true);
+  const handleClosePost = () => setOpenPost(false);
+
   const { t, i18n } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     (async () => {
@@ -56,7 +81,7 @@ function CourseDetailList() {
       setBaiviet(res.data);
     })();
   }, [load]);
-  console.log(baiviet);
+
   useEffect(() => {
     (async () => {
       const res = await $http.getData(
@@ -102,6 +127,7 @@ function CourseDetailList() {
       idkh: id,
       tailieu: dt.tailieu,
     });
+    setOpenEditor(false);
     setLoad((e) => e + 1);
     enqueueSnackbar("Thêm thành công", {
       variant: "success",
@@ -126,8 +152,6 @@ function CourseDetailList() {
       console.log(e);
     }
   };
-
-  console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
 
   return (
     <div className="flex gap-4">
@@ -285,11 +309,27 @@ function CourseDetailList() {
                     {formatDate(e.updatedAt)}
                   </div>
                   {course?.kh?.maso === user.maso && (
-                    <AiTwotoneEdit
-                      size={25}
-                      color="#ff7961"
-                      className="ml-auto my-2 mr-0 cursor-pointer"
-                    />
+                    <>
+                      <AiTwotoneEdit
+                        onClick={() => {
+                          setModalData(e);
+                          handleOpenPost();
+                        }}
+                        size={25}
+                        color="#ff7961"
+                        className="ml-auto my-2 mr-0 cursor-pointer"
+                      />
+                      <Modal
+                        open={openPost}
+                        onClose={handleClosePost}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box sx={styleEditPost}>
+                          {modalData && <EditPost data={modalData} />}
+                        </Box>
+                      </Modal>
+                    </>
                   )}
                 </div>
                 <div
