@@ -6,11 +6,12 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {AiTwotoneFileExcel, AiOutlineSearch} from "react-icons/ai";
 import {DataGrid} from "@mui/x-data-grid";
-import {getData} from "../../utils/httpProvider";
+import {getData, postData} from "../../utils/httpProvider";
 import {API_BASE_URL} from "../../config/configUrl";
 import {TableCell, TableContainer, TableHead, TableRow, Table, TablePagination, Button, TableBody} from "@mui/material";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import {useSnackbar} from "notistack";
 
 const styleAddAccount = {
     position: "absolute",
@@ -41,9 +42,7 @@ const defaulValue = {
     mssv: "",
     gioitinh: "",
     email: "",
-    ngaysinh: "",
-    sodienthoai: "",
-    diachi: "",
+
 };
 
 function Account() {
@@ -51,7 +50,11 @@ function Account() {
     const [data, setData] = useState([]);
     const handleOpen = () => setOpen(true);
     const [page, setPage] = useState(0);
+    const [bomon, setBoMon] = useState([]);
+    const [searchDt, setSearchDt] = useState(null);
+    const {enqueueSnackbar} = useSnackbar();
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [load,setLoad] = useState(0)
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -68,12 +71,15 @@ function Account() {
 
     useEffect(() => {
         (async () => {
-            const res = await getData(API_BASE_URL + '/user');
-            setData((res.data))
+            let res = []
+           if(!searchDt)  res = await getData(API_BASE_URL + '/user');
+           else  res = await getData(API_BASE_URL + '/user?search='+searchDt);
+            setData((res.data));
+            const bm = await getData(API_BASE_URL +'/bomon');
+            setBoMon(bm.data)
         })()
-    }, []);
+    }, [load, searchDt]);
 
-    console.log(data)
     const {
         register,
         handleSubmit,
@@ -85,7 +91,29 @@ function Account() {
         useForm();
 
     //Data form
-    const createAccount = (data) => console.log(data);
+    const createAccount = async (data) => {
+        try{
+            let usr = {}
+            usr.maso = data.mssv.toUpperCase();
+            usr.email = data.email;
+            usr.ho_ten = data.ten;
+            usr.gioi_tinh = data.gioi_tinh === "nam" ? 1 :0;
+            usr.gId = data.chucvu;
+            usr.bId = data.bomon;
+            await postData(API_BASE_URL+'/user', {user: usr});
+            enqueueSnackbar('Thêm thành công', {variant: 'success', autoHideDuration: 3000});
+            setLoad(e=>e+1)
+            handleClose();
+            reset()
+        }catch(error){
+            console.log(error)
+            enqueueSnackbar(error.response.data.message, {
+                variant: "error",
+                autoHideDuration: 2000,
+            });
+        }
+
+    };
 
     const editAccount = (id) => {
         console.log(id);
@@ -104,8 +132,9 @@ function Account() {
 
 
     const search = (data) => {
-        console.log(data);
+        setSearchDt(data.search);
     };
+
 
     return (
         <div>
@@ -160,7 +189,11 @@ function Account() {
                                 <TableCell>{e?.maso}</TableCell>
                                 <TableCell>{e?.ho_ten}</TableCell>
                                 <TableCell>{e?.bomon.name}</TableCell>
-                                <TableCell>{e?.active === 1 ? "Hoạt động" : "Ẩn"}</TableCell>
+                                <TableCell>
+                                    {e?.groups[0].groupname === "SINHVIEN" ? "Sinh viên" : null}
+                                    {e?.groups[0].groupname === "GIANGVIEN" ? "Giảng viên" : null}
+                                    {e?.groups[0].groupname === "NGHIENCUUSINH" ? "Nghiên cứu sinh" : null}
+                                </TableCell>
                                 <TableCell>
                                     {e?.active === 1 ? (
                                         <Button
@@ -230,16 +263,31 @@ function Account() {
                                 name="bomon"
                                 {...register("bomon")}
                             >
-                                <option value="">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                {bomon?.map(e => (
+                                    <option key={e.id} value={e.id}>{e.name}</option>
+                                ))}
                             </select>
                             <p className="absolute text-[12px] text-red-600">
                                 {errors.bomon?.message}
                             </p>
                         </div>
                         <div className="relative my-5">
-                            <p className="mb-1 font-bold">MSSV</p>
+                            <p className="mb-1 font-bold">Chức vụ</p>
+                            <select
+                                className="w-full py-1 px-4 border border-slate-500 rounded-lg outline-none"
+                                name="chucvu"
+                                {...register("chucvu")}
+                            >
+                                <option value={1}>Sinh viên</option>
+                                <option value={2}>Giảng viên</option>
+                                <option value={1}>Nghiên cứu sinh</option>
+                            </select>
+                            <p className="absolute text-[12px] text-red-600">
+                                {errors.chucvu?.message}
+                            </p>
+                        </div>
+                        <div className="relative my-5">
+                            <p className="mb-1 font-bold">Mã Số</p>
                             <input
                                 type="text"
                                 name="mssv"
@@ -272,18 +320,7 @@ function Account() {
                                 {errors.gioitinh?.message}
                             </p>
                         </div>
-                        <div className="relative my-5">
-                            <p className="mb-1 font-bold">Ngày sinh</p>
-                            <input
-                                type="date"
-                                name="ngaysinh"
-                                {...register("ngaysinh")}
-                                className="w-full py-1 px-4 border border-slate-500 rounded-lg outline-none"
-                            />
-                            <p className="absolute text-[12px] text-red-600">
-                                {errors.ngaysinh?.message}
-                            </p>
-                        </div>
+
                         <div className="relative my-5">
                             <p className="mb-1 font-bold">Email</p>
                             <input
@@ -296,30 +333,8 @@ function Account() {
                                 {errors.email?.message}
                             </p>
                         </div>
-                        <div className="relative my-5">
-                            <p className="mb-1 font-bold">Số điện thoại</p>
-                            <input
-                                type="text"
-                                name="sodienthoai"
-                                {...register("sodienthoai")}
-                                className="w-full py-1 px-4 border border-slate-500 rounded-lg outline-none"
-                            />
-                            <p className="absolute text-[12px] text-red-600">
-                                {errors.sodienthoai?.message}
-                            </p>
-                        </div>
-                        <div className="relative my-5">
-                            <p className="mb-1 font-bold">Địa chỉ</p>
-                            <input
-                                type="text"
-                                name="diachi"
-                                {...register("diachi")}
-                                className="w-full py-1 px-4 border border-slate-500 rounded-lg outline-none"
-                            />
-                            <p className="absolute text-[12px] text-red-600">
-                                {errors.diachi?.message}
-                            </p>
-                        </div>
+
+
                         <div className="flex justify-end gap-2">
                             <button
                                 onClick={handleClose}

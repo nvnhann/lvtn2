@@ -58,7 +58,7 @@ const uploadAvatar = async (req, res) => {
 }
 
 const getAll = async (req, res)=>{
-    return res.json(await UserService.getAll())
+    return res.json(await UserService.getAll(req.query.search))
 }
 
 const getProfileByMaSo = async (req, res)=>{
@@ -162,6 +162,8 @@ const updatePwd = async (req, res) => {
 const createUser = async(req, res)=>{
     try {
         const { user } = req.body;
+        const u = await UserService.getByMaSo(user.maso)
+        if(u) return res.status(500).send({message: "Mã số đã tồn tại!"});
         const pass = makepass(8)
         user.mat_khau = await bcrypt.hash(pass,10);
         await UserService.createUser(user);

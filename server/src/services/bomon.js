@@ -1,6 +1,6 @@
-import { BoMon, Group, User } from "../database/models"
+import {BoMon, Group, User} from "../database/models"
 
-const getAll = async () =>{
+const getAll = async () => {
     return await BoMon.findAll();
 }
 
@@ -18,10 +18,10 @@ const getBomonById = async (id) => {
     })
 }
 
-const updateNameById = async(id, name) => {
-    if(id && name){
+const updateNameById = async (id, name) => {
+    if (id && name) {
         const bm = await BoMon.findOne({
-            where: { id: id}
+            where: {id: id}
         });
 
         bm.name = name;
@@ -29,10 +29,10 @@ const updateNameById = async(id, name) => {
     }
 }
 
-const updateStatusById = async(id, status) => {
-    if(id !== undefined && status !== undefined){
+const updateStatusById = async (id, status) => {
+    if (id !== undefined && status !== undefined) {
         const bm = await BoMon.findOne({
-            where: { id: id}
+            where: {id: id}
         });
 
         bm.active = status;
@@ -40,10 +40,15 @@ const updateStatusById = async(id, status) => {
     }
 }
 
+const createBoMon = async (tenbomon) => {
+    await BoMon.create({name: tenbomon});
+}
+
 
 module.exports = {
     getAll,
     updateNameById,
     updateStatusById,
-    getBomonById
+    getBomonById,
+    createBoMon
 }

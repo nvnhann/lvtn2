@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Provider store={store}>
-      <SnackbarProvider maxSnack={3}>
+      <SnackbarProvider maxSnack={3} >
         <I18nextProvider i18n={i18next}>
           <App />
         </I18nextProvider>

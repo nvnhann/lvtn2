@@ -43,9 +43,25 @@ const updateStatusById = async (req, res)=>{
     }
 }
 
+const createBoMon = async (req, res) =>{
+    try{
+        await BoMonService.createBoMon(req.body.tenbomon);
+        res.status(200).json({
+            success: true,
+            message: 'Thanh cong'
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 module.exports = {
     getAll,
     updateNameById,
     updateStatusById,
-    getBomonById
+    getBomonById,
+    createBoMon
 }
