@@ -78,11 +78,23 @@ const getKhoaHocByMaSo = async (req, res) =>{
         });
     }
 }
+const addMemeberKH = async (req, res) => {
+    try{
+       await KhoaHocService.addMemberKH(req.body.id, req.body.idkh);
+       res.status(200).json({message: 'Thành công!'})
+    }catch (e) {
+        console.log(e);
+        res.status(500).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     getAllKhoaHoc,
     getKhoaHocById,
     createKhoaHoc,
     setActiveKhoahoc,
     createKHbyFile,
-    getKhoaHocByMaSo
+    getKhoaHocByMaSo,
+    addMemeberKH
 }

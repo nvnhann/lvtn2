@@ -149,9 +149,7 @@ function DocumentUpload() {
                                 <strong>{e.name}</strong>
                             </p>
                         </Link>
-                        <span>
-              tạo bởi <strong>{e.user.ho_ten}</strong>
-            </span>
+                        <span>tạo bởi <strong>{e.user.ho_ten}</strong></span>
                         <div className="flex flex-wrap space-x-2 items-start">
                             {e.linhvucs?.map((e2, idx) => (
                                 <span key={idx}

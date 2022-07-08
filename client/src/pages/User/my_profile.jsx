@@ -129,6 +129,12 @@ function MyProfile() {
     />);
     console.log(tailieu)
 
+    const saveTaiLieu = async (id, idtl) =>{
+        console.log(id, idtl)
+        await $http.postData(CONFIG.API_BASE_URL+'/tailieu/save', { id: id, idtl: idtl});
+        enqueueSnackbar('Lưu thành công', { variant:'info', autoHideDuration: 3000})
+    }
+
     return (<div>
         <div className="w-full">
             <div className="flex items-center gap-5 p-4 bg-white rounded-md">
@@ -294,7 +300,7 @@ function MyProfile() {
         <div className="mt-5">
             <p className="text-[20px] font-bold">Khóa học</p>
             <div className="grid grid-cols-4 gap-2 mt-3 p-3 text-center bg-[#D9D9D9] rounded-md">
-                {khoahoc?.map((e, idx) => {
+                {khoahoc.length > 0 && khoahoc?.map((e, idx) => {
                     if (e.active) {
                         return (
                             <Link key={idx} to={`/app/course/detail/${e.idkh}`}>
@@ -333,6 +339,7 @@ function MyProfile() {
                                         size={30}
                                         color="#2979ff"
                                         className="ml-auto mr-0 cursor-pointer"
+                                        onClick={()=> saveTaiLieu(user?.id, e.id)}
                                     />
                                 )}
                             </div>

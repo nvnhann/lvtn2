@@ -83,6 +83,27 @@ const setActiveTaiLieu = async (req, res) => {
     res.status(200).json({message: e})
   }
 }
+
+const saveTaiLieu = async (req, res) => {
+  try {
+    const {id, idtl} = req.body;
+    console.log('==========================',req.body)
+     await TaiLieuService.saveTaiLieu(id, idtl)
+    res.status(200).json({message: 'Thành công'})
+  }catch (e){
+    console.log(e);
+    res.status(500).json({message: e})
+  }
+}
+
+const getTaiLieuSave = async (req, res) =>{
+  try{
+    res.status(200).json(await TaiLieuService.getTaiLieuSave(req.user.maso));
+  }catch (e) {
+    console.log(e);
+    res.status(400).json({message: e})
+  }
+}
 module.exports = {
   createTaiLieu,
   uploadFile,
@@ -90,5 +111,7 @@ module.exports = {
   getTailieuById,
   getFileByName,
   deleteTaiLieuById,
-  setActiveTaiLieu
+  setActiveTaiLieu,
+  saveTaiLieu,
+  getTaiLieuSave
 };
