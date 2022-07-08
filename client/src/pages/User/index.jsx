@@ -54,7 +54,9 @@ function User() {
   return (
     <div>
       <div className="flex justify-between items-center py-5 px-6 bg-[#2554A6] text-white">
-        <Link to="/"><p className="block w-[15%] text-[30px] font-bold">CIT</p></Link>
+        <Link to="/">
+          <p className="block w-[15%] text-[30px] font-bold">CIT</p>
+        </Link>
         <form
           className="flex justify-center w-[70%]"
           onSubmit={handleSubmit((data) => search(data))}
@@ -176,10 +178,7 @@ function User() {
               path="/course/register_course"
               element={<RegisterCourse />}
             />
-            <Route
-              path="/course/detail/:id"
-              element={<CourseDetailList />}
-            />
+            <Route path="/course/detail/:id" element={<CourseDetailList />} />
             <Route
               path="/course/detail=:id1/subject=:id2"
               element={<CourseDetail />}

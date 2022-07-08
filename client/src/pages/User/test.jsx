@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+
 export default function Test() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  useEffect(() => {
-    console.log(editorState);
-  }, [editorState]);
+
+  console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+
   return (
-    <div>
-      <h1>React Editors</h1>
-      <h2>Start editing to see some magic happen!</h2>
-      <div
-        style={{
-          border: "1px solid black",
-          padding: "2px",
-          minHeight: "400px",
-        }}
-      >
+    <div className="bg-[#fff]">
+      <div className="border border-gray-300 rounded-md">
         <Editor
           editorState={editorState}
+          wrapperClassName="demo-wrapper"
+          editorClassName="demo-editor"
           onEditorStateChange={setEditorState}
         />
       </div>
