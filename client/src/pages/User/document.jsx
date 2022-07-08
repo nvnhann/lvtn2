@@ -1,7 +1,8 @@
-import { t } from "i18next";
 import React from "react";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { t } from "i18next";
+import DocumentSave from "./document_save";
 
 const arr_1 = [
   {
@@ -32,6 +33,7 @@ const arr_1 = [
 ];
 
 function Document() {
+
   return (
     <div>
       <div className="mb-4 text-white font-bold">
@@ -74,6 +76,9 @@ function Document() {
             </div>
           </Link>
         ))}
+        <div>
+          <DocumentSave />
+        </div>
       </div>
     </div>
   );
