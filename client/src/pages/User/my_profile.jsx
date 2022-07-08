@@ -9,6 +9,7 @@ import ModalEditProFile from "./modalEditProfile";
 import { useForm } from "react-hook-form";
 import * as $http from "../../utils/httpProvider";
 import * as CONFIG from "../../config/configUrl";
+import { useTranslation } from "react-i18next";
 import { useSnackbar } from "notistack";
 import { fnGetUserInfo } from "../../actions/profile/profileAction";
 import { useEffect } from "react";
@@ -28,6 +29,8 @@ function MyProfile() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -158,7 +161,7 @@ function MyProfile() {
                     onClick={submitAvt}
                     className="absolute -left-[68px] top-0 flex items-center justify-center min-w-[50px] p-2 text-white bg-[#F38E46] rounded-md"
                   >
-                    Lưu
+                    {t("button.save")}
                   </button>
                 )}
               </div>
@@ -168,39 +171,42 @@ function MyProfile() {
           <div className="w-[70%]">
             <p className="text-[25px] font-bold uppercase">{profile?.ho_ten}</p>
             <p>
-              <strong>MSSV: </strong> {profile?.maso}
+              <strong>{t("infor.no")}: </strong> {profile?.maso}
             </p>
             <p>
-              <strong>Giới tính: </strong> {profile?.gioi_tinh ? "Nam" : "Nữ"}
+              <strong>{t("infor.gender")}: </strong>{" "}
+              {profile?.gioi_tinh ? "Nam" : "Nữ"}
             </p>
             <p>
-              <strong>Ngày sinh:</strong> {profile?.ngay_sinh}
+              <strong>{t("infor.birthday")}:</strong> {profile?.ngay_sinh}
             </p>
             <p>
               <strong>Email: </strong> {profile?.email}
             </p>
             <p>
-              <strong>Địa chỉ: </strong> {profile?.dia_chi}
+              <strong>{t("infor.address")}: </strong> {profile?.dia_chi}
             </p>
             <p>
-              <strong>Số điện thoại: </strong> {profile?.sdt}
+              <strong>{t("infor.phone")}: </strong> {profile?.sdt}
             </p>
             {user?.maso === profile?.maso && (
               <div className="flex gap-5 mt-5">
                 <Link to="/app/forgot_password">
                   <button className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md">
-                    Đổi mật khẩu <IoMdLock className="ml-2" size={20} />
+                    {t("button.change_password")}
+                    <IoMdLock className="ml-2" size={20} />
                   </button>
                 </Link>
                 <button
                   onClick={() => setShowModal(true)}
                   className="flex items-center justify-center min-w-[200px] px-4 py-2 text-white bg-[#F38E46] rounded-md"
                 >
-                  Chỉnh sửa thông tin <FaUserEdit className="ml-2" size={20} />
+                  {t("button.edit_information")}
+                  <FaUserEdit className="ml-2" size={20} />
                 </button>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <ModalEditProFile
-                    title="Chỉnh sửa thông tin cá nhân"
+                    title={`${t("label.edit_information")}`}
                     showModal={showModal}
                     setShowModal={setShowModal}
                     content={
@@ -240,7 +246,7 @@ function MyProfile() {
                             htmlFor="default-radio-1"
                             className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                           >
-                            Nam
+                            {t("label.male")}
                           </label>
                           <input
                             id="default-radio-2"
@@ -256,7 +262,7 @@ function MyProfile() {
                             htmlFor="default-radio-2"
                             className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                           >
-                            Nữ
+                            {t("label.female")}
                           </label>
                         </div>
                         <input
@@ -288,13 +294,13 @@ function MyProfile() {
                           type="button"
                           onClick={() => setShowModal(false)}
                         >
-                          Đóng
+                          {t("button.cancel")}
                         </button>
                         <button
                           className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="submit"
                         >
-                          Lưu
+                          {t("button.save")}
                         </button>
                       </>
                     }
@@ -307,7 +313,7 @@ function MyProfile() {
       </div>
 
       <div className="my-5">
-        <p className="text-[20px] font-bold">Tài liệu</p>
+        <p className="text-[20px] font-bold">{t("label.document")}</p>
         <div className="w-[250px] mt-3">
           <Link to="">
             <div className="bg-white p-3 rounded-md">
@@ -329,7 +335,7 @@ function MyProfile() {
       </div>
 
       <div className="mt-5">
-        <p className="text-[20px] font-bold">Khóa học đã nghi danh</p>
+        <p className="text-[20px] font-bold">{t("label.registered_course")}</p>
         <div className="grid grid-cols-4 gap-2 mt-3 p-3 text-center bg-[#D9D9D9] rounded-md">
           <div className="p-2 bg-white rounded-md">
             <p>

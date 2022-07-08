@@ -10,6 +10,7 @@ import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 
 const style = {
   position: "absolute",
@@ -37,6 +38,8 @@ function DocumentUpload() {
   const [lv, setLv] = useState([]);
   const [LV, setLV] = useState([]);
   const [lvd, setLvd] = useState([]);
+
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -67,7 +70,7 @@ function DocumentUpload() {
       const tl = {};
       tl.tentailieu = values.tentailieu;
       tl.mota = values.mota;
-      tl.lv =  await LV;
+      tl.lv = await LV;
       const formDt = new FormData();
       formDt.append("document", values.file[0]);
       formDt.append("tailieu", JSON.stringify(tl));
@@ -126,7 +129,7 @@ function DocumentUpload() {
         onClick={handleOpen}
         className="flex items-center gap-2 py-2 my-2 px-4 text-white bg-[#F38E46] rounded-md"
       >
-        Thêm tài liệu <HiOutlineDocumentAdd size={25} />
+        {t("button.add_document")} <HiOutlineDocumentAdd size={25} />
       </button>
       <div className="w-full  grid grid-cols-4 gap-2">
         {data?.map((e, idx) => (
@@ -138,7 +141,7 @@ function DocumentUpload() {
               </p>
             </Link>
             <span>
-              tạo bởi <strong>{e.users[0].ho_ten}</strong>
+              {t("label.create_by")} <strong>{e.users[0].ho_ten}</strong>
             </span>
             <div key={idx} className="flex flex-wrap space-x-2 items-start">
               {e.linhvucs?.map((e2, idx) => (
@@ -163,16 +166,18 @@ function DocumentUpload() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <p className="text-center text-[25px] font-medium">Thêm tài liệu</p>
+          <p className="text-center text-[25px] font-medium">
+            {t("label.add_document")}
+          </p>
           <form onSubmit={handleSubmit(onSubmit)}>
             <p>
-              <strong>Tên tài liệu</strong>
+              <strong>{t("label.document_name")}</strong>
             </p>
             <div className="relative mt-2 mb-4">
               <input
                 type="text"
                 className=" py-1 px-4 w-full border border-[#ccc] rounded-md"
-                placeholder="Nhập tên tài liệu"
+                placeholder={t("label.enter_name_document")}
                 name="tentailieu"
                 {...register("tentailieu")}
               />
@@ -182,13 +187,13 @@ function DocumentUpload() {
             </div>
             <div className="mt-6 mb-2">
               <p>
-                <strong>Mô tả</strong>
+                <strong>{t("label.describe")}</strong>
               </p>
               <textarea
                 type="text"
                 rows={4}
                 className=" py-1 px-4 w-full border border-[#ccc] rounded-md"
-                placeholder="Nhập mô tả"
+                placeholder={t("label.enter_describe")}
                 name="mota"
                 {...register("mota")}
               />
@@ -222,7 +227,7 @@ function DocumentUpload() {
               ))}
             </div>
             <p>
-              <strong>Chọn file</strong>
+              <strong>{t("label.select_file")}</strong>
             </p>
             <input
               type="file"
@@ -235,10 +240,13 @@ function DocumentUpload() {
                 className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300"
                 onClick={handleClose}
               >
-                Hủy
+                {t("button.cancel")}
               </button>
-              <button type="submit" className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300">
-                Thêm
+              <button
+                type="submit"
+                className="py-2 px-4 min-w-[100px] text-white font-bold bg-[#F38E46] rounded-md shadow-md hover:opacity-90 duration-300"
+              >
+                {t("button.add")}
               </button>
             </div>
           </form>

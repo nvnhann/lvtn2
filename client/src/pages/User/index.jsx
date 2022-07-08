@@ -23,12 +23,12 @@ import * as CONFIG from "../../config/configUrl";
 import { userLogout } from "../../actions/profile";
 import { useTranslation } from "react-i18next";
 import RegisterCourse from "./register_course";
+import Test from "./test";
 //-----------------------------------------------------------------
 
 function User() {
   const [show, setShow] = useState(false);
-  const {t, i18n} = useTranslation();
-  console.log(t('header.home'))
+  const { t, i18n } = useTranslation();
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const profile = useSelector((state) => getUserInfo(state));
@@ -96,26 +96,26 @@ function User() {
                     onClick={() => close()}
                     className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
                   >
-                    {t('header.profile')}
+                    {t("header.profile")}
                   </p>
                 </Link>
                 <p
-                  onClick={() => i18n.changeLanguage('en')}
+                  onClick={() => i18n.changeLanguage("en")}
                   className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
                 >
-                  {t('header.en')}
+                  {t("header.en")}
                 </p>
                 <p
-                  onClick={() => i18n.changeLanguage('vi')}
+                  onClick={() => i18n.changeLanguage("vi")}
                   className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
                 >
-                  {t('header.vi')}
+                  {t("header.vi")}
                 </p>
                 <p
                   onClick={() => logout()}
                   className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
                 >
-                  {t('header.logout')}
+                  {t("header.logout")}
                 </p>
               </div>
             ) : (
@@ -130,32 +130,32 @@ function User() {
           <div className="bg-[#47568A] p-4 rounded-md text-center">
             <Link to="/app/home">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-                {t('sidebar.suggest')}
+                {t("sidebar.suggest")}
               </p>
             </Link>
             <Link to="/app/course">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-              {t('sidebar.courses')}
+                {t("sidebar.courses")}
               </p>
             </Link>
             <Link to="/app/teacher">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-              {t('sidebar.lectures')}
+                {t("sidebar.lectures")}
               </p>
             </Link>
             <Link to="/app/document">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-              {t('sidebar.my_doc')}
+                {t("sidebar.my_doc")}
               </p>
             </Link>
             <Link to="/app/article">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-              {t('sidebar.paper')}
+                {t("sidebar.paper")}
               </p>
             </Link>
             <Link to="/app/lich-thuc-hanh">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-              {t('sidebar.schedule')}
+                {t("sidebar.schedule")}
               </p>
             </Link>
           </div>
@@ -206,6 +206,8 @@ function User() {
                 />
               }
             />
+            {/* TEST */}
+            <Route path="/test" element={<Test />} />
           </Routes>
         </div>
       </div>

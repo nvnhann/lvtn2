@@ -25,12 +25,34 @@
     "edit_information": "Edit document"
   },
   "label": {
-    "document_name": "Document name",
+    "document": "Document",
+    "document_name": "Name document",
+    "add_document": "Add document",
     "describe": "Describe",
-    "select_file": "Select file",
+    "select_file": "Choose file",
     "change_password": "Change password",
     "current_password": "Current password",
     "new_password": "New password",
-    "confirm_password": "Confirm password"
+    "confirm_password": "Confirm password",
+    "create_by": "create by",
+    "male": "Male",
+    "female": "Female",
+    "registered_course": "Registered course",
+    "edit_information": "Edit document profile",
+    "enter_name_document": "Enter name document",
+    "enter_describe": "Enter describe"
+  },
+  "infor": {
+    "no": "No",
+    "gender": "Gender",
+    "birthday": "Birthday",
+    "address": "Address",
+    "phone": "Phone"
+  },
+  "errors": {
+    "err_1": "Please enter a password",
+    "err_2": "Password at least 8 characters",
+    "err_3": "Please re-enter a password",
+    "err_4": "Password incorrect"
   }
 }
