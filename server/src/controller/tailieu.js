@@ -36,9 +36,8 @@ const createTaiLieu = async (req, res) => {
 };
 
 const getTailieuByMaso = async (req, res) => {
-  const { maso } = req.user;
   try {
-    return res.status(200).json(await TaiLieuService.getTailieuByMaso(maso));
+    return res.status(200).json(await TaiLieuService.getTailieuByMaso(req.params.maso, req.query.search));
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -47,6 +46,7 @@ const getTailieuByMaso = async (req, res) => {
     });
   }
 };
+
 const getTailieuById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -64,10 +64,31 @@ const getFileByName = async (req, res) => {
   const { name } = req.params;
   return res.send(await TaiLieuService.getFileByName(name));
 };
+
+const deleteTaiLieuById = async (req, res) => {
+  try{
+    await TaiLieuService.deleteTaiLieuById(req.params.id);
+    res.status(200).json({message: 'Thành công'});
+  }catch (e) {
+    console.log(e);
+    res.status(500).json({message: e})
+  }
+}
+const setActiveTaiLieu = async (req, res) => {
+  try{
+    await TaiLieuService.setActiveTaiLieu(req.body.id, req.body.active);
+    res.status(200).json({message: 'Thành công'})
+  }  catch (e) {
+    console.log(e);
+    res.status(200).json({message: e})
+  }
+}
 module.exports = {
   createTaiLieu,
   uploadFile,
   getTailieuByMaso,
   getTailieuById,
   getFileByName,
+  deleteTaiLieuById,
+  setActiveTaiLieu
 };

@@ -49,9 +49,10 @@ function Course() {
   const { enqueueSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [check, setCheck] = useState(false);
   const [uploadFileCourse, setUploadFileCourse] = useState();
+  const [searchp, setSearchp] = useState(null);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -105,16 +106,19 @@ function Course() {
 
   useEffect(() => {
     (async () => {
-      const res = await $http.getData(CONFIG.API_BASE_URL + "/course");
+      let res = []
+      if(searchp)  res = await $http.getData(CONFIG.API_BASE_URL + "/course?search="+searchp);
+      else res = await $http.getData(CONFIG.API_BASE_URL + "/course");
       setData(res.data);
       console.log(res.data);
     })();
-  }, [load]);
+  }, [load, searchp]);
 
   const columnName = [
     "Mã khóa học",
     "Tên khóa học",
     "Tên giảng viên",
+    "Mã số CB",
     "Trạng thái",
     "",
   ];
@@ -143,16 +147,17 @@ function Course() {
     await $http.postData(CONFIG.API_BASE_URL + "/course/file", formDt, {
       "content-type": "multipart/form-data",
     });
-    setLoad((e) => e + 1);
-    setCheck(false);
+   
     enqueueSnackbar("Thêm thành công", {
       variant: "success",
       autoHideDuration: 3000,
     });
+    setLoad((e) => e + 1);
+    setCheck(false);
   };
 
   const search = (data) => {
-    console.log(data);
+    setSearchp(data.search)
   };
 
   return (
@@ -226,6 +231,7 @@ function Course() {
                   <TableCell>{e?.ma_khoa_hoc}</TableCell>
                   <TableCell>{e?.ten_khoa_hoc}</TableCell>
                   <TableCell>{e?.ho_ten}</TableCell>
+                  <TableCell>{e?.maso}</TableCell>
                   <TableCell>{e?.active === 1 ? "Hoạt động" : "Ẩn"}</TableCell>
                   <TableCell>
                     {e?.active === 1 ? (

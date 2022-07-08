@@ -18,7 +18,7 @@ function Course() {
 
   return (
     <>
-    <div className="flex flex-wrap gap-4 mb-5">
+      <div className="flex flex-wrap gap-4 mb-5">
         {data?.map((e, idx) => {
           if(e?.active === 1){
             return (
@@ -47,7 +47,7 @@ function Course() {
                         )}
                       </div>
                     </div>
-                    <Link to="/app/course/detail=jkasndjj">
+                    <Link to={"/app/course/detail/" + e.id}>
                       <div className="h-[150px]">
                         <IoMdFolderOpen
                             size={25}
@@ -56,7 +56,7 @@ function Course() {
                       </div>
                     </Link>
                   </div>
-                  <Link to={"/app/course/detail/id=" + e.id + "&gv=" + e.idgv}>
+                  <Link to={"/app/course/detail/" + e.id}>
                     <div className="h-[150px]">
                       <IoMdFolderOpen
                           size={25}

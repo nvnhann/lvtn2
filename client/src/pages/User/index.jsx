@@ -54,7 +54,7 @@ function User() {
   return (
     <div>
       <div className="flex justify-between items-center py-5 px-6 bg-[#2554A6] text-white">
-        <p className="block w-[15%] text-[30px] font-bold">CIT</p>
+        <Link to="/"><p className="block w-[15%] text-[30px] font-bold">CIT</p></Link>
         <form
           className="flex justify-center w-[70%]"
           onSubmit={handleSubmit((data) => search(data))}
@@ -91,7 +91,7 @@ function User() {
             )}
             {show === true ? (
               <div className="absolute -right-3 w-[200px] text-center top-[60px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
-                <Link to={"/app/student/" + profile?.maso}>
+                <Link to={"/app/user/" + profile?.maso}>
                   <p
                     onClick={() => close()}
                     className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
@@ -162,8 +162,7 @@ function User() {
         </div>
         <div className="w-[80%] p-5">
           <Routes>
-            <Route path="/" element={<Navigate to="/app/home" />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route
               path="/save"
               element={<Navigate to="/app/document/save" />}
@@ -178,7 +177,7 @@ function User() {
               element={<RegisterCourse />}
             />
             <Route
-              path="/course/detail/id=:id&gv=:gv"
+              path="/course/detail/:id"
               element={<CourseDetailList />}
             />
             <Route
@@ -190,7 +189,7 @@ function User() {
               path="/teacher/teacher_profile"
               element={<TeacherProfile />}
             />
-            <Route path="/student/:id" element={<MyProfile />} />
+            <Route path="/user/:id" element={<MyProfile />} />
             <Route path="/edit_profile/:user" element={<EditProfile />} />
             <Route path="/forgot_password" element={<ForgotPassword />} />
             <Route path="/search/:keyword" element={<ResultSearch />} />

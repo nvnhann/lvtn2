@@ -37,7 +37,7 @@ function Teacher() {
       </div>
       <div className="grid grid-cols-2 gap-5 mt-5">
         {gv?.users?.map((e,idx) => (
-          <Link key={idx}to="/app/teacher/teacher_profile">
+          <Link key={idx}   to={`/app/user/${e.maso}`}>
           <div className="p-4 text-center font-medium bg-white rounded-md cursor-pointer">
             <p>{e.ho_ten}</p>
           </div>

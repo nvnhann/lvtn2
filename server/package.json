@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "npm run prod",
+    "seed:all": "cd ./src/database && npx sequelize-cli db:seed:all ",
     "server": "nodemon --exec babel-node ./src/bin/www",
     "server:prod": "node ./dist/bin/www",
     "dev": "SET NODE_ENV=development npm-run-all server",
