@@ -26,6 +26,7 @@ import RegisterCourse from "./register_course";
 import Test from "./test";
 import DocumentSave from "./document_save";
 import EditPost from "./edit_post";
+import PostsDetails from "./posts_details";
 //-----------------------------------------------------------------
 
 function User() {
@@ -182,6 +183,10 @@ function User() {
               element={<RegisterCourse />}
             />
             <Route path="/course/detail/:id" element={<CourseDetailList />} />
+            <Route
+              path="/course/detail/:id/posts_detail=:idbv"
+              element={<PostsDetails />}
+            />
             <Route
               path="/course/detail/:id/post=:params"
               element={<EditPost />}
