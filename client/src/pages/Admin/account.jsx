@@ -57,6 +57,19 @@ const schema = yup
   })
   .required();
 
+const schema_edit = yup
+  .object({
+    hoten: yup.string().required("Vui lòng nhập tên"),
+    bomon: yup.string().required("Vui lòng chọn bộ môn"),
+    maso: yup.string().required("Vui lòng nhập mã số sinh viên"),
+    gioitinh: yup.string().nullable().required("Vui lòng chọn giới tính"),
+    email: yup
+      .string()
+      .email("Vui lòng nhập email")
+      .required("Vui lòng nhập email"),
+  })
+  .required();
+
 const defaulValue = {
   ten: "",
   mssv: "",
@@ -114,7 +127,13 @@ function Account() {
   const { register: registerSearch, handleSubmit: handleSubmitSearch } =
     useForm();
 
-  const { register: registerEdit, handleSubmit: handleSubmitEdit } = useForm();
+  const {
+    register: registerEdit,
+    handleSubmit: handleSubmitEdit,
+    formState: { errors: errEdit },
+  } = useForm({
+    resolver: yupResolver(schema_edit),
+  });
 
   //Data form
   const createAccount = async (data) => {
@@ -258,7 +277,7 @@ function Account() {
                           Chỉnh sửa tài khoản
                         </p>
                         <form onSubmit={handleSubmitEdit(editAccount)}>
-                          <div className="mb-4">
+                          <div className="relative mb-4">
                             <p className="mb-1 font-medium">Họ tên</p>
                             <input
                               type="text"
@@ -266,8 +285,11 @@ function Account() {
                               {...registerEdit("hoten")}
                               className="w-full py-2 px-4 border border-gray-600 rounded-md outline-none"
                             />
+                            <p className="absolute text-[12px] text-red-600">
+                              {errEdit.hoten?.message}
+                            </p>
                           </div>
-                          <div className="mb-4">
+                          <div className="relative mb-4">
                             <p className="mb-1 font-medium">Bộ môn</p>
                             <select
                               name="bomon"
@@ -278,8 +300,11 @@ function Account() {
                               <option value="2">2</option>
                               <option value="3">3</option>
                             </select>
+                            <p className="absolute text-[12px] text-red-600">
+                              {errEdit.bomon?.message}
+                            </p>
                           </div>
-                          <div className="mb-4">
+                          <div className="relative mb-4">
                             <p className="mb-1 font-medium">Chức vụ</p>
                             <select
                               name="chucvu"
@@ -290,8 +315,11 @@ function Account() {
                               <option value="2">2</option>
                               <option value="3">3</option>
                             </select>
+                            <p className="absolute text-[12px] text-red-600">
+                              {errEdit.chucvu?.message}
+                            </p>
                           </div>
-                          <div className="mb-4">
+                          <div className="relative mb-4">
                             <p className="mb-1 font-medium">Mã số</p>
                             <input
                               type="text"
@@ -299,9 +327,12 @@ function Account() {
                               {...registerEdit("maso")}
                               className="w-full py-2 px-4 border border-gray-600 rounded-md outline-none"
                             />
+                            <p className="absolute text-[12px] text-red-600">
+                              {errEdit.maso?.message}
+                            </p>
                           </div>
 
-                          <div className="relative flex gap-2 items-center">
+                          <div className="relative flex gap-2 items-center mt-5">
                             <p className="mb-1 font-medium">Giới tính</p>
                             <input
                               id="nam"
@@ -319,11 +350,11 @@ function Account() {
                               type="radio"
                             />
                             <label htmlFor="nu">Nữ</label>
-                            <p className="absolute -bottom-4 text-[12px] text-red-600">
-                              {errors.gioitinh?.message}
+                            <p className="absolute -bottom-2 text-[12px] text-red-600">
+                              {errEdit.gioitinh?.message}
                             </p>
                           </div>
-                          <div className="mb-4">
+                          <div className="relative mt-3 mb-4">
                             <p className="mb-1 font-medium">Email</p>
                             <input
                               type="text"
@@ -331,6 +362,9 @@ function Account() {
                               {...registerEdit("email")}
                               className="w-full py-2 px-4 border border-gray-600 rounded-md outline-none"
                             />
+                            <p className="absolute text-[12px] text-red-600">
+                              {errEdit.email?.message}
+                            </p>
                           </div>
                           <div className="flex justify-end gap-4">
                             <button
