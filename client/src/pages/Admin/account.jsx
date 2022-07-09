@@ -291,12 +291,61 @@ function Account() {
                               <option value="3">3</option>
                             </select>
                           </div>
-                          <button
-                            type="submit"
-                            className="block ml-auto mr-0 py-2 px-4 min-w-[100px] bg-yellow-400 rounded-md font-medium shadow-md"
-                          >
-                            Sửa
-                          </button>
+                          <div className="mb-4">
+                            <p className="mb-1 font-medium">Mã số</p>
+                            <input
+                              type="text"
+                              name="maso"
+                              {...registerEdit("maso")}
+                              className="w-full py-2 px-4 border border-gray-600 rounded-md outline-none"
+                            />
+                          </div>
+
+                          <div className="relative flex gap-2 items-center">
+                            <p className="mb-1 font-medium">Giới tính</p>
+                            <input
+                              id="nam"
+                              name="gioitinh"
+                              value="nam"
+                              {...registerEdit("gioitinh")}
+                              type="radio"
+                            />
+                            <label htmlFor="nam">Nam</label>
+                            <input
+                              id="nu"
+                              name="gioitinh"
+                              value="nu"
+                              {...registerEdit("gioitinh")}
+                              type="radio"
+                            />
+                            <label htmlFor="nu">Nữ</label>
+                            <p className="absolute -bottom-4 text-[12px] text-red-600">
+                              {errors.gioitinh?.message}
+                            </p>
+                          </div>
+                          <div className="mb-4">
+                            <p className="mb-1 font-medium">Email</p>
+                            <input
+                              type="text"
+                              name="email"
+                              {...registerEdit("email")}
+                              className="w-full py-2 px-4 border border-gray-600 rounded-md outline-none"
+                            />
+                          </div>
+                          <div className="flex justify-end gap-4">
+                            <button
+                              onClick={() => handleCloseEditAccount()}
+                              className="py-2 px-4 min-w-[100px] border border-yellow-400 rounded-md font-medium shadow-md"
+                            >
+                              Hủy
+                            </button>
+                            <button
+                              type="submit"
+                              className="py-2 px-4 min-w-[100px] bg-yellow-400 rounded-md font-medium shadow-md"
+                            >
+                              Sửa
+                            </button>
+                          </div>
                         </form>
                       </Box>
                     </Modal>
