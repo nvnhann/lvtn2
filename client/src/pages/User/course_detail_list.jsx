@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { getUserInfo } from "../../reducers/profile";
 import { formatDate } from "../../utils/formatDate";
 import { BsFillEyeSlashFill } from "react-icons/bs";
-import { IoEyeSharp } from "react-icons/io5";
+import { IoClose, IoEyeSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import EditPost from "./edit_post";
 
@@ -318,7 +318,14 @@ function CourseDetailList() {
                     aria-describedby="modal-modal-description"
                   >
                     <Box sx={styleEditPost}>
-                      <EditPost data={dataModal} />
+                      <div className="relative">
+                        <IoClose
+                          onClick={handleCloseEdit}
+                          className="absolute right-0 top-1 cursor-pointer"
+                          size={30}
+                        />
+                        <EditPost data={dataModal} />
+                      </div>
                     </Box>
                   </Modal>
                 </div>
