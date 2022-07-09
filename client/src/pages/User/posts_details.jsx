@@ -74,10 +74,7 @@ function PostsDetails() {
 
           {comment === "" ? (
             <>
-              <div
-                onClick={() => submitComment()}
-                className="absolute right-[3px] top-[2px] pl-3 p-2 bg-slate-200 rounded-full opacity-60 cursor-not-allowed shadow-md active:bg-slate-300 duration-300"
-              >
+              <div className="absolute right-[3px] top-[2px] pl-3 p-2 bg-slate-200 rounded-full opacity-60 cursor-not-allowed shadow-md active:bg-slate-300 duration-300">
                 <IoSend className="block" size={20} color="#2554A6" />
               </div>
             </>
