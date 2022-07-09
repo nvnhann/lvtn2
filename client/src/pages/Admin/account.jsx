@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { AiTwotoneFileExcel, AiOutlineSearch } from "react-icons/ai";
-import { DataGrid } from "@mui/x-data-grid";
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import { getData, postData } from "../../utils/httpProvider";
 import { API_BASE_URL } from "../../config/configUrl";
 import {
@@ -21,6 +21,7 @@ import {
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import { useSnackbar } from "notistack";
+import {Edit} from "@mui/icons-material";
 
 const styleAddAccount = {
   position: "absolute",
@@ -220,7 +221,7 @@ function Account() {
                 </TableCell>
                 <TableCell>
                   <Box sx={{ "& button": { m: 1 } }}>
-                    {e?.active === 1 ? (
+                    {e?.active ? (
                       <Button
                         variant="contained"
                         sx={{ textTransform: "none" }}
@@ -243,10 +244,20 @@ function Account() {
                       onClick={() => handleOpenEditAccount()}
                       className="ml-2"
                       variant="contained"
+                      endIcon={<Edit />}
                       sx={{ textTransform: "none" }}
                     >
                       Chỉnh sửa
                     </Button>
+                    <Button
+                      className="ml-2"
+                      variant="contained"
+                      endIcon={<SettingsApplicationsIcon />}
+                      sx={{ textTransform: "none" }}
+                    >
+                      Đặt lại mặt khẩu
+                    </Button>
+
                     <Modal
                       open={openEditAccount}
                       onClose={handleCloseEditAccount}

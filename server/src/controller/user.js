@@ -96,6 +96,10 @@ const login = async (req, res) => {
         const { maso, pwd } = req.body;
         console.log('maso', maso)
         const user = await AuthenticateService.verifyUser(maso,pwd);
+        if(!user.active) return res.status(400).json({
+            code: "Error",
+            message: "Tài khoản không truy cập được vui lòng liên hệ quản trị viên"
+        });
         if (user !== null) {
             let token = TokenUtils.createToken(user);
             res.status(200).json({
@@ -164,6 +168,9 @@ const createUser = async(req, res)=>{
         const { user } = req.body;
         const u = await UserService.getByMaSo(user.maso)
         if(u) return res.status(500).send({message: "Mã số đã tồn tại!"});
+        let e = await UserService.getByEmail(user.email);
+        if(e) return res.status(500).send({message: "Email đã tồn tại!"});
+
         const pass = makepass(8)
         user.mat_khau = await bcrypt.hash(pass,10);
         await UserService.createUser(user);
@@ -186,6 +193,31 @@ const createUser = async(req, res)=>{
     }
 }
 
+const resetPwd = async (req, res) => {
+    try{
+        const {maso} = req.body;
+        const pass = makepass(8)
+        const mat_khau = await bcrypt.hash(pass,10);
+        await UserService.updatePwd(maso, mat_khau);
+        const user = await UserService.getByMaSo(maso);
+        const subject_email = 'Cấp lại mật khẩu tài khoản CIT';
+        const content = `
+            <div>
+            <div style="color: #002984">Xin chào!</div>    
+            <h1>${user.ho_ten}</h1>
+            <p>Tài khoản CIT của bạn là: </p>
+            <p>Tài khoản: ${user.maso}</p>
+            <p>Mật khẩu: ${pass}</p>
+            </div>
+        `;
+        sendMail(user.email,subject_email,content);
+        return res.status(200).json({message: 'thanh cong'})
+        return res.status(200).json({success: true, message: 'successfully!'})
+    }catch (error) {
+        console.log(error)
+        return res.status(500).json({err: error})
+    }
+}
 module.exports = {
     getAll,
     login,
@@ -194,5 +226,7 @@ module.exports = {
     uploadFile,
     uploadAvatar,
     updatePwd,
-    createUser
+    createUser,
+    resetPwd
+
 }

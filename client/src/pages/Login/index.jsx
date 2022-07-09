@@ -29,7 +29,6 @@ function Login() {
             const ms = data?.maso.toUpperCase();
             data.ms = ms;
             const res = await $http.postData(CONFIG.API_BASE_URL + '/user/login', data);
-            console.log('data', res.data)
             if (res.data.data !== undefined) {
                 TokenUtils.setToken(JSON.stringify(res.data.data));
                 dispatch(fnGetUserInfo(res.data.maso))
@@ -39,7 +38,7 @@ function Login() {
         } catch (error) {
             enqueueSnackbar(error.response.data.message, {
                 variant: "error",
-                autoHideDuration: 2000,
+                autoHideDuration: 3000,
             });
 
         }

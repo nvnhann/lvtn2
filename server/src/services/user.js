@@ -1,6 +1,7 @@
 const {User, Group, BoMon, Avatar} = require("../database/models");
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
 const getAll = async (search) => {
     if (search) {
         return await User.findAll({
@@ -41,6 +42,17 @@ const getByMaSo = async maso => {
         }]
     })
 };
+
+const getByEmail = async email => {
+    if (!email) return;
+    return User.findOne({
+        where: {email: email},
+        include: [{
+            model: Group
+        }]
+    })
+};
+
 
 const getGiangVienByMaSo = async maso => {
     if (!maso) return;
@@ -116,5 +128,6 @@ module.exports = {
     getUserByMaso,
     updatePwd,
     createUser,
-    getGiangVienByMaSo
+    getGiangVienByMaSo,
+    getByEmail
 }
