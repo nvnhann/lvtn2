@@ -28,6 +28,7 @@ function MyProfile() {
   const [check, setCheck] = useState(false);
   const [tailieu, setTailieu] = useState([]);
   const [khoahoc, setKhoaHoc] = useState([]);
+  const [role, setRole] = useState("");
 
   const {
     register,
@@ -42,6 +43,7 @@ function MyProfile() {
         CONFIG.API_BASE_URL + "/user/profile/" + id
       );
       setProfile(res.data);
+      setRole(res.data.role[0]?.groupname);
       setImageUrl([
         { url: CONFIG.API_BASE_URL + "/avatar/" + res.data?.avatar?.path_name },
       ]);
@@ -178,12 +180,14 @@ function MyProfile() {
                   uploadImage(e);
                 }}
               />
-              <AiOutlineCloudUpload
-                onClick={btnActive}
-                size={30}
-                color="#F38E46"
-                className="absolute bottom-1 right-1 cursor-pointer"
-              />
+              {user?.maso === profile?.maso && (
+                <AiOutlineCloudUpload
+                  onClick={btnActive}
+                  size={30}
+                  color="#F38E46"
+                  className="absolute bottom-1 right-1 cursor-pointer"
+                />
+              )}
               <div className="mt-2">
                 {check && (
                   <button
@@ -199,10 +203,13 @@ function MyProfile() {
           <div className="w-[70%]">
             <p className="text-[25px] font-bold uppercase">{profile?.ho_ten}</p>
             <p>
-              <strong>{t("infor.no")}: </strong> {profile?.maso}
+              <strong>
+                {role === "GIANGVIEN" ? t("infor.no2") : t("infor.no1")}:{" "}
+              </strong>
+              {profile?.maso}
             </p>
             <p>
-              <strong>{t("infor.gender")}: </strong>{" "}
+              <strong>{t("infor.gender")}: </strong>
               {profile?.gioi_tinh ? "Nam" : "Nữ"}
             </p>
             <p>
@@ -297,7 +304,7 @@ function MyProfile() {
                           className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
                           type="text"
                           name="dia_chi"
-                          placeholder={`${t('infor.address')}`}
+                          placeholder={`${t("infor.address")}`}
                           {...register("dia_chi", {
                             value: profile?.dia_chi,
                             required: true,
@@ -307,7 +314,7 @@ function MyProfile() {
                           className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
                           type="text"
                           name="sdt"
-                          placeholder={`${t('infor.phone')}`}
+                          placeholder={`${t("infor.phone")}`}
                           {...register("sdt", {
                             value: profile?.sdt,
                             required: true,
@@ -340,7 +347,11 @@ function MyProfile() {
         </div>
       </div>
       <div className="mt-5">
-        <p className="text-[20px] font-bold">{t("title.registered_course")}</p>
+        <p className="text-[20px] font-bold">
+          {role === "GIANGVIEN"
+            ? t("title.course")
+            : t("title.registered_course")}
+        </p>
         <div className="grid grid-cols-4 gap-2 mt-3 p-3 text-center bg-[#D9D9D9] rounded-md">
           {khoahoc.length > 0 &&
             khoahoc?.map((e, idx) => {

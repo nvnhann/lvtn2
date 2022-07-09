@@ -48,7 +48,8 @@
     "update": "Update",
     "lecturer": "Lecturer",
     "student": "Student",
-    "member": "Member"
+    "member": "Member",
+    "course": "Course"
   },
   "infor": {
     "name": "Full name",

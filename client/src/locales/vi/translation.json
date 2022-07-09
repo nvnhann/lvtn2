@@ -48,11 +48,13 @@
     "update": "Cập nhật",
     "lecturer": "Giảng viên",
     "student": "Sinh viên",
-    "member": "Thành viên"
+    "member": "Thành viên",
+    "course": "Khóa học"
   },
   "infor": {
     "name": "Họ và tên",
-    "no": "MSSV",
+    "no1": "MSSV",
+    "no2": "Mã số",
     "gender": "Giới tính",
     "birthday": "Ngày sinh",
     "address": "Địa chỉ",
