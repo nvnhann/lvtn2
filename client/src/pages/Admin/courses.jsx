@@ -67,6 +67,7 @@ function Course() {
         register,
         handleSubmit,
         formState: {errors},
+        reset
     } = useForm({resolver: yupResolver(schema)});
 
     const {register: registerSearch, handleSubmit: handleSubmitSearch} =
@@ -94,10 +95,7 @@ function Course() {
                 active: active,
             };
             await $http.postData(CONFIG.API_BASE_URL + "/course/active", dt);
-            enqueueSnackbar("Cập nhật thành công!", {
-                variant: "success",
-                autoHideDuration: 3000,
-            });
+            enqueueSnackbar(active === 1 ? 'Đã hiện khóa học' : 'Đã ẩn khóa học', {variant: "success", autoHideDuration: 3000});
             setLoad((e) => e + 1);
         } catch (e) {
             console.log(e);

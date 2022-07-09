@@ -18,6 +18,14 @@ const getBomonById = async (id) => {
     })
 }
 
+const getBoMonByName = async (name) =>{
+    return await BoMon.findOne({
+        where: {
+            name: name
+        }
+    })
+}
+
 const updateNameById = async (id, name) => {
     if (id && name) {
         const bm = await BoMon.findOne({
@@ -50,5 +58,6 @@ module.exports = {
     updateNameById,
     updateStatusById,
     getBomonById,
-    createBoMon
+    createBoMon,
+    getBoMonByName
 }

@@ -17,8 +17,6 @@ const createTaiLieu = async (maso, tailieu) => {
                 maso: maso,
             },
         });
-        console.log('=======================')
-        console.log(user)
 
         if (user) {
             tl = await TaiLieu.create(tl);

@@ -46,10 +46,15 @@ function BoMon(props) {
 
     useEffect(() => {
         (async () => {
-            const res = await $http.getData(CONFIG.API_BASE_URL + '/bomon');
-            setData(res.data);
+            try{
+                const res = await $http.getData(CONFIG.API_BASE_URL + '/bomon');
+                setData(res.data);
+            }catch(e){
+                console.log(e)
+            }
         })()
     }, [load]);
+
 
     const creatBoMon = async () =>{
        try{
@@ -59,6 +64,10 @@ function BoMon(props) {
            enqueueSnackbar('Thêm thành công', {variant: 'success', autoHideDuration: 3000});
        }catch (e) {
            console.log(e)
+           enqueueSnackbar(e.response.data.message, {
+               variant: "error",
+               autoHideDuration: 2000,
+           });
        }
     }
 
@@ -67,7 +76,7 @@ function BoMon(props) {
             if(!tenBoMonEdit) return enqueueSnackbar('Không được bỏ trống!', {variant: 'error', autoHideDuration: 3000});
             await putData(API_BASE_URL+'/bomon', {id: id, name: tenBoMonEdit});
             setLoad(e => e+1)
-            enqueueSnackbar('Thêm thành công', {variant: 'success', autoHideDuration: 3000});
+            enqueueSnackbar('Chỉnh sửa thành thành công', {variant: 'success', autoHideDuration: 3000});
             setId(null);
             setOpen(false)
         }catch (e) {
@@ -78,6 +87,7 @@ function BoMon(props) {
     const updateStatus = async (id, status) =>{
         try{
             await postData(API_BASE_URL+'/bomon/status', {id: id, status: status});
+            enqueueSnackbar(status === 1 ? 'Đã hiện bộ môn' : 'Đã ẩn bộ môn', {variant: "success", autoHideDuration: 3000});
             setLoad(e => e+1)
         }catch (e) {
             console.log(e)
@@ -137,7 +147,7 @@ function BoMon(props) {
                              type="text"
                              value={tenBoMonEdit}
                              onChange={(e) => setTenBoMonEdit(e.target.value)}
-                             placeholder="Ten bo mon"
+                             placeholder="Tên bộ môn"
                          />
                      </div>
                         <div className="flex justify-end gap-2">

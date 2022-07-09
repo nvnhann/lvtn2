@@ -5,6 +5,7 @@ const multer = require('multer');
 const db = require('../database/models');
 const bcrypt = require('bcryptjs');
 const sendMail = require('../services/mail');
+const TaiLieuService = require("../services/tailieu");
 
 function makepass(length) {
     let result           = '';
@@ -94,13 +95,12 @@ const getProfileByMaSo = async (req, res)=>{
 const login = async (req, res) => {
     try{
         const { maso, pwd } = req.body;
-        console.log('maso', maso)
         const user = await AuthenticateService.verifyUser(maso,pwd);
-        if(!user.active) return res.status(400).json({
-            code: "Error",
-            message: "Tài khoản không truy cập được vui lòng liên hệ quản trị viên"
-        });
         if (user !== null) {
+            if(!user.active) return res.status(400).json({
+                code: "Error",
+                message: "Tài khoản không truy cập được vui lòng liên hệ quản trị viên"
+            });
             let token = TokenUtils.createToken(user);
             res.status(200).json({
               code: "Success",
@@ -193,6 +193,23 @@ const createUser = async(req, res)=>{
     }
 }
 
+const editUser = async(req, res)=>{
+    try {
+        const { user } = req.body;
+        console.log(user)
+        const u = await UserService.getById(user.id)
+        if(u.maso !== user.maso && await UserService.getByMaSo(user.maso)) return res.status(500).send({message: "Mã số đã tồn tại!"});
+        if(u.email !== user.email && await UserService.getByEmail(user.email) ) return res.status(500).send({message: "Email đã tồn tại!"});
+        await UserService.eidtUser(user);
+        return res.status(200).json({message: 'thanh cong'})
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({err: error})
+    }
+}
+
+
 const resetPwd = async (req, res) => {
     try{
         const {maso} = req.body;
@@ -218,6 +235,15 @@ const resetPwd = async (req, res) => {
         return res.status(500).json({err: error})
     }
 }
+const setActiveUser = async (req, res) => {
+    try{
+        await UserService.setActiveUser(req.body.id, req.body.active);
+        res.status(200).json({message: 'Thành công'})
+    }  catch (e) {
+        console.log(e);
+        res.status(200).json({message: e})
+    }
+}
 module.exports = {
     getAll,
     login,
@@ -227,6 +253,7 @@ module.exports = {
     uploadAvatar,
     updatePwd,
     createUser,
-    resetPwd
-
+    resetPwd,
+    editUser,
+    setActiveUser
 }

@@ -1,15 +1,14 @@
 import "../../assets/css/styles.css";
 import React from "react";
 import {Link, Navigate, Route, Routes} from "react-router-dom";
-import {AiOutlineUser} from "react-icons/ai";
 import {BsNewspaper} from "react-icons/bs";
 import {FiUsers} from "react-icons/fi";
 
 import Account from "./account";
-import Student from "./student";
-import Lecturer from "./lecturers";
+
 import Course from "./courses";
 import BoMon from "./bomon";
+import LinhVuc from "./LinhVuc";
 
 function Admin() {
     return (
@@ -41,6 +40,13 @@ function Admin() {
                                 <p className="">Khóa học</p>
                             </div>
                         </Link>
+                        <Link to="/admin/linhvuc">
+                            <div
+                                className="flex gap-5 items-center w-[90%] mx-auto my-2 px-5 py-3 hover:bg-[#42C2FF] hover:text-white rounded-md duration-300 cursor-pointer">
+                                <BsNewspaper size={25}/>
+                                <p className="">Lĩnh vực</p>
+                            </div>
+                        </Link>
 
                     </div>
                 </div>
@@ -62,6 +68,7 @@ function Admin() {
                         <Route path="/accounts" element={<Account/>}/>
                         <Route path="/courses" element={<Course/>}/>
                         <Route path="/bomon" element={<BoMon/>}/>
+                        <Route path="/linhvuc" element={<LinhVuc/>}/>
                     </Routes>
                 </div>
             </div>

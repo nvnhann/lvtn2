@@ -158,6 +158,11 @@ function User() {
                 {t("sidebar.paper")}
               </p>
             </Link>
+            <Link to="/app/article">
+              <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
+                Luận văn
+              </p>
+            </Link>
             <Link to="/app/lich-thuc-hanh">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 {t("sidebar.schedule")}

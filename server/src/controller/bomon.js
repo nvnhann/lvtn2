@@ -45,6 +45,8 @@ const updateStatusById = async (req, res)=>{
 
 const createBoMon = async (req, res) =>{
     try{
+        const b = await BoMonService.getBoMonByName(req.body.tenbomon);
+        if(b) return res.status(500).send({message: "Tên bộ môn đã tồn tại!"});
         await BoMonService.createBoMon(req.body.tenbomon);
         res.status(200).json({
             success: true,

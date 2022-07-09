@@ -15,6 +15,17 @@ import { useEffect } from "react";
 import { MdOutlineDataSaverOn } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
+const formatDate = (date) =>{
+  const today = new Date(date);
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // Months start at 0!
+  let dd = today.getDate();
+
+  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = '0' + mm;
+
+  return dd + '/' + mm + '/' + yyyy;
+}
 //---------------------------------------------------------------------------------
 function MyProfile() {
   const { id } = useParams();
@@ -150,7 +161,6 @@ function MyProfile() {
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
       />
     );
-  console.log(tailieu);
 
   const saveTaiLieu = async (id, idtl) => {
     console.log(id, idtl);
@@ -213,7 +223,7 @@ function MyProfile() {
               {profile?.gioi_tinh ? "Nam" : "Nữ"}
             </p>
             <p>
-              <strong>{t("infor.birthday")}:</strong> {profile?.ngay_sinh}
+              <strong>{t("infor.birthday")}:</strong> {formatDate(profile?.ngay_sinh)}
             </p>
             <p>
               <strong>Email: </strong> {profile?.email}
@@ -262,7 +272,7 @@ function MyProfile() {
                           name="ngay_sinh"
                           placeholder={`${t("infor.birthday")}`}
                           {...register("ngay_sinh", {
-                            value: profile?.ngay_sinh,
+                            value: new Date(profile.ngay_sinh),
                             required: true,
                           })}
                         />

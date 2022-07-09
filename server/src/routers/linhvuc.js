@@ -1,9 +1,12 @@
 import { checkToken } from '../helper/middleware';
-const asyncHandler = require('express-async-handler');
 const { Router } = require('express');
 const router = Router();
 const LinhVucController = require('../controller/linhvuc');
+const asyncHandler = require('express-async-handler');
 
 router.get('/linhvuc', asyncHandler(LinhVucController.getAll))
+router.post('/linhvuc',asyncHandler(LinhVucController.createLinhVuc));
+router.put("/linhvuc", asyncHandler(LinhVucController.updateNameById));
+router.post("/linhvuc/status", asyncHandler(LinhVucController.updateStatusById));
 
 export default router;

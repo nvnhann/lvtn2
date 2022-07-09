@@ -12,6 +12,7 @@ const mailPort = 587;
  * @param htmlcontent
  * @returns {*}
  */
+
 module.exports= function (to, subject, htmlcontent){
     const transporter = nodemail.createTransport({
         service: 'gmail',
