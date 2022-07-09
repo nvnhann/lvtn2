@@ -53,7 +53,8 @@
   },
   "infor": {
     "name": "Full name",
-    "no": "No",
+    "no1": "No",
+    "no2": "No",
     "gender": "Gender",
     "birthday": "Birthday",
     "address": "Address",
