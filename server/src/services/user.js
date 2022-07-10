@@ -121,14 +121,14 @@ const createUser = async (user) => {
     usr.email = user.email;
     usr.ho_ten = user.ho_ten;
     usr.mat_khau = user.mat_khau;
-    usr.gioi_tinh = usr.gioi_tinh;
+    usr.gioi_tinh = user.gioi_tinh;
 
     const u = await User.create(usr);
     const g = await Group.findOne({where: {id: user.gId}});
     const b = await BoMon.findOne({where: {id: user.bId}});
     await g.setUser(u, {through: 'membership'});
     await b.setUser(u);
-    console.log(user)
+    console.log(usr)
     return;
 
 }
@@ -143,7 +143,7 @@ const eidtUser = async (user) => {
     usr.maso = user.maso;
     usr.email = user.email;
     usr.ho_ten = user.ho_ten;
-    usr.gioi_tinh = usr.gioi_tinh;
+    usr.gioi_tinh = user.gioi_tinh;
     const g = await Group.findOne({where: {id: user.gId}});
     const b = await BoMon.findOne({where: {id: user.bId}});
     await sequelize.query('DELETE FROM membership WHERE `membership`.`user_id` = ' + usr.id + ' AND `membership`.`group_id` = ' + usr.groups[0].id)
@@ -170,7 +170,7 @@ const userSearch = async (search) => {
     rs.taikhoan = gv;
     const kh = await db.sequelize.query('SELECT kh.ma_khoa_hoc, ctkh.id, kh.ten_khoa_hoc, u.ho_ten, u.maso, u.id as idgv, ctkh.active  , avatar.path_name \
     from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m \
-    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND kh.ten_khoa_hoc like '+`'%${search}%'` )
+    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND kh.ten_khoa_hoc like '+`'%${search}%'` ,{type: db.sequelize.QueryTypes.SELECT})
     rs.kh = kh;
     const tl = await TaiLieu.findAll({
         where: {
@@ -178,7 +178,13 @@ const userSearch = async (search) => {
                 [Op.like]: `%${search}%`
             },
             active: 1
-        }
+        },
+        include: [{
+            model: User,
+            where: {
+                active: 1
+            }
+        }]
     });
     rs.tl =tl
     const lv = await LinhVuc.findAll({

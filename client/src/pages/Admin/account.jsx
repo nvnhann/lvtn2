@@ -145,7 +145,7 @@ function Account() {
       usr.maso = data.mssv.toUpperCase();
       usr.email = data.email;
       usr.ho_ten = data.ten;
-      usr.gioi_tinh = data.gioi_tinh === "nam" ? 1 : 0;
+      usr.gioi_tinh = data.gioitinh === "nam" ? 1 : 0;
       usr.gId = data.chucvu;
       usr.bId = data.bomon;
       await postData(API_BASE_URL + "/user", { user: usr });
@@ -168,10 +168,11 @@ function Account() {
   const editAccount = async (data) => {
     try {
       let usr = {};
+      console.log(usr)
       usr.maso = data.maso.toUpperCase();
       usr.email = data.email;
       usr.ho_ten = data.hoten;
-      usr.gioi_tinh = data.gioi_tinh === "nam" ? 1 : 0;
+      usr.gioi_tinh = data.gioitinh === "nam" ? 1 : 0;
       usr.gId = data.chucvu;
       usr.bId = data.bomon;
       usr.id = data.id;
