@@ -87,7 +87,6 @@ const setActiveTaiLieu = async (req, res) => {
 const saveTaiLieu = async (req, res) => {
   try {
     const {id, idtl} = req.body;
-    console.log('==========================',req.body)
      await TaiLieuService.saveTaiLieu(id, idtl)
     res.status(200).json({message: 'Thành công'})
   }catch (e){
@@ -105,6 +104,14 @@ const getTaiLieuSave = async (req, res) =>{
   }
 }
 
+const getTaiLieuByLinhVuc = async (req, res) =>{
+  try{
+    res.status(200).json(await TaiLieuService.getTaiLieuByLinhVuc(req.params.linhvuc));
+  }catch (e) {
+    console.log(e);
+    res.status(400).json({message: e})
+  }
+}
 module.exports = {
   createTaiLieu,
   uploadFile,
@@ -114,5 +121,5 @@ module.exports = {
   deleteTaiLieuById,
   setActiveTaiLieu,
   saveTaiLieu,
-  getTaiLieuSave
+  getTaiLieuSave, getTaiLieuByLinhVuc
 };

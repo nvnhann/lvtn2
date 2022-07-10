@@ -6,6 +6,7 @@ const TaiLieuController = require('../controller/tailieu');
 
 router.post('/tailieu', [checkToken, TaiLieuController.uploadFile, TaiLieuController.createTaiLieu])
 router.get('/tailieugv/:maso', [TaiLieuController.getTailieuByMaso]);
+router.get('/tailieulv/:linhvuc', [TaiLieuController.getTaiLieuByLinhVuc]);
 router.post('/tailieu/active', asyncHandler(TaiLieuController.setActiveTaiLieu))
 router.post('/tailieu/save', asyncHandler(TaiLieuController.saveTaiLieu));
 router.get('/tailieu/save',[ checkToken,asyncHandler(TaiLieuController.getTaiLieuSave)])

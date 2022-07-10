@@ -244,6 +244,15 @@ const setActiveUser = async (req, res) => {
         res.status(200).json({message: e})
     }
 }
+
+const userSearch = async (req, res) =>{
+    try{
+        res.status(200).json(await UserService.userSearch(req.params.search))
+    }  catch (e) {
+        console.log(e);
+        res.status(200).json({message: e})
+    }
+}
 module.exports = {
     getAll,
     login,
@@ -255,5 +264,6 @@ module.exports = {
     createUser,
     resetPwd,
     editUser,
-    setActiveUser
+    setActiveUser,
+    userSearch
 }

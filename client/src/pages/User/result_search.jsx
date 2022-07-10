@@ -23,6 +23,7 @@ function ResultSearch() {
               <Tab label="Giáo viên" value="3" />
               <Tab label="Sinh viên" value="4" />
               <Tab label="Bài báo" value="5" />
+              <Tab label="Lĩnh vực" value="6" />
             </TabList>
           </Box>
           <TabPanel value="1">

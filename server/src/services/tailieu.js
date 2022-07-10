@@ -66,6 +66,30 @@ const getTailieuByMaso = async (maso, search) => {
     }
 };
 
+const getTaiLieuByLinhVuc = async(name) =>{
+    return await TaiLieu.findAll({
+        where:{
+            active: 1
+        },
+        include: [
+            {
+                model: User,
+                where: {
+                    active: 1
+                }
+            },
+            {
+                model: LinhVuc,
+                where: {
+                    active: 1,
+                    name: {
+                        [Op.like]: `%${name}%`
+                    },
+                }
+            },
+        ],
+    });
+}
 
 const getTailieuById = async (id) => {
     return await TaiLieu.findByPk(id, {
@@ -128,4 +152,5 @@ module.exports = {
     setActiveTaiLieu,
     saveTaiLieu,
     getTaiLieuSave,
+    getTaiLieuByLinhVuc
 };

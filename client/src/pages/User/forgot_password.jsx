@@ -98,7 +98,7 @@ function ForgotPassword() {
               {...register("renewpwd")}
             />
             {errors.renewpwd && (
-              <span className="absolute top-11 right-[325px] text-[12px] text-red-500">
+              <span className="absolute top-11 left-[325px] text-[12px] text-red-500">
                 {errors.renewpwd.message}
               </span>
             )}
