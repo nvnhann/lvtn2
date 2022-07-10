@@ -131,11 +131,19 @@ const saveTaiLieu = async (id, idtl) =>{
 
 }
 
+const unSaveTaiLieu = async (id, idtl) =>{
+    return await db.sequelize.query("DELETE FROM tl_luu WHERE `tl_luu`.`user_id` = "+id+" AND `tl_luu`.`tailieu_id` = "+idtl)
+
+}
+
 const getTaiLieuSave = async (maso) =>{
     return await User.findOne({
         where: { maso : maso},
         include: [{
             model: TaiLieu,
+            where: {
+              active: 1
+            },
             include: [{
                 model: LinhVuc
             }, {model: User}]
@@ -152,5 +160,6 @@ module.exports = {
     setActiveTaiLieu,
     saveTaiLieu,
     getTaiLieuSave,
-    getTaiLieuByLinhVuc
+    getTaiLieuByLinhVuc,
+    unSaveTaiLieu
 };

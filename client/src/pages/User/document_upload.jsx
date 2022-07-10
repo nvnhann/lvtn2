@@ -116,7 +116,10 @@ function DocumentUpload() {
     const setActiveTL = async (id, active) => {
         try {
             await $http.postData(CONFIG.API_BASE_URL + '/tailieu/active', {id: id, active: active});
-            enqueueSnackbar(active === 1 ? 'Đã hiện tài liệu' : 'Đã ẩn tài liệu', {variant: "success", autoHideDuration: 3000});
+            enqueueSnackbar(active === 1 ? 'Đã hiện tài liệu' : 'Đã ẩn tài liệu', {
+                variant: "success",
+                autoHideDuration: 3000
+            });
             setLoad(e => e + 1)
         } catch (e) {
             console.log(e)

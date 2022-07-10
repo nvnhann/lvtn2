@@ -65,6 +65,7 @@ const getAll = async (req, res)=>{
 const getProfileByMaSo = async (req, res)=>{
     try {
         const rs = await UserService.getProfileByMaSo(req.params.maso);
+        const tl = await  TaiLieuService.getTaiLieuSave(req.params.maso);
         if(rs){
             res.json({
                 id: rs.id,
@@ -77,7 +78,8 @@ const getProfileByMaSo = async (req, res)=>{
                 gioi_tinh: rs.gioi_tinh,
                 bomon: rs.bomon.name,
                 role: rs.groups,
-                avatar: rs.avatar
+                avatar: rs.avatar,
+                tl: tl?.tailieus || []
             })
         }
         else{

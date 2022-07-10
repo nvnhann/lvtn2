@@ -29,9 +29,9 @@ function Login() {
             const ms = data?.maso.toUpperCase();
             data.ms = ms;
             const res = await $http.postData(CONFIG.API_BASE_URL + '/user/login', data);
-            if (res.data.data !== undefined) {
+            if (res?.data.data !== undefined) {
                 TokenUtils.setToken(JSON.stringify(res.data.data));
-                dispatch(fnGetUserInfo(res.data.maso))
+                dispatch(fnGetUserInfo(res?.data.maso))
                 const role = profile.role;
                 if (role[0].groupname === 'SINHVIEN' || role[0].groupname === 'GIANGVIEN') navigate("/app");
             }

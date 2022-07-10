@@ -12,15 +12,20 @@ import {Link} from 'react-router-dom';
 import * as CONFIG from "../../config/configUrl";
 import {MdOutlineDataSaverOn} from "react-icons/md";
 import {useTranslation} from "react-i18next";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getUserInfo} from "../../reducers/profile";
+import {checkTL} from "../../utils/checkTaiLieu";
+import {fnSaveTaiLieu, fnUnSaveTaiLieu} from "../../actions/profile/profileAction";
+import {AiOutlineDisconnect} from "react-icons/ai";
 
 function ResultSearch() {
     const [value, setValue] = React.useState("1");
     const [data, setData] = useState([]);
     const {keyword} = useParams();
     const {t} = useTranslation();
-    const user = useSelector(state => getUserInfo(state))
+    const user = useSelector(state => getUserInfo(state));
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         (async () => {
@@ -50,10 +55,7 @@ function ResultSearch() {
                         <div className="my-2 grid grid-cols-4 gap-5 mt-5">
                             {data?.taikhoan?.map(e => (
                                 <Link key={e.id} to={`/app/user/${e.maso}`}
-                                      className="p-4 text-center font-medium bg-white rounded-md cursor-pointer">
-                <span key={e.id}>
-                  {e.ho_ten}
-                  </span>
+                                      className="p-4 text-center font-medium bg-white rounded-md cursor-pointer"><span key={e.id}>{e.ho_ten}</span>
                                 </Link>
                             ))}
                         </div>
@@ -113,7 +115,7 @@ function ResultSearch() {
                         </div>
                         <div className="grid grid-cols-4 mb-5">
                             {data?.tl?.map((e, idx) => (
-                                <div key={idx} className="bg-white p-3 rounded-md">
+                                <div key={idx} className="bg-white mr-2 p-3 rounded-md">
                                     <Link to={"/app/document/detail/" + e.id}>
                                         <div
                                             className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"></div>
@@ -135,12 +137,15 @@ function ResultSearch() {
                                         ))}
                                     </div>
                                     {user?.maso !== e.user.maso && (
-                                        <MdOutlineDataSaverOn
+                                        !checkTL(e.id, user.tl) ?  <MdOutlineDataSaverOn
                                             size={30}
                                             color="#2979ff"
                                             className="ml-auto mr-0 cursor-pointer"
-                                            // onClick={() => saveTaiLieu(user?.id, e.id)}
-                                        />
+                                            onClick={async () =>dispatch(await fnSaveTaiLieu(user.id,e.id, user.maso))}
+                                        /> :   <AiOutlineDisconnect  size={30}
+                                                                     color="#2979ff"
+                                                                     onClick={async () =>dispatch(await fnUnSaveTaiLieu(user.id,e.id, user.maso))}
+                                                                     className="ml-auto mr-0 cursor-pointer" />
                                     )}
                                 </div>
                             ))}
@@ -214,7 +219,7 @@ function ResultSearch() {
                     <TabPanel value="4">
                         <div className="grid grid-cols-4 mb-5">
                             {data?.tl?.map((e, idx) => (
-                                <div key={idx} className="bg-white p-3 rounded-md">
+                                <div key={idx} className="bg-white p-3 mr-2 rounded-md">
                                     <Link to={"/app/document/detail/" + e.id}>
                                         <div
                                             className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"></div>

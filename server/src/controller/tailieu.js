@@ -95,6 +95,17 @@ const saveTaiLieu = async (req, res) => {
   }
 }
 
+const unSaveTaiLieu = async (req, res) => {
+  try {
+    const {id, idtl} = req.body;
+    await TaiLieuService.unSaveTaiLieu(id, idtl)
+    res.status(200).json({message: 'Thành công'})
+  }catch (e){
+    console.log(e);
+    res.status(500).json({message: e})
+  }
+}
+
 const getTaiLieuSave = async (req, res) =>{
   try{
     res.status(200).json(await TaiLieuService.getTaiLieuSave(req.user.maso));
@@ -121,5 +132,7 @@ module.exports = {
   deleteTaiLieuById,
   setActiveTaiLieu,
   saveTaiLieu,
-  getTaiLieuSave, getTaiLieuByLinhVuc
+  getTaiLieuSave,
+  getTaiLieuByLinhVuc,
+  unSaveTaiLieu
 };

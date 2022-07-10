@@ -170,7 +170,7 @@ const userSearch = async (search) => {
     rs.taikhoan = gv;
     const kh = await db.sequelize.query('SELECT kh.ma_khoa_hoc, ctkh.id, kh.ten_khoa_hoc, u.ho_ten, u.maso, u.id as idgv, ctkh.active  , avatar.path_name \
     from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m \
-    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND kh.ten_khoa_hoc like '+`'%${search}%'` ,{type: db.sequelize.QueryTypes.SELECT})
+    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND (kh.ten_khoa_hoc like '+`'%${search}%'` + `OR u.ho_ten like '%${search}%')`,{type: db.sequelize.QueryTypes.SELECT})
     rs.kh = kh;
     const tl = await TaiLieu.findAll({
         where: {
@@ -182,7 +182,7 @@ const userSearch = async (search) => {
         include: [{
             model: User,
             where: {
-                active: 1
+                active: 1,
             }
         }]
     });

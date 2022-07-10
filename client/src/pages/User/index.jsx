@@ -134,7 +134,7 @@ function User() {
       <div className="flex mt-4">
         <div className="w-[20%] p-5">
           <div className="bg-[#47568A] p-4 rounded-md text-center">
-            <Link to="/app/home">
+            <Link to="/">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 {t("sidebar.suggest")}
               </p>
