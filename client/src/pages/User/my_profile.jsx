@@ -14,18 +14,31 @@ import { fnGetUserInfo } from "../../actions/profile/profileAction";
 import { useEffect } from "react";
 import { MdOutlineDataSaverOn } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-const formatDate = (date) =>{
+const formatDate = (date) => {
   const today = new Date(date);
   const yyyy = today.getFullYear();
   let mm = today.getMonth() + 1; // Months start at 0!
   let dd = today.getDate();
 
-  if (dd < 10) dd = '0' + dd;
-  if (mm < 10) mm = '0' + mm;
+  if (dd < 10) dd = "0" + dd;
+  if (mm < 10) mm = "0" + mm;
 
-  return dd + '/' + mm + '/' + yyyy;
-}
+  return dd + "/" + mm + "/" + yyyy;
+};
+
+const schema = yup
+  .object({
+    ho_ten: yup.string().required("Vui lòng nhập tên"),
+    ngay_sinh: yup.string().required("Vui lòng nhập ngày sinh"),
+    dia_chi: yup.string().required("Vui lòng nhập địa chỉ"),
+    gioi_tinh: yup.string().nullable().required("Vui lòng chọn giới tính"),
+    sdt: yup.string().required("Vui lòng nhập số điện thoại"),
+  })
+  .required();
+
 //---------------------------------------------------------------------------------
 function MyProfile() {
   const { id } = useParams();
@@ -45,7 +58,8 @@ function MyProfile() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
+
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
@@ -104,6 +118,18 @@ function MyProfile() {
   };
 
   const uploadImage = async (e) => {
+    let file = e.target.files;
+    if (
+      !(file[0]?.type === "image/jpeg" ||
+      file[0]?.type === "image/png" ||
+      file[0]?.type === "image/gif")
+    ) {
+      enqueueSnackbar("Vui lòng chọn hình ảnh", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      return;
+    }
     setListImage(e.target.files);
     const imageNumber = e.target.files.length + imageUrl.length;
     if (imageNumber <= 5) {
@@ -223,7 +249,8 @@ function MyProfile() {
               {profile?.gioi_tinh ? "Nam" : "Nữ"}
             </p>
             <p>
-              <strong>{t("infor.birthday")}:</strong> {formatDate(profile?.ngay_sinh)}
+              <strong>{t("infor.birthday")}:</strong>{" "}
+              {formatDate(profile?.ngay_sinh)}
             </p>
             <p>
               <strong>Email: </strong> {profile?.email}
@@ -256,27 +283,39 @@ function MyProfile() {
                     setShowModal={setShowModal}
                     content={
                       <>
-                        <input
-                          className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                          type="text"
-                          name="ho_ten"
-                          placeholder={`${t("infor.name")}`}
-                          {...register("ho_ten", {
-                            value: profile?.ho_ten,
-                            required: true,
-                          })}
-                        />
-                        <input
-                          className="my-4 block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                          type="date"
-                          name="ngay_sinh"
-                          placeholder={`${t("infor.birthday")}`}
-                          {...register("ngay_sinh", {
-                            value: new Date(profile.ngay_sinh),
-                            required: true,
-                          })}
-                        />
-                        <div className="flex items-center my-4">
+                        <div className="relative">
+                          <input
+                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="text"
+                            name="ho_ten"
+                            placeholder={`${t("infor.name")}`}
+                            {...register("ho_ten", {
+                              value: profile?.ho_ten,
+                              required: true,
+                            })}
+                          />
+                          <p className="absolute -bottom-5 text-[12px] text-red-600">
+                            {errors.ho_ten?.message}
+                          </p>
+                        </div>
+
+                        <div className="relative mt-8">
+                          <input
+                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="date"
+                            name="ngay_sinh"
+                            placeholder={`${t("infor.birthday")}`}
+                            {...register("ngay_sinh", {
+                              value: new Date(profile.ngay_sinh),
+                              required: true,
+                            })}
+                          />
+                          <p className="absolute -bottom-5 text-[12px] text-red-600">
+                            {errors.ngay_sinh?.message}
+                          </p>
+                        </div>
+
+                        <div className="relative flex items-center mt-6">
                           <input
                             id="default-radio-1"
                             type="radio"
@@ -309,27 +348,42 @@ function MyProfile() {
                           >
                             {t("title.female")}
                           </label>
+                          <p className="absolute -bottom-5 text-[12px] text-red-600">
+                            {errors.gioi_tinh?.message}
+                          </p>
                         </div>
-                        <input
-                          className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                          type="text"
-                          name="dia_chi"
-                          placeholder={`${t("infor.address")}`}
-                          {...register("dia_chi", {
-                            value: profile?.dia_chi,
-                            required: true,
-                          })}
-                        />
-                        <input
-                          className="block my-4 w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
-                          type="text"
-                          name="sdt"
-                          placeholder={`${t("infor.phone")}`}
-                          {...register("sdt", {
-                            value: profile?.sdt,
-                            required: true,
-                          })}
-                        />
+
+                        <div className="relative mt-6">
+                          <input
+                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="text"
+                            name="dia_chi"
+                            placeholder={`${t("infor.address")}`}
+                            {...register("dia_chi", {
+                              value: profile?.dia_chi,
+                              required: true,
+                            })}
+                          />
+                          <p className="absolute -bottom-5 text-[12px] text-red-600">
+                            {errors.dia_chi?.message}
+                          </p>
+                        </div>
+
+                        <div className="relative mt-8">
+                          <input
+                            className="block w-full px-4 py-2 border-2 border-slate-400 rounded-md outline-none"
+                            type="text"
+                            name="sdt"
+                            placeholder={`${t("infor.phone")}`}
+                            {...register("sdt", {
+                              value: profile?.sdt,
+                              required: true,
+                            })}
+                          />
+                          <p className="absolute -bottom-5 text-[12px] text-red-600">
+                            {errors.sdt?.message}
+                          </p>
+                        </div>
                       </>
                     }
                     action={
