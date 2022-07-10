@@ -1,6 +1,6 @@
-const {User, Group, BoMon, Avatar, sequelize} = require("../database/models");
-const Sequelize = require('sequelize');
+const {User, Group, BoMon, Avatar, sequelize, TaiLieu, LinhVuc} = require("../database/models");
 const db = require("../database/models");
+const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const getAll = async (search) => {
@@ -146,7 +146,7 @@ const eidtUser = async (user) => {
     usr.gioi_tinh = usr.gioi_tinh;
     const g = await Group.findOne({where: {id: user.gId}});
     const b = await BoMon.findOne({where: {id: user.bId}});
-    await sequelize.query('DELETE FROM membership WHERE `membership`.`user_id` = '+usr.id+' AND `membership`.`group_id` = '+usr.groups[0].id)
+    await sequelize.query('DELETE FROM membership WHERE `membership`.`user_id` = ' + usr.id + ' AND `membership`.`group_id` = ' + usr.groups[0].id)
     await g.addUser(usr, {through: 'membership'});
     await b.addUser(usr);
     await usr.save();
@@ -154,7 +154,44 @@ const eidtUser = async (user) => {
 
 }
 const setActiveUser = async (id, active) => {
-    await db.sequelize.query('UPDATE `user` SET `active` = '+active+' WHERE `user`.`id` = '+id);
+    await db.sequelize.query('UPDATE `user` SET `active` = ' + active + ' WHERE `user`.`id` = ' + id);
+}
+
+const userSearch = async (search) => {
+    let rs = {};
+    const gv = await User.findAll({
+        where: {
+            ho_ten: {
+                [Op.like]: `%${search}%`
+            },
+            active: 1
+        }
+    });
+    rs.taikhoan = gv;
+    const kh = await db.sequelize.query('SELECT kh.ma_khoa_hoc, ctkh.id, kh.ten_khoa_hoc, u.ho_ten, u.maso, u.id as idgv, ctkh.active  , avatar.path_name \
+    from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m \
+    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND kh.ten_khoa_hoc like '+`'%${search}%'` )
+    rs.kh = kh;
+    const tl = await TaiLieu.findAll({
+        where: {
+            name: {
+                [Op.like]: `%${search}%`
+            },
+            active: 1
+        }
+    });
+    rs.tl =tl
+    const lv = await LinhVuc.findAll({
+        where: {
+            name: {
+                [Op.like]: `%${search}%`
+            },
+            active: 1
+        }
+    }) ;
+    rs.lv = lv
+    return rs;
+
 }
 module.exports = {
     getAll,
@@ -168,5 +205,6 @@ module.exports = {
     getByEmail,
     eidtUser,
     getById,
-    setActiveUser
+    setActiveUser,
+    userSearch
 }

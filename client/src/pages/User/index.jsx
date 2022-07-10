@@ -27,6 +27,7 @@ import Test from "./test";
 import DocumentSave from "./document_save";
 import EditPost from "./edit_post";
 import PostsDetails from "./posts_details";
+import LuanVan from "./luanvan";
 //-----------------------------------------------------------------
 
 function User() {
@@ -158,7 +159,7 @@ function User() {
                 {t("sidebar.paper")}
               </p>
             </Link>
-            <Link to="/app/article">
+            <Link to="/app/luanvan">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
                 Luận văn
               </p>
@@ -182,6 +183,7 @@ function User() {
             <Route path="/document/upload" element={<DocumentUpload />} />
             <Route path="/document/save" element={<DocumentSave />} />
             <Route path="/article" element={<Article />} />
+            <Route path="/luanvan" element={<LuanVan />} />
             <Route path="/course" element={<Course />} />
             <Route
               path="/course/register-course/:id"

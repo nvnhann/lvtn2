@@ -10,7 +10,7 @@ import {MdDelete} from "react-icons/md";
 import {Link} from "react-router-dom";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import {BsFillEyeSlashFill} from "react-icons/bs";
 import {IoEyeSharp} from "react-icons/io5";
 import {useSelector} from "react-redux";
@@ -51,7 +51,7 @@ function DocumentUpload() {
             const reslv = await $http.getData(CONFIG.API_BASE_URL + "/linhvuc");
             await setLv(reslv.data);
             await setLvd(reslv.data);
-            const res = await $http.getData(CONFIG.API_BASE_URL + "/tailieugv/"+user?.maso);
+            const res = await $http.getData(CONFIG.API_BASE_URL + "/tailieugv/" + user?.maso);
             setData(res.data);
         })();
     }, [load]);
@@ -89,6 +89,7 @@ function DocumentUpload() {
                 const tl = {};
                 tl.tentailieu = values.tentailieu;
                 tl.mota = values.mota;
+                if (LV.length === 0) return;
                 tl.lv = LV;
                 const formDt = new FormData();
                 formDt.append("document", values.file[0]);
@@ -114,9 +115,10 @@ function DocumentUpload() {
 
     const setActiveTL = async (id, active) => {
         try {
-            await $http.postData(CONFIG.API_BASE_URL + '/tailieu/active',{id: id, active: active});
-            setLoad(e => e+1)
-        }catch (e) {
+            await $http.postData(CONFIG.API_BASE_URL + '/tailieu/active', {id: id, active: active});
+            enqueueSnackbar(active === 1 ? 'Đã hiện tài liệu' : 'Đã ẩn tài liệu', {variant: "success", autoHideDuration: 3000});
+            setLoad(e => e + 1)
+        } catch (e) {
             console.log(e)
         }
     }
@@ -158,8 +160,12 @@ function DocumentUpload() {
                             ))}
                         </div>
                         <div className="flex items-end my-2">
-                            {e.active && <BsFillEyeSlashFill onClick={() => setActiveTL(e.id, 0)} className="cursor-pointer" size={30} color="#2979ff"/>}
-                            {!e.active && <IoEyeSharp  onClick={() => setActiveTL(e.id, 1)}  className="cursor-pointer" size={30} color="#2979ff"/>}
+                            {e.active &&
+                                <BsFillEyeSlashFill onClick={() => setActiveTL(e.id, 0)} className="cursor-pointer"
+                                                    size={30} color="#2979ff"/>}
+                            {!e.active &&
+                                <IoEyeSharp onClick={() => setActiveTL(e.id, 1)} className="cursor-pointer" size={30}
+                                            color="#2979ff"/>}
                             <MdDelete
                                 size={30}
                                 color="#757575"
@@ -224,6 +230,7 @@ function DocumentUpload() {
                   {e.name}
                 </span>
                             ))}
+                            <span>{LV.length === 0 && 'Vui lòng chọn lĩnh vực'}</span>
                         </div>
                         <div className="flex flex-wrap justify-center space-x-2">
                             {lv?.map((e, idx) => (
