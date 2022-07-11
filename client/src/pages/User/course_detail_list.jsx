@@ -31,12 +31,12 @@ const styleFile = {
   p: 2,
 };
 
-const styleEditPost = {
+const styleDelete = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 800,
+  width: 400,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 2,
@@ -49,12 +49,12 @@ function CourseDetailList() {
   const navigate = useNavigate();
   const user = useSelector((state) => getUserInfo(state));
   const [openFile, setOpenFile] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const handleOpenFile = () => setOpenFile(true);
   const handleCloseFile = () => setOpenFile(false);
-  const handleOpenEdit = () => setOpenEdit(true);
-  const handleCloseEdit = () => setOpenEdit(false);
-  const [dataModal, setDataModal] = useState([]);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
+  const [idDelete, setIdDelete] = useState("");
   const [tailieu, setTaiLieu] = useState([]);
   const [selectTL, setSelectTL] = useState([]);
   const [search, setSearch] = useState(null);
@@ -119,6 +119,7 @@ function CourseDetailList() {
       tailieu: dt.tailieu,
     });
     setLoad((e) => e + 1);
+    setOpenEditor(false);
     enqueueSnackbar("Thêm thành công", {
       variant: "success",
       autoHideDuration: 3000,
@@ -141,6 +142,10 @@ function CourseDetailList() {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const confirmDelete = () => {
+    console.log(idDelete);
   };
 
   console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -300,34 +305,6 @@ function CourseDetailList() {
                     <span className="font-bold">{t("title.update")}: </span>
                     {formatDate(e.updatedAt)}
                   </div>
-                  {course?.kh?.maso === user.maso && (
-                    <AiTwotoneEdit
-                      onClick={() => {
-                        setDataModal(e);
-                        handleOpenEdit();
-                      }}
-                      size={25}
-                      color="#ff7961"
-                      className="ml-auto my-2 mr-0 cursor-pointer"
-                    />
-                  )}
-                  <Modal
-                    open={openEdit}
-                    onClose={handleCloseEdit}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box sx={styleEditPost}>
-                      <div className="relative">
-                        <IoClose
-                          onClick={handleCloseEdit}
-                          className="absolute right-0 top-1 cursor-pointer"
-                          size={30}
-                        />
-                        <EditPost data={dataModal} />
-                      </div>
-                    </Box>
-                  </Modal>
                 </div>
                 <div
                   className="my-2"
@@ -359,12 +336,12 @@ function CourseDetailList() {
                   ))}
                 </div>
                 {course?.kh?.maso === user.maso && (
-                  <div className="flex">
+                  <div className="flex border-t border-gray-300 mt-2 px-4">
                     <div className="my-2">
                       {e.active && (
                         <BsFillEyeSlashFill
                           onClick={() => setActiveBaiViet(e.id, 0)}
-                          className="cursor-pointer"
+                          className="cursor-pointer hover:opacity-80 duration-300"
                           size={30}
                           color="#2979ff"
                         />
@@ -372,17 +349,47 @@ function CourseDetailList() {
                       {!e.active && (
                         <IoEyeSharp
                           onClick={() => setActiveBaiViet(e.id, 1)}
-                          className="cursor-pointer"
+                          className="cursor-pointer hover:opacity-80 duration-300"
                           size={30}
                           color="#2979ff"
                         />
                       )}
                     </div>
                     <MdDelete
+                      onClick={() => {
+                        handleOpenDelete();
+                        setIdDelete(e, id);
+                      }}
                       size={30}
                       color="#757575"
-                      className="ml-auto my-2 mr-0 cursor-pointer"
+                      className="ml-auto my-2 mr-0 cursor-pointer hover:opacity-80 duration-300"
                     />
+                    <Modal
+                      open={openDelete}
+                      onClose={handleCloseDelete}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box sx={styleDelete}>
+                        <p className="text-[20px] text-center font-medium">
+                          Xác nhận xóa tài liệu
+                        </p>
+                        <div className="flex justify-center gap-5 mt-4">
+                          <button
+                            onClick={handleCloseDelete}
+                            className="py-2 px-4 bg-slate-500 text-white font-bold hover:opacity-90 active:opacity-60 duration-300 rounded-md shadow-md"
+                          >
+                            Hủy
+                          </button>
+                          <button
+                            onClick={confirmDelete}
+                            className="py-2 px-4 bg-red-500 text-white font-bold hover:opacity-90 active:opacity-60 duration-300 rounded-md shadow-md"
+                          >
+                            Xóa
+                          </button>
+                        </div>
+                      </Box>
+                    </Modal>
                   </div>
                 )}
               </div>

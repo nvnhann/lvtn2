@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoMdLock } from "react-icons/io";
 import { FaUserEdit, FaUser } from "react-icons/fa";
-import {AiOutlineCloudUpload, AiOutlineDisconnect} from "react-icons/ai";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Link, useMatch, useParams } from "react-router-dom";
 import { getUserInfo } from "../../reducers/profile";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,13 +10,12 @@ import { useForm } from "react-hook-form";
 import * as $http from "../../utils/httpProvider";
 import * as CONFIG from "../../config/configUrl";
 import { useSnackbar } from "notistack";
-import {fnGetUserInfo, fnSaveTaiLieu, fnUnSaveTaiLieu} from "../../actions/profile/profileAction";
+import { fnGetUserInfo } from "../../actions/profile/profileAction";
 import { useEffect } from "react";
 import { MdOutlineDataSaverOn } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {checkTL} from "../../utils/checkTaiLieu";
 
 const formatDate = (date) => {
   const today = new Date(date);
@@ -118,17 +117,16 @@ function MyProfile() {
     });
   };
 
-  function isFileImage(file) {
-    return file && file['type'].split('/')[0] === 'image';
-  }
-
   const uploadImage = async (e) => {
     let file = e.target.files;
-    console.log(isFileImage(file[0]))
-    if (!isFileImage(file[0])) {
-      enqueueSnackbar("Định dạng hình ảnh không hợp lê!", {
+    if (
+      !(file[0]?.type === "image/jpeg" ||
+      file[0]?.type === "image/png" ||
+      file[0]?.type === "image/gif")
+    ) {
+      enqueueSnackbar("Vui lòng chọn hình ảnh", {
         variant: "error",
-        autoHideDuration: 3000,
+        autoHideDuration: 2000,
       });
       return;
     }
@@ -464,15 +462,12 @@ function MyProfile() {
                     ))}
                   </div>
                   {user?.maso !== e.user.maso && (
-                    !checkTL(e.id, user.tl) ?  <MdOutlineDataSaverOn
+                    <MdOutlineDataSaverOn
                       size={30}
                       color="#2979ff"
                       className="ml-auto mr-0 cursor-pointer"
-                      onClick={async () =>dispatch(await fnSaveTaiLieu(user.id,e.id, user.maso))}
-                    /> :   <AiOutlineDisconnect  size={30}
-                                                 color="#2979ff"
-                                                 onClick={async () =>dispatch(await fnUnSaveTaiLieu(user.id,e.id, user.maso))}
-                                                 className="ml-auto mr-0 cursor-pointer" />
+                      onClick={() => saveTaiLieu(user?.id, e.id)}
+                    />
                   )}
                 </div>
               );

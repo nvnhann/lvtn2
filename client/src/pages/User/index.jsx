@@ -97,6 +97,15 @@ function User() {
             )}
             {show === true ? (
               <div className="absolute -right-3 w-[200px] text-center top-[60px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
+                <Link to={"/admin"}>
+                  <p
+                    onClick={() => close()}
+                    className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
+                  >
+                    {/* {t("header.profile")} */}
+                    Admin
+                  </p>
+                </Link>
                 <Link to={"/app/user/" + profile?.maso}>
                   <p
                     onClick={() => close()}
