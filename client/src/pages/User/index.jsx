@@ -170,7 +170,7 @@ function User() {
             </Link>
             <Link to="/app/luanvan">
               <p className="block my-4 mx-auto py-2 px-4 w-[90%] rounded-md bg-white cursor-pointer">
-                Luận văn
+                {t("sidebar.dissertation")}
               </p>
             </Link>
             <Link to="/app/lich-thuc-hanh">

@@ -12,7 +12,8 @@
     "lectures": "Giảng viên",
     "my_doc": "Tài liệu của tôi",
     "paper": "Bài báo",
-    "schedule": "Lịch thực hành"
+    "schedule": "Lịch thực hành",
+    "dissertation": "Luận văn"
   },
   "button": {
     "saved": "Đã lưu",
@@ -23,7 +24,9 @@
     "add_document": "Thêm tài liệu",
     "change_password": "Đổi mật khẩu",
     "edit_information": "Chỉnh sửa thông tin",
-    "post": "Đăng"
+    "post": "Đăng",
+    "registered_course": "Ghi danh khóa học",
+    "delete": "Xóa"
   },
   "title": {
     "document": "Tài liệu",
@@ -49,7 +52,10 @@
     "lecturer": "Giảng viên",
     "student": "Sinh viên",
     "member": "Thành viên",
-    "course": "Khóa học"
+    "course": "Khóa học",
+    "fields": "Lĩnh vực",
+    "enter_fields": "Vui lòng chọn lĩnh vực",
+    "university_thesis": "Các luận văn đại học"
   },
   "infor": {
     "name": "Họ và tên",

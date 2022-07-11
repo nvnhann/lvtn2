@@ -12,7 +12,8 @@
     "lectures": "Lectures",
     "my_doc": "My documents",
     "paper": "Papers",
-    "schedule": "Practice schedule"
+    "schedule": "Practice schedule",
+    "dissertation": "Dissertation"
   },
   "button": {
     "saved": "Saved",
@@ -23,11 +24,13 @@
     "add_document": "Add document",
     "change_password": "Change password",
     "edit_information": "Edit document",
-    "post": "Post"
+    "post": "Post",
+    "registered_course": "Register for the course",
+    "delete": "Delete"
   },
   "title": {
     "document": "Document",
-    "document_name": "Name document",
+    "document_name": "Document name",
     "add_document": "Add document",
     "add_posts": "Add posts",
     "describe": "Describe",
@@ -49,7 +52,10 @@
     "lecturer": "Lecturer",
     "student": "Student",
     "member": "Member",
-    "course": "Course"
+    "course": "Course",
+    "fields": "Fields",
+    "enter_fields": "Please select fields",
+    "university_thesis": "University thesis"
   },
   "infor": {
     "name": "Full name",
