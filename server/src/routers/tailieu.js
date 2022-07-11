@@ -13,5 +13,6 @@ router.post('/tailieu/unsave', asyncHandler(TaiLieuController.unSaveTaiLieu));
 router.get('/tailieu/save',[ checkToken,asyncHandler(TaiLieuController.getTaiLieuSave)])
 router.get('/tailieu/:id', [ TaiLieuController.getTailieuById])
 router.delete('/tailieu/:id', [ TaiLieuController.deleteTaiLieuById])
-router.get('/tailieu/file/:name', [ TaiLieuController.getFileByName])
+router.get('/tailieu/file/:name', [ TaiLieuController.getFileByName]);
+router.get('/tailieu/goiy/:id', TaiLieuController.getGoiY);
 export default router;

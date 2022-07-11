@@ -96,9 +96,15 @@ const getTailieuById = async (id) => {
         include: [
             {
                 model: User,
+                where: {
+                    active: 1
+                }
             },
             {
                 model: LinhVuc,
+                where: {
+                    active: 1
+                }
             },
         ],
     });
@@ -151,6 +157,26 @@ const getTaiLieuSave = async (maso) =>{
     })
 }
 
+const getGoiY = async (id) => {
+    const g = await db.sequelize.query('SELECT DISTINCT(ct_lv.tailieu_id)\n' +
+        'FROM ct_lv LEFT JOIN tailieu ON tailieu.id = ct_lv.tailieu_id\n' +
+        'WHERE ct_lv.linhvuc_id IN (\n' +
+        '                                SELECT ct_lv.linhvuc_id\n' +
+        '                            FROM tl_luu \n' +
+        '                                LEFT JOIN tailieu ON tailieu.id = tl_luu.tailieu_id \n' +
+        '                                LEFT JOIN ct_lv ON ct_lv.tailieu_id = tl_luu.tailieu_id\n' +
+        '                            WHERE tl_luu.user_id = '+id+')  AND tailieu.active = 1', {type: db.sequelize.QueryTypes.SELECT});
+    let rs = [];
+    if(g.length > 0){
+        rs = Promise.all(
+            g.map(async e=> getTailieuById(e.tailieu_id))
+        );
+    }
+    console.log(rs)
+    return rs;
+
+}
+
 module.exports = {
     createTaiLieu,
     getTailieuByMaso,
@@ -161,5 +187,6 @@ module.exports = {
     saveTaiLieu,
     getTaiLieuSave,
     getTaiLieuByLinhVuc,
-    unSaveTaiLieu
+    unSaveTaiLieu,
+    getGoiY
 };

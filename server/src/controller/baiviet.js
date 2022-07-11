@@ -28,3 +28,13 @@ export const setActiveBaiViet = async (req, res) => {
         res.status(200).json({message: e})
     }
 }
+
+export const deleteBaiViet = async (req, res)=>{
+    try{
+        await BaiVietService.deleteBaiViet(req.params.id);
+        res.status(200).json({message: 'Thành công'})
+    }  catch (e) {
+        console.log(e);
+        res.status(200).json({message: e})
+    }
+}

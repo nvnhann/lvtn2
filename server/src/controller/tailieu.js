@@ -123,6 +123,15 @@ const getTaiLieuByLinhVuc = async (req, res) =>{
     res.status(400).json({message: e})
   }
 }
+
+const getGoiY = async (req, res) => {
+  try{
+    res.status(200).json(await TaiLieuService.getGoiY(req.params.id));
+  }catch (e) {
+    console.log(e);
+    res.status(400).json({message: e})
+  }
+}
 module.exports = {
   createTaiLieu,
   uploadFile,
@@ -132,6 +141,7 @@ module.exports = {
   deleteTaiLieuById,
   setActiveTaiLieu,
   saveTaiLieu,
+  getGoiY,
   getTaiLieuSave,
   getTaiLieuByLinhVuc,
   unSaveTaiLieu

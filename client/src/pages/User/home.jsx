@@ -1,62 +1,79 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { GrDocumentText } from "react-icons/gr";
-import { AiFillCaretDown } from "react-icons/ai";
+import {AiFillCaretDown, AiOutlineDisconnect} from "react-icons/ai";
+import {useDispatch, useSelector} from "react-redux";
+import {getUserInfo} from "../../reducers/profile";
+import {getData} from "../../utils/httpProvider";
+import {API_BASE_URL} from "../../config/configUrl";
+import {Link} from "react-router-dom";
+import {checkTL} from "../../utils/checkTaiLieu";
+import {MdOutlineDataSaverOn} from "react-icons/md";
+import {fnSaveTaiLieu, fnUnSaveTaiLieu} from "../../actions/profile/profileAction";
+import {useTranslation} from "react-i18next";
 
-const arr = [
-  { id: 1, tengv: "Đào Minh Minh" },
-  { id: 2, tengv: "Đào Đào Minh" },
-  { id: 3, tengv: "Đào Minh Khoa" },
-  { id: 4, tengv: "Đào Đào Khoa" },
-];
+
 
 function Home() {
-  const viewTeacher = (idgv) => {
-    console.log(idgv);
-  };
+ const [data, setData] = useState([]);
+ const user = useSelector(state => getUserInfo(state));
+ const dispatch = useDispatch();
+ const {t} = useTranslation();
+
+ useEffect(()=>{
+   (async ()=>{
+     const res = await getData(API_BASE_URL+ '/tailieu/goiy/'+user.id);
+     setData(res.data);
+   })()
+ }, []);
+ console.log(data)
   return (
-    <div className="p-5 bg-[#2554A6]">
-      <p className="uppercase text-center text-[25px] text-white">
-        có thể bạn quan tâm
-      </p>
-      <div className="mt-5 flex justify-between gap-8 text-center ">
-        <p className="py-2 w-full bg-[#F5F5F5] cursor-pointer rounded-md">
-          Tất cả
-        </p>
-        <p className="py-2 w-full bg-[#F5F5F5] cursor-pointer rounded-md">
-          Giảng viên
-        </p>
-        <p className="py-2 w-full bg-[#F5F5F5] cursor-pointer rounded-md">
-          Bài báo
-        </p>
-        <p className="py-2 w-full bg-[#F5F5F5] cursor-pointer rounded-md">
-          Khóa học
-        </p>
-      </div>
+   <div>
+       <div className="w-full mt-3  grid grid-cols-4 gap-2">
+           {data?.map((e, idx) => {
+               if (e.active && !checkTL(e.id, user.tl)) {
+                   return (
+                       <div key={idx} className="bg-white p-3 rounded-md">
+                           <Link to={"/app/document/detail/" + e.id}>
+                               <div className="mb-4 w-full h-[160px] bg-slate-200 rounded-lg overflow-hidden"></div>
+                               <p>
+                                   <strong>{e.name}</strong>
+                               </p>
+                           </Link>
+                           <span>
+                    {t("title.create_by")} <strong>{e.user.ho_ten}</strong>
+                  </span>
+                           <div className="flex flex-wrap space-x-2 items-start">
+                               {e.linhvucs?.map((e2, i) => (
+                                   <span
+                                       key={i}
+                                       className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
+                                   >
+                        {e2.name}
+                      </span>
+                               ))}
+                           </div>
+                           <div className="flex justify-end items-center gap-5">
+                               {e?.user?.maso !== user?.maso && <div
+                                   className="flex items-center gap-2 p-2 cursor-pointer bg-yellow-300 rounded-md shadow-md"
+                               >
 
-      <div className="p-4 mt-5 bg-[#D9D9D9]">
-        {arr?.map(({ id, tengv }, idx) => (
-          <div
-            key={idx}
-            className="p-4 mb-5 flex justify-between rounded-md bg-white"
-          >
-            <p>
-              <strong>Giảng viên: </strong>
-              {tengv}
-            </p>
-
-            <div
-              onClick={() => viewTeacher(id)}
-              className="flex items-center cursor-pointer"
-            >
-              <GrDocumentText />
-              <p>Xem</p>
-            </div>
-          </div>
-        ))}
-        <p className="mt-5 flex items-center justify-center cursor-pointer">
-          <strong>Xem thêm </strong> <AiFillCaretDown />
-        </p>
-      </div>
+                                   {
+                                       !checkTL(e.id, user.tl) ? <MdOutlineDataSaverOn
+                                           color="#2979ff"
+                                           className="ml-auto mr-0 cursor-pointer"
+                                           onClick={async () => dispatch(await fnSaveTaiLieu(user.id, e.id, user.maso))}
+                                       /> : <AiOutlineDisconnect
+                                           color="#2979ff"
+                                           onClick={async () => dispatch(await fnUnSaveTaiLieu(user.id, e.id, user.maso))}
+                                           className="ml-auto mr-0 cursor-pointer"/>
+                                   }
+                               </div>}
+                           </div>
+                       </div>
+                   );
+               }
+           })}
+       </div>
     </div>
   );
 }

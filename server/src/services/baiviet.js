@@ -44,3 +44,7 @@ export const getBaiVietByKH = async id => {
 export const setActiveBaiViet = async (id, active) => {
     await db.sequelize.query('UPDATE `baiviet` SET `active` = '+active+' WHERE `baiviet`.`id` = '+ id);
 }
+
+export const deleteBaiViet = async id => {
+    await db.sequelize.query('DELETE FROM baiviet WHERE `baiviet`.`id` = '+id)
+}
