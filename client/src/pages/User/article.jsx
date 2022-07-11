@@ -49,7 +49,9 @@ function Article() {
   }, []);
   return (
     <>
-      <div className="mb-2 font-bold text-[2rem]">Các nghiên cứu khoa học</div>
+      <div className="mb-2 font-bold text-[2rem]">
+        {t("title.scientific_studies")}
+      </div>
 
       <div className="w-full px-5 grid grid-cols-4 gap-4">
         {data?.map((item, idx) => (

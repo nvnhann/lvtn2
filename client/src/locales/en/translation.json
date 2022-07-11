@@ -55,7 +55,9 @@
     "course": "Course",
     "fields": "Fields",
     "enter_fields": "Please select fields",
-    "university_thesis": "University thesis"
+    "university_thesis": "University thesis",
+    "save_document": "Save document",
+    "scientific_studies": "Scientific studies"
   },
   "infor": {
     "name": "Full name",

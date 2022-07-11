@@ -55,7 +55,9 @@
     "course": "Khóa học",
     "fields": "Lĩnh vực",
     "enter_fields": "Vui lòng chọn lĩnh vực",
-    "university_thesis": "Các luận văn đại học"
+    "university_thesis": "Các luận văn đại học",
+    "save_document": "Tài liệu đã lưu",
+    "scientific_studies": "Các nghiên cứu khoa học"
   },
   "infor": {
     "name": "Họ và tên",
