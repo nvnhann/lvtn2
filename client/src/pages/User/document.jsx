@@ -67,7 +67,7 @@ function Document() {
         id: id,
         active: active,
       });
-      enqueueSnackbar(active === 1 ? "Đã hiện tài liệu" : "Đã ẩn tài liệu", {
+      enqueueSnackbar(active === 1 ? `${t("alert.show_document")}` : `${t("alert.hidden_document")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });
@@ -80,7 +80,7 @@ function Document() {
   const deleteTaiLieu = async () => {
     try {
       await $http.deleteData(CONFIG.API_BASE_URL + "/tailieu/" + idtl);
-      enqueueSnackbar("Xóa tài liệu thành công", {
+      enqueueSnackbar(`${t("alert.delete_document_success")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });

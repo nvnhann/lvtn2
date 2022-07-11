@@ -95,7 +95,7 @@ function MyProfile() {
         profile: values,
       });
       dispatch(await fnGetUserInfo(profile.maso));
-      enqueueSnackbar("Cập nhật thành công", {
+      enqueueSnackbar(`${t("alert.update_success")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });
@@ -125,7 +125,7 @@ function MyProfile() {
       file[0]?.type === "image/png" ||
       file[0]?.type === "image/gif")
     ) {
-      enqueueSnackbar("Vui lòng chọn hình ảnh", {
+      enqueueSnackbar(`${t("alert.select_image")}`, {
         variant: "error",
         autoHideDuration: 2000,
       });
@@ -160,7 +160,7 @@ function MyProfile() {
           "content-type": "multipart/form-data",
         }
       );
-      enqueueSnackbar("Cập nhật ảnh đại diện thành công", {
+      enqueueSnackbar(`${t("alert.update_avatar_success")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });
@@ -195,7 +195,7 @@ function MyProfile() {
       id: id,
       idtl: idtl,
     });
-    enqueueSnackbar("Lưu thành công", {
+    enqueueSnackbar(`${t("alert.save_success")}`, {
       variant: "info",
       autoHideDuration: 3000,
     });

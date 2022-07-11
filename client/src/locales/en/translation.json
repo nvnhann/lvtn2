@@ -71,5 +71,19 @@
     "err_2": "Password at least 8 characters",
     "err_3": "Please re-enter a password",
     "err_4": "Password incorrect"
+  },
+  "alert": {
+    "add_success": "Add success",
+    "delete_success": "Successfully deleted",
+    "select_file": "Please select the file",
+    "validate_file": "The file must not be greater than 25MB",
+    "hidden_document": "Hidden document",
+    "show_document": "Showed document",
+    "delete_document_success": "Delete the document successfully",
+    "update_pass_success": "Successful password update",
+    "update_success": "Successful update",
+    "select_image": "Please select the image",
+    "update_avatar_success": "Successful photo update",
+    "save_success": "Save success"
   }
 }

@@ -33,7 +33,7 @@ function ForgotPassword() {
   const updatePassword = async (data) => {
     try {
       await $http.postData(CONFIG.API_BASE_URL + "/user/forgotpass", data);
-      enqueueSnackbar("Cập nhật mật khẩu thành công", {
+      enqueueSnackbar(`${t("alert.update_pass_success")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });

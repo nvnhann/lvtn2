@@ -71,5 +71,19 @@
     "err_2": "Mật khẩu ít nhất 8 ký tự",
     "err_3": "Vui lòng nhập lại mật khẩu",
     "err_4": "Mật khẩu không khớp"
+  },
+  "alert": {
+    "add_success": "Thêm thành công",
+    "delete_success": "Xóa thành công",
+    "select_file": "Vui lòng chọn file",
+    "validate_file": "File không được lớn hơn 25MB",
+    "hidden_document": "Đã ẩn tài liệu",
+    "show_document": "Đã hiện tài liệu",
+    "delete_document_success": "Xóa tài liệu thành công",
+    "update_pass_success": "Cập nhật mật khẩu thành công",
+    "update_success": "Cập nhật thành công",
+    "select_image": "Vui lòng chọn hình ảnh",
+    "update_avatar_success": "Cập nhật ảnh đại điện thành công",
+    "save_success": "Lưu thành công"
   }
 }

@@ -76,14 +76,14 @@ function DocumentUpload() {
   const onSubmit = async (values) => {
     try {
       if (values.file.length === 0) {
-        enqueueSnackbar("Vui lòng chọn file", {
+        enqueueSnackbar(`${t("alert.select_file")}`, {
           variant: "error",
           autoHideDuration: 3000,
         });
         return;
       }
       if (values.file[0].size / 1024 / 1024 > 25) {
-        enqueueSnackbar("File không được lớn hơn 25MB", {
+        enqueueSnackbar(`${t("alert.validate_file")}`, {
           variant: "error",
           autoHideDuration: 3000,
         });
@@ -99,7 +99,7 @@ function DocumentUpload() {
         await $http.postData(CONFIG.API_BASE_URL + "/tailieu", formDt, {
           "content-type": "multipart/form-data",
         });
-        enqueueSnackbar("Thêm thành công", {
+        enqueueSnackbar(`${t("alert.add_success")}`, {
           variant: "success",
           autoHideDuration: 3000,
         });
@@ -121,7 +121,7 @@ function DocumentUpload() {
         id: id,
         active: active,
       });
-      enqueueSnackbar(active === 1 ? "Đã hiện tài liệu" : "Đã ẩn tài liệu", {
+      enqueueSnackbar(active === 1 ? `${t("alert.show_document")}` : `${t("alert.hidden_document")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });
@@ -134,7 +134,7 @@ function DocumentUpload() {
   const deleteTaiLieu = async () => {
     try {
       await $http.deleteData(CONFIG.API_BASE_URL + "/tailieu/" + idtl);
-      enqueueSnackbar("Xóa tài liệu thành công", {
+      enqueueSnackbar(`${t("alert.delete_document_success")}`, {
         variant: "success",
         autoHideDuration: 3000,
       });
