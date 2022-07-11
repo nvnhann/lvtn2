@@ -41,7 +41,7 @@ const setActiveKhoahoc = async (idkh, active) => {
 
 const getKhoaHocById = async (id) => {
     const rs = {};
-    console.log(id)
+
     let khh = await db.sequelize.query('SELECT ctkh.id as idkh, ctkh.user_id, kh.ma_khoa_hoc, kh.ten_khoa_hoc, u.maso, u.ho_ten, avatar.path_name \
     from chi_tiet_kh ctkh INNER JOIN user u ON ctkh.user_id = u.id INNER JOIN khoahoc kh ON ctkh.khoahoc_id = kh.id LEFT JOIN avatar ON avatar.user_id = u.id \
     WHERE ctkh.id = ' + id, {type: db.sequelize.QueryTypes.SELECT});

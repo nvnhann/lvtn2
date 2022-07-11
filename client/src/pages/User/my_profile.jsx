@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoMdLock } from "react-icons/io";
 import { FaUserEdit, FaUser } from "react-icons/fa";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import {AiOutlineCloudUpload, AiOutlineDisconnect} from "react-icons/ai";
 import { Link, useMatch, useParams } from "react-router-dom";
 import { getUserInfo } from "../../reducers/profile";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +10,13 @@ import { useForm } from "react-hook-form";
 import * as $http from "../../utils/httpProvider";
 import * as CONFIG from "../../config/configUrl";
 import { useSnackbar } from "notistack";
-import { fnGetUserInfo } from "../../actions/profile/profileAction";
+import {fnGetUserInfo, fnSaveTaiLieu, fnUnSaveTaiLieu} from "../../actions/profile/profileAction";
 import { useEffect } from "react";
 import { MdOutlineDataSaverOn } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {checkTL} from "../../utils/checkTaiLieu";
 
 const formatDate = (date) => {
   const today = new Date(date);
@@ -461,14 +462,23 @@ function MyProfile() {
                       </span>
                     ))}
                   </div>
-                  {user?.maso !== e.user.maso && (
-                    <MdOutlineDataSaverOn
-                      size={30}
-                      color="#2979ff"
-                      className="ml-auto mr-0 cursor-pointer"
-                      onClick={() => saveTaiLieu(user?.id, e.id)}
-                    />
-                  )}
+                  <div className="flex justify-end items-center gap-5">
+                    {e?.user?.maso !== user?.maso && <div
+                        className="flex items-center gap-2 p-2 cursor-pointer bg-yellow-300 rounded-md shadow-md"
+                    >
+
+                      {
+                        !checkTL(e.id, user.tl) ? <MdOutlineDataSaverOn
+                            color="#2979ff"
+                            className="ml-auto mr-0 cursor-pointer"
+                            onClick={async () => dispatch(await fnSaveTaiLieu(user.id, e.id, user.maso))}
+                        /> : <AiOutlineDisconnect
+                            color="#2979ff"
+                            onClick={async () => dispatch(await fnUnSaveTaiLieu(user.id, e.id, user.maso))}
+                            className="ml-auto mr-0 cursor-pointer"/>
+                      }
+                    </div>}
+                  </div>
                 </div>
               );
             }

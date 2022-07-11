@@ -9,8 +9,11 @@ import Account from "./account";
 import Course from "./courses";
 import BoMon from "./bomon";
 import LinhVuc from "./LinhVuc";
+import {useDispatch} from "react-redux";
+import {userLogout} from "../../actions/profile";
 
 function Admin() {
+    const dispatch = useDispatch();
     return (
         <div className="flex text-slate-900">
             <div className=" w-[20%] h-[100vh]">
@@ -56,7 +59,9 @@ function Admin() {
                     <div></div>
 
                     <div>
-                        <button className="ml-2 px-4 py-2 font-medium bg-yellow-400 rounded-md">
+                        <button onClick={()=>{
+                            dispatch(userLogout())
+                        }} className="ml-2 px-4 py-2 font-medium bg-yellow-400 rounded-md">
                             Đăng xuất
                         </button>
                     </div>
