@@ -47,7 +47,7 @@ function BoMon(props) {
     useEffect(() => {
         (async () => {
             try{
-                const res = await $http.getData(CONFIG.API_BASE_URL + '/bomon');
+                const res = await $http.getData(CONFIG.API_BASE_URL + '/bomonadmin');
                 setData(res.data);
             }catch(e){
                 console.log(e)

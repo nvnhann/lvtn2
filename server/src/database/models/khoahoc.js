@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     ten_khoa_hoc: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
     },
     active: {
       type: Sequelize.BOOLEAN,

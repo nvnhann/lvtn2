@@ -4,7 +4,9 @@ const LinhVucService = require('../services/linhvuc');
 export const getAll = async (req, res) => {
     res.status(200).json(await LinhVucService.getAll());
 }
-
+export const getAllAdmin = async (req, res) => {
+    res.status(200).json(await LinhVucService.getAllAdmin());
+}
 export const createLinhVuc = async (req, res) =>{
     try{
         const b = await LinhVucService.getLinhVucByName(req.body.tenbomon);

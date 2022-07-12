@@ -46,7 +46,7 @@ function LinhVuc(props) {
 
     useEffect(() => {
         (async () => {
-            const res = await $http.getData(CONFIG.API_BASE_URL + '/linhvuc');
+            const res = await $http.getData(CONFIG.API_BASE_URL + '/linhvucadmin');
             setData(res.data);
         })()
     }, [load]);

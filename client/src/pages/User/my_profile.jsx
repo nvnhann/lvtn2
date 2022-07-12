@@ -74,7 +74,7 @@ function MyProfile() {
         { url: CONFIG.API_BASE_URL + "/avatar/" + res.data?.avatar?.path_name },
       ]);
     })();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     (async () => {
@@ -454,12 +454,14 @@ function MyProfile() {
                   </span>
                   <div className="flex flex-wrap space-x-2 items-start">
                     {e.linhvucs?.map((e2, i) => (
-                      <span
-                        key={i}
-                        className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
-                      >
+                      <Link to={"/app/tailieu/linhvuc/"+e2.name}>
+                        <span
+                            key={i}
+                            className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
+                        >
                         {e2.name}
                       </span>
+                      </Link>
                     ))}
                   </div>
                   <div className="flex justify-end items-center gap-5">

@@ -126,8 +126,8 @@ const createUser = async (user) => {
     const u = await User.create(usr);
     const g = await Group.findOne({where: {id: user.gId}});
     const b = await BoMon.findOne({where: {id: user.bId}});
-    await g.setUser(u, {through: 'membership'});
-    await b.setUser(u);
+    await g.addUser(u, {through: 'membership'});
+    await b.addUser(u);
     console.log(usr)
     return;
 
@@ -164,13 +164,19 @@ const userSearch = async (search) => {
             ho_ten: {
                 [Op.like]: `%${search}%`
             },
-            active: 1
-        }
+            active: 1,
+        },
+        include: [{
+            model: BoMon,
+            where: {
+                active: 1
+            }
+        }]
     });
     rs.taikhoan = gv;
     const kh = await db.sequelize.query('SELECT kh.ma_khoa_hoc, ctkh.id, kh.ten_khoa_hoc, u.ho_ten, u.maso, u.id as idgv, ctkh.active  , avatar.path_name \
-    from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m \
-    WHERE (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND g.groupname = "GIANGVIEN") AND (kh.ten_khoa_hoc like '+`'%${search}%'` + `OR u.ho_ten like '%${search}%')`,{type: db.sequelize.QueryTypes.SELECT})
+    from khoahoc kh, lvtn2.user u LEFT JOIN avatar ON u.id = avatar.user_id, chi_tiet_kh ctkh, `group` g, membership m, bomon bm \
+    WHERE ctkh.active = 1 and bm.active = 1 and (kh.id = ctkh.khoahoc_id and u.id = ctkh.user_id AND m.user_id = ctkh.user_id AND m.group_id = g.id AND bm.id = u.bomon_id AND g.groupname = "GIANGVIEN") AND (kh.ten_khoa_hoc like '+`'%${search}%'` + `OR u.ho_ten like '%${search}%')`,{type: db.sequelize.QueryTypes.SELECT})
     rs.kh = kh;
     const tl = await TaiLieu.findAll({
         where: {

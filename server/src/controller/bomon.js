@@ -4,6 +4,10 @@ const getAll = async(req, res)=>{
     return await res.json(await BoMonService.getAll());
 }
 
+const getAllAdmin = async(req, res)=>{
+    return await res.json(await BoMonService.getAllAdmin());
+}
+
 const getBomonById = async (req, res) => {
     return await res.json ( await BoMonService.getBomonById(req.params.id));
 }
@@ -65,5 +69,6 @@ module.exports = {
     updateNameById,
     updateStatusById,
     getBomonById,
-    createBoMon
+    createBoMon,
+    getAllAdmin
 }

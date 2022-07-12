@@ -1,8 +1,17 @@
 import {BoMon, Group, User} from "../database/models"
 
 const getAll = async () => {
+    return await BoMon.findAll({
+        where: {
+            active: 1
+        }
+    });
+}
+
+const getAllAdmin = async () => {
     return await BoMon.findAll();
 }
+
 
 const getBomonById = async (id) => {
     return await BoMon.findByPk(id, {
@@ -59,5 +68,6 @@ module.exports = {
     updateStatusById,
     getBomonById,
     createBoMon,
-    getBoMonByName
+    getBoMonByName,
+    getAllAdmin
 }

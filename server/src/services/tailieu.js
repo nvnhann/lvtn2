@@ -43,6 +43,9 @@ const getTailieuByMaso = async (maso, search) => {
                 },
                 {
                     model: LinhVuc,
+                    where: {
+                        active: 1
+                    }
                 },
             ],
             where: {
@@ -60,6 +63,9 @@ const getTailieuByMaso = async (maso, search) => {
                 },
                 {
                     model: LinhVuc,
+                    where: {
+                        active: 1
+                    }
                 },
             ],
         });
@@ -151,7 +157,10 @@ const getTaiLieuSave = async (maso) =>{
               active: 1
             },
             include: [{
-                model: LinhVuc
+                model: LinhVuc,
+                where: {
+                    active: 1
+                }
             }, {model: User}]
         }]
     })
@@ -164,8 +173,8 @@ const getGoiY = async (id) => {
         '                                SELECT ct_lv.linhvuc_id\n' +
         '                            FROM tl_luu \n' +
         '                                LEFT JOIN tailieu ON tailieu.id = tl_luu.tailieu_id \n' +
-        '                                LEFT JOIN ct_lv ON ct_lv.tailieu_id = tl_luu.tailieu_id\n' +
-        '                            WHERE tl_luu.user_id = '+id+')  AND tailieu.active = 1', {type: db.sequelize.QueryTypes.SELECT});
+        '                                LEFT JOIN ct_lv ON ct_lv.tailieu_id = tl_luu.tailieu_id LEFT JOIN linhvuc lv ON lv.id = ct_lv.linhvuc_id \n' +
+        '                            WHERE lv.active = 1 AND tl_luu.user_id = '+id+')  AND tailieu.active = 1', {type: db.sequelize.QueryTypes.SELECT});
     let rs = [];
     if(g.length > 0){
         rs = Promise.all(

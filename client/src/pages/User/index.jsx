@@ -28,6 +28,7 @@ import DocumentSave from "./document_save";
 import EditPost from "./edit_post";
 import PostsDetails from "./posts_details";
 import LuanVan from "./luanvan";
+import TaiLieuLinhVuc from "./TaiLieuLinhVuc";
 //-----------------------------------------------------------------
 
 function User() {
@@ -101,7 +102,7 @@ function User() {
             )}
             {show === true ? (
               <div className="absolute -right-3 w-[200px] text-center top-[60px] p-3 bg-white rounded-md after:content-['*'] after:w-[25px] after:h-[25px] after:absolute after:top-[-12px] after:right-[10px] after:bg-white after:rotate-45 z-[100]">
-                {isAdmin && <Link to={"/admin"}>
+                {isAdmin && <Link to={"/admin/accounts"}>
                   <p
                     onClick={() => close()}
                     className="px-4 py-2 my-2 bg-[#2554A6] rounded-md cursor-pointer hover:opacity-80 duration-300"
@@ -195,6 +196,7 @@ function User() {
             <Route path="/document/detail/:id" element={<DocumentDetail />} />
             <Route path="/document/upload" element={<DocumentUpload />} />
             <Route path="/document/save" element={<DocumentSave />} />
+            <Route path="/tailieu/linhvuc/:id" element={<TaiLieuLinhVuc />} />
             <Route path="/article" element={<Article />} />
             <Route path="/luanvan" element={<LuanVan />} />
             <Route path="/course" element={<Course />} />

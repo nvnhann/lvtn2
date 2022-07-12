@@ -2,11 +2,20 @@ import {BoMon, Group, LinhVuc, User} from "../database/models"
 
 export const getAll = async () =>{
     return await LinhVuc.findAll({
+        where: {
+          active: 1
+        },
         order: [
             ['id', 'DESC']]
     });
 }
 
+export const getAllAdmin = async () =>{
+    return await LinhVuc.findAll({
+        order: [
+            ['id', 'DESC']]
+    });
+}
 
 export const getLinhVucById = async (id) => {
     return await LinhVuc.findByPk(id)

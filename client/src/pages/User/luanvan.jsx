@@ -38,12 +38,14 @@ function LuanVan() {
               </span>
               <p>
                 {item.linhvucs.map((e) => (
-                  <span
-                    key={e.id}
-                    className="text-[12px] text-white bg-orange-500 rounded-full mr-2 px-[8px] py-1"
-                  >
+                  <Link to={"/app/tailieu/linhvuc/"+e.name}>
+                      <span
+                          key={e.id}
+                          className="text-[12px] text-white bg-orange-500 rounded-full mr-2 px-[8px] py-1"
+                      >
                     {e.name}
                   </span>
+                  </Link>
                 ))}
               </p>
               {user?.maso !== item.user.maso && (

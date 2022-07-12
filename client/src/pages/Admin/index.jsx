@@ -56,7 +56,13 @@ function Admin() {
             </div>
             <div className="w-full">
                 <div className="flex justify-between items-center mb-4 p-4 w-full h-[100px] border-b border-slate-200">
-                    <div></div>
+                    <div>
+                        <Link to="/">
+                            <button className="ml-2 px-4 py-2 font-medium bg-cyan-700 text-white rounded-md">
+                                CIT
+                            </button>
+                        </Link>
+                    </div>
 
                     <div>
                         <button onClick={()=>{

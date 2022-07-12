@@ -230,10 +230,7 @@ function Account() {
           >
             Thêm tài khoản
           </button>
-          <button className="px-4 py-2 my-2 bg-yellow-400 font-medium rounded-md inline-flex items-center hover:opacity-90 active:opacity-50 duration-300">
-            Thêm tài khoản
-            <AiTwotoneFileExcel className="ml-2" color="#064e3b" />
-          </button>
+
           <form onSubmit={handleSubmitSearch((data) => search(data))}>
             <div className="flex items-center gap-2">
               <input
