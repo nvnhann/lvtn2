@@ -61,8 +61,10 @@ function ResultSearch() {
                         </div>
                         <div className="flex mt-2 flex-wrap space-x-2 items-start">
                             {data?.lv?.map((e2, idx) => (
-                                <span key={idx}
-                                      className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
+                                <Link to={"/app/tailieu/linhvuc/"+e2.name}>
+                                    <span key={idx}
+                                          className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
+                                </Link>
                             ))}
                         </div>
                         <div className="grid grid-cols-4 mb-5">
@@ -128,12 +130,14 @@ function ResultSearch() {
                   </span>
                                     <div className="flex flex-wrap space-x-2 items-start">
                                         {e.linhvucs?.map((e2, i) => (
-                                            <span
-                                                key={i}
-                                                className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
-                                            >
+                                           <Link to={"/app/tailieu/linhvuc/"+e2.name}>
+                                                <span
+                                                    key={i}
+                                                    className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
+                                                >
                         {e2.name}
                       </span>
+                                           </Link>
                                         ))}
                                     </div>
                                     {user?.maso !== e.user.maso && (
@@ -232,12 +236,14 @@ function ResultSearch() {
                   </span>
                                     <div className="flex flex-wrap space-x-2 items-start">
                                         {e.linhvucs?.map((e2, i) => (
-                                            <span
-                                                key={i}
-                                                className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
-                                            >
+                                           <Link to={"/app/tailieu/linhvuc"}>
+                                                <span
+                                                    key={i}
+                                                    className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease"
+                                                >
                         {e2.name}
                       </span>
+                                           </Link>
                                         ))}
                                     </div>
                                     {user?.maso !== e.user.maso && (
@@ -256,8 +262,10 @@ function ResultSearch() {
                     <TabPanel value="5">
                         <div className="flex mt-2 flex-wrap space-x-2 items-start">
                             {data?.lv?.map((e2, idx) => (
-                                <span key={idx}
-                                      className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
+                                <Link to={"/app/tailieu/linhvuc/"+e2.name}>
+                                    <span key={idx}
+                                          className="p-1 my-2 rounded-full text-white  bg-orange-400 font-semibold text-[10px] flex align-center w-max cursor-pointer active:bg-gray-300 transition duration-300 ease">{e2.name}</span>
+                                </Link>
                             ))}
                         </div>
                     </TabPanel>
